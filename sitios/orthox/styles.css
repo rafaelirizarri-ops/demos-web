@@ -96,10 +96,6 @@ section[id] { scroll-margin-top: 84px; }
 .age-adults p { color: var(--ink-soft); }
 
 /* Primera visita */
-.flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; counter-reset: paso; }
-.flow li { border-top: 2px solid var(--teal); padding-top: 28px; }
-.flow h3 { font-size: 1.4rem; margin-bottom: .6rem; font-stretch: 105%; }
-.flow p { margin: 0; color: var(--ink-soft); max-width: 34ch; }
 
 /* Contacto */
 .contact { padding-block: 128px 112px; border-top: 1px solid var(--line); background: radial-gradient(60% 80% at 85% 0%, rgb(79 199 185 / .12), transparent 70%); }
@@ -120,19 +116,29 @@ section[id] { scroll-margin-top: 84px; }
 .footer .brand { font-size: 1rem; }
 .footer a { color: var(--ink-soft); text-decoration: none; display: inline-flex; align-items: center; gap: .4rem; }
 
-/* Movimiento (solo sin reduced-motion; la clase la pone el JS) */
-.motion .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--ease) var(--d, 0s), transform .9s var(--ease) var(--d, 0s); }
-.motion .reveal.in { opacity: 1; transform: none; }
-.motion .hero-title .line > span { transform: translateY(105%); transition: transform 1.1s var(--ease); }
-.motion .hero-title .line:nth-child(2) > span { transition-delay: .08s; }
-.motion .hero-title .line:nth-child(3) > span { transition-delay: .16s; }
-.motion .hero.in .hero-title .line > span { transform: none; }
-.motion .hero-foot { opacity: 0; transition: opacity .9s var(--ease) .35s; }
-.motion .hero.in .hero-foot { opacity: 1; }
+/* Movimiento: lo maneja main.js con GSAP. Solo la banda es CSS. */
 @media (prefers-reduced-motion: no-preference) {
   .band-track { animation: band 38s linear infinite; }
   @keyframes band { to { transform: translateX(-50%); } }
 }
+
+/* Proceso: sección fijada con la arcada */
+.process { border-top: 1px solid var(--line); }
+.process-pin { min-height: 100dvh; display: flex; align-items: center; padding-block: 96px; }
+.process-inner { display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; align-items: center; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.step { padding: 18px 0 18px 24px; border-left: 2px solid var(--line); transition: border-color .4s var(--ease), opacity .4s var(--ease); opacity: .38; }
+.step h3 { font-size: 1.35rem; font-stretch: 105%; margin-bottom: .3rem; }
+.step p { margin: 0; color: var(--ink-soft); max-width: 40ch; }
+.step.is-on { opacity: 1; border-color: var(--teal); }
+.arch { width: 100%; height: auto; overflow: visible; }
+.arch rect:not(.bracket) { fill: var(--ink); }
+.arch .bracket { fill: var(--teal); }
+.arch .wire { stroke: var(--teal); stroke-width: 2.5; stroke-dasharray: 1; stroke-dashoffset: 1; }
+/* Sin movimiento (o sin JS): dientes ya alineados y todos los pasos visibles */
+.static .tooth, html:not(.motion) .tooth { transform: none; }
+.static .bracket, html:not(.motion) .bracket { display: none; }
+.static .step, html:not(.motion) .step { opacity: 1; border-color: var(--teal); }
 
 /* Móvil */
 @media (max-width: 900px) {
@@ -146,7 +152,12 @@ section[id] { scroll-margin-top: 84px; }
   .who { justify-self: start; }
   .ages { grid-template-columns: 1fr; }
   .age { min-height: 280px; padding: 40px 28px; }
-  .flow, .contact-grid { grid-template-columns: 1fr; gap: 36px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 36px; }
+  .process-inner { grid-template-columns: 1fr; gap: 24px; }
+  .process-pin { padding-block: 72px 40px; }
+  .process .arch { order: -1; max-width: 420px; justify-self: center; }
+  .step { padding: 10px 0 10px 18px; }
+  .step p { font-size: .95rem; }
   .contact { padding-block: 88px; }
 }
 @media (max-width: 480px) {
