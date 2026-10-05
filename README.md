@@ -7,9 +7,12 @@ Sitios demo para prospectos. Cada carpeta en `sitios/` es un sitio estático ind
 | Orthox Clínica Dental | `sitios/orthox` | Falta: fotos, horario |
 | Sen Vietnam | `sitios/sen-vietnam` | Falta: fotos, horario |
 
-## Publicar en Netlify (una vez por sitio)
-1. Netlify → Add new project → Import an existing project → GitHub → `demos-web`.
-2. **Base directory:** `sitios/<carpeta>` (ej. `sitios/orthox`). Build command: vacío. Publish directory: `sitios/<carpeta>`.
-3. Deploy. Desde ahí, cada cambio que entre a `main` se publica solo.
+## Netlify
+El proyecto `demos-webs` publica la carpeta `sitios/` (ver `netlify.toml` en la raíz). Cada demo queda en su propia ruta:
+- https://demos-webs.netlify.app/orthox/
+- https://demos-webs.netlify.app/sen-vietnam/
+
+Una demo nueva = una carpeta nueva en `sitios/`. Cada cambio que entra a `main` se publica solo.
+Si un cliente cierra, se le crea su propio proyecto de Netlify con Base directory `sitios/<carpeta>` y su dominio.
 
 `capturas/` tiene screenshots de QA (escritorio, móvil, oscuro) y el "antes". Ver `FLUJO-DE-TRABAJO.md`.

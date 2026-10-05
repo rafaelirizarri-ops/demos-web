@@ -1,0 +1,10 @@
+# Un solo proyecto de Netlify para todas las demos:
+#   demos-webs.netlify.app/orthox/  y  demos-webs.netlify.app/sen-vietnam/
+[build]
+  publish = "sitios"
+  command = ""
+
+[[headers]]
+  for = "/*/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
