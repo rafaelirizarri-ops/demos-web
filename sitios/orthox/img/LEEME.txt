@@ -1,0 +1,4 @@
+Pon aquí 2 fotos reales de la clínica (de @orthoxclinicadental o tomadas en el local):
+  hero.jpg      vertical 4:5   (la Dra. Cristina con un paciente)
+  brackets.jpg  horizontal     (tratamiento de ortodoncia)
+Mientras no estén, la página muestra un recuadro azul con el nombre de la foto.

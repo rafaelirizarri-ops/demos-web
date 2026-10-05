@@ -1,0 +1,150 @@
+/* Orthox: paleta "Cobalto + un neutro frío". Confianza clínica sin el turquesa típico de dentista.
+   Forma: botones en píldora, bloques y fotos con radio 20px. */
+:root {
+  --bg: #f5f7fa;
+  --surface: #e9eef5;
+  --ink: #0f1b2d;
+  --ink-soft: #4a5872;
+  --line: #d3dbe7;
+  --accent: #2446d6;
+  --accent-ink: #ffffff;
+  --deep: #0f1b2d;
+  --on-deep: #eef2f8;
+  --radius: 20px;
+  --font: "Manrope", system-ui, sans-serif;
+  --ease: cubic-bezier(.16, 1, .3, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1220;
+    --surface: #131d30;
+    --ink: #e7ecf5;
+    --ink-soft: #a3b0c6;
+    --line: #233149;
+    --accent: #7d97ff;
+    --accent-ink: #0b1220;
+    --deep: #16244a;
+    --on-deep: #eef2f8;
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 17px/1.6 var(--font); -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+h1, h2, h3 { font-weight: 800; letter-spacing: -0.03em; margin: 0; }
+h2 { font-size: clamp(2rem, 4vw, 2.9rem); line-height: 1.08; margin-bottom: 2.25rem; }
+h3 { font-size: 1.25rem; line-height: 1.25; font-weight: 700; letter-spacing: -0.015em; }
+.wrap { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.section { padding-block: 104px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem; white-space: nowrap;
+  padding: .9rem 1.45rem; border-radius: 999px; border: 1.5px solid var(--accent);
+  background: var(--accent); color: var(--accent-ink); font-weight: 700; text-decoration: none;
+  transition: transform .25s var(--ease);
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: scale(.98); }
+.btn .ph { font-size: 1.15em; }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover { border-color: var(--ink); }
+.btn-small { padding: .55rem 1rem; font-size: .95rem; }
+.btn-light { background: var(--on-deep); color: #0f1b2d; border-color: var(--on-deep); }
+
+.nav { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.nav-inner { height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.brand { display: inline-flex; align-items: center; gap: .55rem; font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; text-decoration: none; }
+.brand-mark { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--accent-ink); font-size: 1.1rem; }
+.nav nav { display: flex; gap: 2rem; }
+.nav nav a { text-decoration: none; color: var(--ink-soft); font-weight: 600; font-size: .97rem; }
+.nav nav a:hover { color: var(--ink); }
+
+.hero { min-height: calc(100dvh - 68px); display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; padding-top: 48px; padding-bottom: 48px; }
+.hero h1 { font-size: clamp(2.4rem, 4.4vw, 3.8rem); line-height: 1.05; }
+.lead { font-size: 1.18rem; color: var(--ink-soft); max-width: 40ch; margin: 1.5rem 0 2.25rem; }
+.cta-row { display: flex; flex-wrap: wrap; gap: .75rem; }
+.hero-photo { aspect-ratio: 4 / 5; max-height: 76dvh; width: 100%; max-width: 500px; justify-self: end; }
+
+.photo { position: relative; margin: 0; border-radius: var(--radius); overflow: hidden; background: radial-gradient(120% 90% at 70% 15%, #3a5bd9 0%, #18295a 55%, #0f1b2d 100%); }
+.photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.ph-slot { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: .5rem; padding: 1rem; text-align: center; color: rgb(238 242 248 / .75); font-size: .95rem; }
+.ph-slot .ph { font-size: 2rem; }
+
+/* Bento 4 celdas: foto ancha arriba-izq, acento a la derecha, dos abajo */
+.bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.tile { border-radius: var(--radius); background: var(--surface); padding: 28px; display: flex; flex-direction: column; gap: .5rem; }
+.tile p { margin: 0; color: var(--ink-soft); max-width: 40ch; }
+.tile-photo { grid-column: span 2; grid-row: span 2; padding: 0; overflow: hidden; }
+.tile-photo .photo { border-radius: 0; flex: 1; min-height: 300px; }
+.tile-photo .tile-text { padding: 26px 28px 28px; display: grid; gap: .5rem; }
+.tile-accent { background: var(--accent); color: var(--accent-ink); }
+.tile-accent p { color: var(--accent-ink); opacity: .88; }
+.tile-icon { font-size: 2rem; margin-bottom: auto; padding-bottom: 2.5rem; color: var(--accent); }
+.tile-accent .tile-icon { color: var(--accent-ink); }
+.bento > .tile:nth-child(4) { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: 1.5rem; }
+.bento > .tile:nth-child(4) .tile-icon { margin: 0; padding: 0; }
+
+/* Primera visita */
+.visit-flow { background: var(--surface); padding-block: 104px; }
+.flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; position: relative; }
+.flow li { border-top: 2px solid var(--accent); padding-top: 28px; }
+.flow .ph { font-size: 1.8rem; color: var(--accent); }
+.flow h3 { margin: 1rem 0 .5rem; }
+.flow p { margin: 0; color: var(--ink-soft); max-width: 34ch; }
+
+/* FAQ */
+.faq-list { max-width: 820px; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.4rem 0; font-weight: 700; font-size: 1.12rem; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary .ph { transition: transform .3s var(--ease); color: var(--ink-soft); flex: none; }
+.faq details[open] summary .ph { transform: rotate(180deg); }
+.faq details p { margin: 0 0 1.5rem; color: var(--ink-soft); max-width: 62ch; }
+
+/* Contacto */
+.contact { background: var(--deep); color: var(--on-deep); padding-block: 96px; }
+.contact-inner { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: center; }
+.contact h2 { margin-bottom: 1rem; }
+.contact p { margin: 0 0 2rem; color: rgb(238 242 248 / .78); }
+.contact-info { margin: 0; display: grid; gap: 1.5rem; }
+.contact-info dt { font-weight: 700; display: flex; align-items: center; gap: .5rem; }
+.contact-info dd { margin: .2rem 0 0 1.75rem; color: rgb(238 242 248 / .75); }
+
+.footer { border-top: 1px solid var(--line); padding: 32px 0; }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.footer a { text-decoration: none; color: var(--ink-soft); display: inline-flex; align-items: center; gap: .4rem; }
+
+.motion .reveal { opacity: 0; transform: translateY(22px); transition: opacity .8s var(--ease) var(--d, 0s), transform .8s var(--ease) var(--d, 0s); }
+.motion .reveal.in { opacity: 1; transform: none; }
+
+@media (max-width: 860px) {
+  .nav nav { display: none; }
+  .hero { grid-template-columns: 1fr; min-height: auto; gap: 32px; padding-top: 32px; }
+  .hero-photo { max-width: none; justify-self: stretch; aspect-ratio: 4 / 3.4; }
+  .bento { grid-template-columns: 1fr; }
+  .tile-photo, .bento > .tile:nth-child(4) { grid-column: auto; grid-row: auto; }
+  .bento > .tile:nth-child(4) { flex-direction: column; align-items: flex-start; }
+  .tile-icon { padding-bottom: 1.25rem; }
+  .flow { grid-template-columns: 1fr; gap: 36px; }
+  .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+  .section, .visit-flow { padding-block: 72px; }
+}
+@media (max-width: 480px) {
+  .wrap { padding: 0 16px; }
+  .cta-row .btn { flex: 1 1 100%; justify-content: center; }
+  .nav .btn-small { padding: .5rem .85rem; }
+}
+.doc { font-weight: 500; font-size: .85rem; color: var(--ink-soft); letter-spacing: 0; margin-left: .5rem; }
+.contact-info dd a { color: inherit; }
+
+/* Accesibilidad y pulido */
+html { color-scheme: light dark; }
+body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+section[id] { scroll-margin-top: 84px; }
+h1, h2 { text-wrap: balance; }
+p { text-wrap: pretty; }
+.skip-link { position: absolute; left: 16px; top: -100px; z-index: 20; padding: .6rem 1rem; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-weight: 700; text-decoration: none; }
+.skip-link:focus { top: 12px; }

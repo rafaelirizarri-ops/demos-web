@@ -1,0 +1,5 @@
+Pon aquí 3 fotos (JPG, idealmente sacadas del Instagram del restaurante o tomadas en el local):
+  hero.jpg   vertical 4:5   (el pho, plato estrella)
+  pho.jpg    horizontal     (pho visto de arriba)
+  rollos.jpg horizontal     (rollos frescos)
+Mientras no estén, la página muestra un recuadro verde con el nombre de la foto.
