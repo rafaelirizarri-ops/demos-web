@@ -55,6 +55,8 @@
       video.appendChild(s);
     });
     video.hidden = false;
+    // the video has its own lighthouse, so the CSS beam steps aside once it is playing
+    video.addEventListener("playing", () => video.closest(".hero").classList.add("has-video"), { once: true });
     video.load();
     video.play().catch(() => {});
   }
@@ -119,7 +121,10 @@
       if (!ok) { say(t("contact.required"), "error"); return; }
 
       const fc = CFG.form || {};
-      const configured = fc.provider === "formspree" ? /formspree\.io\/f\//.test(fc.endpoint || "") : !!fc.accessKey;
+      const configured =
+        fc.provider === "formspree" ? /formspree\.io\/f\//.test(fc.endpoint || "")
+        : fc.provider === "formsubmit" ? !!fc.email
+        : !!fc.accessKey;
       if (!configured) { say(t("contact.notConnected"), "error"); return; }
 
       const data = {
@@ -139,7 +144,13 @@
 
       try {
         let res;
-        if (fc.provider === "formspree") {
+        const json = { Accept: "application/json", "Content-Type": "application/json" };
+        if (fc.provider === "formsubmit") {
+          res = await fetch("https://formsubmit.co/ajax/" + encodeURIComponent(fc.email), {
+            method: "POST", headers: json,
+            body: JSON.stringify(Object.assign({ _subject: "Nuevo contacto desde la web de Faro", _template: "table", _captcha: "false" }, data)),
+          });
+        } else if (fc.provider === "formspree") {
           res = await fetch(fc.endpoint, { method: "POST", headers: { Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify(data) });
         } else {
           res = await fetch(fc.endpoint || "https://api.web3forms.com/submit", {

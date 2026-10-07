@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; overflow: hidden; background: #07090d; }
+      #root { width: 100%; height: 100%; position: relative; background: #07090d; }
+      #sea { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    </style>
+  </head>
+  <body>
+    <!--
+      Faro hero loop: a two-beam lighthouse turning over a night sea.
+      Everything is drawn on a canvas from a single time value u in [0, 1),
+      so the render is deterministic and frame 0 == frame 300 (seamless loop).
+    -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1920" data-height="1080">
+      <canvas id="sea" class="clip" data-start="0" data-duration="10" data-track-index="0" width="1920" height="1080"></canvas>
+    </div>
+    <script>
+      (function () {
+        const W = 1920, H = 1080;
+        const cv = document.getElementById("sea");
+        const g = cv.getContext("2d");
+
+        // palette
+        const NIGHT = [7, 9, 13];
+        const AMBER = [255, 178, 62];
+        const WARM = [255, 214, 150];
+
+        // geometry
+        const LX = W * 0.78, LY = H * 0.335; // lamp
+        const HY = H * 0.36;                 // horizon
+        const TAU = Math.PI * 2;
+
+        // seeded PRNG (mulberry32) for particles and grain
+        function rng(seed) {
+          return function () {
+            seed |= 0; seed = (seed + 0x6d2b79f5) | 0;
+            let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+          };
+        }
+        const r = rng(20261007);
+        const particles = Array.from({ length: 46 }, () => ({
+          x: W * (0.35 + r() * 0.65), y: H * (0.08 + r() * 0.8),
+          s: 0.6 + r() * 1.8, p: r(), drift: 40 + r() * 90, a: 0.25 + r() * 0.55,
+        }));
+
+        // six pre-baked grain tiles; tile chosen by frame index (300 % 6 == 0 keeps the loop exact)
+        const grain = Array.from({ length: 6 }, (_, k) => {
+          const c = document.createElement("canvas"); c.width = c.height = 256;
+          const x = c.getContext("2d"); const img = x.createImageData(256, 256); const rr = rng(99 + k);
+          for (let i = 0; i < img.data.length; i += 4) {
+            const v = rr() * 255; img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255;
+          }
+          x.putImageData(img, 0, 0); return c;
+        });
+
+        const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+        // one projected beam. phi = beam heading in the horizontal plane (0 = pointing right, PI/2 = at camera)
+        function beam(phi, strength) {
+          const dx = Math.cos(phi);                 // sideways component on screen
+          const toCam = Math.sin(phi);              // > 0 means coming toward the viewer
+          const len = W * 1.15 * Math.abs(dx);
+          if (len < 4) return;
+          const dir = Math.sign(dx);
+          const spread = 26 + 70 * Math.max(0, toCam); // wider when the beam swings toward us
+          const drop = 70 * Math.max(0, toCam);          // and dips slightly (perspective)
+          const tipX = LX + dir * len, tipY = LY + drop;
+          const a = (0.16 + 0.12 * Math.max(0, toCam)) * strength;
+
+          const grad = g.createLinearGradient(LX, LY, tipX, tipY);
+          grad.addColorStop(0, rgba(WARM, a * 1.6));
+          grad.addColorStop(0.35, rgba(AMBER, a));
+          grad.addColorStop(1, rgba(AMBER, 0));
+          g.save();
+          g.globalCompositeOperation = "lighter";
+          g.filter = "blur(14px)";
+          g.fillStyle = grad;
+          g.beginPath();
+          g.moveTo(LX, LY - 3);
+          g.lineTo(tipX, tipY - spread);
+          g.lineTo(tipX, tipY + spread);
+          g.lineTo(LX, LY + 3);
+          g.closePath();
+          g.fill();
+          // bright core
+          g.filter = "blur(4px)";
+          const core = g.createLinearGradient(LX, LY, LX + dir * len * 0.55, tipY);
+          core.addColorStop(0, rgba(WARM, a * 1.4));
+          core.addColorStop(1, rgba(WARM, 0));
+          g.fillStyle = core;
+          g.beginPath();
+          g.moveTo(LX, LY - 1.5);
+          g.lineTo(LX + dir * len * 0.55, LY + drop * 0.55 - spread * 0.18);
+          g.lineTo(LX + dir * len * 0.55, LY + drop * 0.55 + spread * 0.18);
+          g.lineTo(LX, LY + 1.5);
+          g.fill();
+          g.restore();
+        }
+
+        function draw(u) {
+          // two opposite beams turning half a revolution per loop = seamless
+          const phi = Math.PI * u + 0.35;
+          const facing = Math.max(Math.sin(phi), Math.sin(phi + Math.PI)); // either beam toward camera
+          const flash = Math.pow(Math.max(0, facing), 18);
+
+          // sky + sea
+          g.globalCompositeOperation = "source-over";
+          g.filter = "none";
+          const sky = g.createLinearGradient(0, 0, 0, H);
+          sky.addColorStop(0, "#07090d");
+          sky.addColorStop(0.36, "#0c1017");
+          sky.addColorStop(0.37, "#090c12");
+          sky.addColorStop(1, "#05070a");
+          g.fillStyle = sky; g.fillRect(0, 0, W, H);
+
+          // haze around the lamp, breathing with the flash
+          const haze = g.createRadialGradient(LX, LY, 0, LX, LY, 520 + 120 * flash);
+          haze.addColorStop(0, rgba(AMBER, 0.16 + 0.1 * flash));
+          haze.addColorStop(1, rgba(AMBER, 0));
+          g.fillStyle = haze; g.fillRect(0, 0, W, H);
+
+          beam(phi, 1);
+          beam(phi + Math.PI, 1);
+
+          // water: fine lines that catch light near the beam's ground track
+          const bx1 = LX + Math.cos(phi) * W * 0.9, bx2 = LX + Math.cos(phi + Math.PI) * W * 0.9;
+          for (let i = 0; i < 70; i++) {
+            const k = i / 70;
+            const y = HY + 6 + Math.pow(k, 1.7) * (H - HY);
+            const shimmer = 0.5 + 0.5 * Math.sin(TAU * (u * 2 + k * 3.1)); // integer cycles per loop
+            const base = 0.03 + 0.045 * k;
+            g.fillStyle = rgba([243, 238, 228], base * (0.6 + 0.4 * shimmer));
+            g.fillRect(0, y, W, 1 + k * 1.2);
+            // amber glints under each beam
+            [bx1, bx2].forEach((bx) => {
+              const cx = LX + (bx - LX) * (0.25 + k * 0.6);
+              const wdt = 140 + 520 * k;
+              const lg = g.createLinearGradient(cx - wdt, 0, cx + wdt, 0);
+              const a = (0.07 + 0.14 * shimmer) * (1 - k * 0.4);
+              lg.addColorStop(0, rgba(AMBER, 0)); lg.addColorStop(0.5, rgba(AMBER, a)); lg.addColorStop(1, rgba(AMBER, 0));
+              g.fillStyle = lg; g.fillRect(cx - wdt, y, wdt * 2, 1 + k * 1.2);
+            });
+          }
+
+          // vertical reflection of the lamp
+          const refl = g.createLinearGradient(0, HY, 0, H);
+          refl.addColorStop(0, rgba(AMBER, 0.22 + 0.14 * flash));
+          refl.addColorStop(1, rgba(AMBER, 0));
+          g.save(); g.globalCompositeOperation = "lighter"; g.filter = "blur(10px)";
+          g.fillStyle = refl; g.fillRect(LX - 10 - 12 * flash, HY, 20 + 24 * flash, H - HY);
+          g.restore();
+
+          // horizon hairline
+          const hz = g.createLinearGradient(0, 0, W, 0);
+          hz.addColorStop(0, "rgba(243,238,228,0)"); hz.addColorStop(0.55, "rgba(243,238,228,0.16)"); hz.addColorStop(1, "rgba(243,238,228,0.05)");
+          g.fillStyle = hz; g.fillRect(0, HY, W, 1);
+
+          // lamp
+          g.save(); g.globalCompositeOperation = "lighter";
+          [[90 + 50 * flash, 0.28 + 0.18 * flash], [26, 0.75], [7, 1]].forEach(([rad, a]) => {
+            const lg = g.createRadialGradient(LX, LY, 0, LX, LY, rad);
+            lg.addColorStop(0, rgba([255, 243, 220], a)); lg.addColorStop(1, rgba(AMBER, 0));
+            g.fillStyle = lg; g.beginPath(); g.arc(LX, LY, rad, 0, TAU); g.fill();
+          });
+          g.restore();
+
+          // drifting embers (each fades out exactly as it wraps)
+          g.save(); g.globalCompositeOperation = "lighter";
+          particles.forEach((p) => {
+            const f = (p.p + u) % 1;
+            const a = p.a * Math.pow(Math.sin(Math.PI * f), 2);
+            g.fillStyle = rgba(WARM, a);
+            g.beginPath(); g.arc(p.x + 14 * Math.sin(TAU * (f + p.p)), p.y - p.drift * f, p.s, 0, TAU); g.fill();
+          });
+          g.restore();
+
+          // keep the left side quiet for the headline
+          const veil = g.createLinearGradient(0, 0, W * 0.62, 0);
+          veil.addColorStop(0, rgba(NIGHT, 0.72)); veil.addColorStop(1, rgba(NIGHT, 0));
+          g.fillStyle = veil; g.fillRect(0, 0, W, H);
+
+          // film grain
+          const tile = grain[Math.round(u * 300) % 6];
+          g.save(); g.globalAlpha = 0.05; g.globalCompositeOperation = "overlay";
+          g.fillStyle = g.createPattern(tile, "repeat"); g.fillRect(0, 0, W, H);
+          g.restore();
+        }
+
+        const state = { u: 0 };
+        const tl = gsap.timeline({ paused: true });
+        tl.to(state, { u: 1, duration: 10, ease: "none", onUpdate: () => draw(state.u % 1) }, 0);
+        draw(0);
+        window.__timelines["main"] = tl;
+      })();
+    </script>
+  </body>
+</html>
