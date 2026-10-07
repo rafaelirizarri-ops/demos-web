@@ -25,6 +25,7 @@ window.FARO_COPY = {
       skip: "Saltar al contenido",
       langLabel: "Cambiar idioma",
       menu: "Menú",
+      close: "Cerrar",
     },
     hero: {
       kicker: "Operaciones para negocios pequeños",
@@ -44,12 +45,16 @@ window.FARO_COPY = {
         "Y un equipo completo cuesta lo que todavía no tienes.",
       ],
       close: "No te falta talento.<br><em>Te falta sistema.</em>",
+      sub: "Faro te lo monta, lo lleva y lo hace crecer contigo.",
     },
     services: {
       label: "Servicios",
       title: "Siete sistemas.<br><em>Un solo equipo.</em>",
       lead: "Eliges lo que necesitas hoy. Sumas el resto cuando crezcas.",
-      hint: "Pasa el cursor por cada tarjeta",
+      hint: "Sigue bajando para recorrer los siete",
+      hintTouch: "Desliza para ver los siete",
+      prev: "Anterior",
+      next: "Siguiente",
       items: [
         {
           id: "marketing",
@@ -125,10 +130,11 @@ window.FARO_COPY = {
       label: "Resultados",
       title: "Lo que cuentan<br><em>nuestros clientes.</em>",
       note: "Espacio reservado: aquí van testimonios y cifras reales de clientes.",
+      pending: "Por publicar",
       items: [
-        { quote: "[Testimonio real: qué cambió en su negocio después de trabajar con Faro.]", name: "[Nombre del cliente]", role: "[Negocio · Ciudad]", metric: "[+__%]", metricLabel: "[métrica real, ej. consultas por WhatsApp]" },
-        { quote: "[Testimonio real: cuánto tiempo recuperó cada semana.]", name: "[Nombre del cliente]", role: "[Negocio · Ciudad]", metric: "[__ h]", metricLabel: "[métrica real, ej. horas ahorradas por semana]" },
-        { quote: "[Testimonio real: cómo se ve ahora su marca en línea.]", name: "[Nombre del cliente]", role: "[Negocio · Ciudad]", metric: "[__×]", metricLabel: "[métrica real, ej. reservas al mes]" },
+        { metric: "+__%", metricLabel: "consultas por WhatsApp", quote: "Aquí va, con sus palabras, qué cambió en su negocio después de trabajar con Faro.", name: "Nombre del cliente", role: "Negocio · Ciudad" },
+        { metric: "__ h", metricLabel: "horas recuperadas por semana", quote: "Aquí va cuánto tiempo recuperó cada semana y en qué lo usa ahora.", name: "Nombre del cliente", role: "Negocio · Ciudad" },
+        { metric: "__×", metricLabel: "reservas al mes", quote: "Aquí va cómo se ve hoy su marca en línea y qué le dicen sus clientes.", name: "Nombre del cliente", role: "Negocio · Ciudad" },
       ],
     },
     faq: {
@@ -185,6 +191,7 @@ window.FARO_COPY = {
       skip: "Skip to content",
       langLabel: "Change language",
       menu: "Menu",
+      close: "Close",
     },
     hero: {
       kicker: "Operations for small businesses",
@@ -204,12 +211,16 @@ window.FARO_COPY = {
         "And a full team costs money you don’t have yet.",
       ],
       close: "You’re not short on talent.<br><em>You’re short on systems.</em>",
+      sub: "Faro builds it, runs it and grows it with you.",
     },
     services: {
       label: "Services",
       title: "Seven systems.<br><em>One team.</em>",
       lead: "Start with what you need today. Add the rest as you grow.",
-      hint: "Hover over each card",
+      hint: "Keep scrolling to move through all seven",
+      hintTouch: "Swipe through all seven",
+      prev: "Previous",
+      next: "Next",
       items: [
         {
           id: "marketing",
@@ -284,10 +295,11 @@ window.FARO_COPY = {
       label: "Results",
       title: "What our clients<br><em>are saying.</em>",
       note: "Placeholder: real client testimonials and numbers go here.",
+      pending: "Coming soon",
       items: [
-        { quote: "[Real testimonial: what changed in their business after working with Faro.]", name: "[Client name]", role: "[Business · City]", metric: "[+__%]", metricLabel: "[real metric, e.g. WhatsApp inquiries]" },
-        { quote: "[Real testimonial: how much time they win back each week.]", name: "[Client name]", role: "[Business · City]", metric: "[__ h]", metricLabel: "[real metric, e.g. hours saved per week]" },
-        { quote: "[Real testimonial: how their brand looks online now.]", name: "[Client name]", role: "[Business · City]", metric: "[__×]", metricLabel: "[real metric, e.g. bookings per month]" },
+        { metric: "+__%", metricLabel: "WhatsApp inquiries", quote: "In their own words: what changed in their business after working with Faro.", name: "Client name", role: "Business · City" },
+        { metric: "__ h", metricLabel: "hours won back each week", quote: "How much time they win back each week, and what they do with it now.", name: "Client name", role: "Business · City" },
+        { metric: "__×", metricLabel: "bookings per month", quote: "How their brand looks online today, and what their customers say about it.", name: "Client name", role: "Business · City" },
       ],
     },
     faq: {

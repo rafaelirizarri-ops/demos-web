@@ -6,7 +6,7 @@ Sitios demo para prospectos. Cada carpeta en `sitios/` es un sitio estático ind
 |---|---|---|
 | Orthox Clínica Dental | `sitios/orthox` | Falta: fotos, horario |
 | Sen Vietnam | `sitios/sen-vietnam` | Falta: fotos, horario |
-| Faro | `sitios/faro` | ES/EN, video del hero con HyperFrames (`video-src/hero.html`), formulario por FormSubmit (activar con el primer envío) |
+| Faro | `sitios/faro` | ES/EN, logo propio (la F es el faro), intro y escenas fijas con GSAP, video del hero con HyperFrames (`video-src/hero.html`), formulario por FormSubmit (activar con el primer envío) |
 
 ## Netlify
 El proyecto `demos-webs` publica la carpeta `sitios/` (ver `netlify.toml` en la raíz). Cada demo queda en su propia ruta:
