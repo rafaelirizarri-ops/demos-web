@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-160 -60 740 740">
+  <rect x="-160" y="-60" width="740" height="740" rx="160" fill="#07090d"/>
+  <g transform="translate(40 40) scale(0.62)">
+  <defs>
+    <linearGradient id="ic-beam" x1="124.5" y1="0" x2="1180" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffd596" stop-opacity="1"/>
+      <stop offset="0.3" stop-color="#ffb23e" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#ffb23e" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="ic-glow" cx="124.5" cy="118" r="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffb23e" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ffb23e" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="ic-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="900" height="900">
+      <rect width="900" height="900" fill="#fff"/>
+      <!-- remove the F's original top arm and the top of the stem: the lamp and beam replace them -->
+      <rect x="0" y="0" width="420" height="148" fill="#000"/>
+      <rect x="161" y="0" width="260" height="296" fill="#000"/>
+    </mask>
+  </defs>
+  <g fill="#f3eee4"><path d="M237 800L34 800Q19 800 19 789L19 789Q19 780 32 777L32 777L55 773Q76 769 82.5 762Q89 755 89 734L89 734L89 146Q89 125 82.5 118Q76 111 55 107L55 107L32 103Q19 100 19 91L19 91Q19 80 34 80L34 80L356 80Q379 80 381 103L381 103L389 269Q391 286 376 286L376 286Q364 286 362 273L362 273L357 240Q349 188 329 159Q309 130 284 117.5Q259 105 236 105L236 105Q192 105 176 119Q160 133 160 162L160 162L160 398Q160 412 174 412L174 412L209 412Q253 412 263 365L263 365L274 315Q277 302 289 302L289 302Q301 302 301 319L301 319L301 544Q301 561 289 561L289 561Q277 561 274 548L274 548L263 499Q256 464 243.5 453Q231 442 208 442L208 442L174 442Q160 442 160 456L160 456L160 729Q160 750 166.5 758.5Q173 767 194 770L194 770L241 777Q252 779 252 788L252 788Q252 800 237 800L237 800Z" mask="url(#ic-cut)"/></g>
+  <path d="M124.5 104 L640 68 L640 162 L124.5 132 Z" fill="url(#ic-beam)"/>
+  <circle cx="124.5" cy="118" r="120" fill="url(#ic-glow)"/>
+  <circle cx="124.5" cy="118" r="40" fill="#ffb23e"/></g>
+</svg>

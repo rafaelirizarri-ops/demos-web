@@ -1,7 +1,8 @@
 /* =========================================================================
    Faro: language engine + list rendering.
    Reads window.FARO_COPY (copy.js), fills [data-i18n*] elements and renders
-   the repeating blocks (problem lines, service cards, steps, results, FAQ).
+   the repeating blocks (problem words, service cards, marquee, steps,
+   results, FAQ).
    Runs synchronously at the end of <body>, so text is in place before paint.
    ========================================================================= */
 
@@ -108,7 +109,9 @@
   /* ---------- list renderers (keyed by data-list) ---------- */
 
   const renderers = {
-    "problem.lines": (items) => items.map((t) => `<li class="problem__line"><span>${esc(t)}</span></li>`).join(""),
+    // One sentence per line; every word is its own span so it can "light up" on scroll
+    "problem.lines": (items) => items.map((t) =>
+      `<span class="problem__s">${t.split(" ").map((w) => `<span class="w">${esc(w)}</span>`).join(" ")}</span>`).join(" "),
 
     "services.items": (items, lang) => {
       const demo = get(lang, "services.demo");
@@ -126,8 +129,8 @@
               <p class="card__text">${esc(s.body)}</p>
               <ul class="card__points">${s.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
             </div>
+            <span class="card__light" aria-hidden="true"></span>
           </div>
-          <span class="card__light" aria-hidden="true"></span>
         </li>`).join("");
     },
 
@@ -136,18 +139,28 @@
       get(lang, "services.items").map((s) => `
         <label class="chip"><input type="checkbox" name="needs" value="${esc(s.name)}"><span>${esc(s.name)}</span></label>`).join(""),
 
+    // Service names, twice, so the marquee can loop seamlessly
+    "services.marquee": (_, lang) => {
+      const group = get(lang, "services.items").map((s) =>
+        `<span class="marquee__item">${esc(s.name)}</span><i class="marquee__dot"></i>`).join("");
+      return `<div class="marquee__group">${group}</div><div class="marquee__group">${group}</div>`;
+    },
+
     "how.steps": (items) => items.map((s, i) => `
-      <li class="step">
-        <span class="step__num">${i + 1}</span>
+      <li class="step" data-step="${i}">
+        <span class="step__num">${String(i + 1).padStart(2, "0")}</span>
         <h3 class="step__name">${esc(s.name)}</h3>
         <p class="step__body">${esc(s.body)}</p>
       </li>`).join(""),
 
-    "results.items": (items) => items.map((r) => `
+    // Placeholder cards: clearly marked as pending until real testimonials arrive
+    "results.items": (items, lang) => items.map((r) => `
       <li class="quote">
-        <p class="quote__metric">${esc(r.metric)}<span>${esc(r.metricLabel)}</span></p>
+        <span class="quote__badge">${esc(get(lang, "results.pending"))}</span>
+        <p class="quote__metric">${esc(r.metric)}</p>
+        <p class="quote__label">${esc(r.metricLabel)}</p>
         <blockquote class="quote__text">${esc(r.quote)}</blockquote>
-        <p class="quote__who"><b>${esc(r.name)}</b> ${esc(r.role)}</p>
+        <p class="quote__who"><b>${esc(r.name)}</b><span>${esc(r.role)}</span></p>
       </li>`).join(""),
 
     "faq.items": (items) => items.map((f) => `
