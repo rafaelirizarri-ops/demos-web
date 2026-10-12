@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Clínica Dental Mareas · Costa del Este</title>
+<meta name="description" content="Odontología general y estética en Costa del Este. Limpiezas, ortodoncia invisible e implantes. Agenda por WhatsApp.">
+<meta name="theme-color" content="#04171b">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Fraunces-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Figtree-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body>
+
+<a class="skip" href="#tratamientos" data-i="skip">Saltar al contenido</a>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="Clínica Dental Mareas">
+    <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4c-4.2-2.3-11 0-10 8 .6 4.8 2 8.3 3 12.5.6 2.6 3.4 2.8 4 .2l1.2-5.3c.5-1.9 3.1-1.9 3.6 0l1.2 5.3c.6 2.6 3.4 2.4 4-.2 1-4.2 2.4-7.7 3-12.5 1-8-5.8-10.3-10-8Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 13c2.5-1.6 5.5 1.6 7 0s4.5-1.6 7 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span class="brand__name">Mareas</span>
+  </a>
+  <div class="nav__right">
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="es" aria-pressed="true">ES</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="btn btn--sm nav__cta js-wa" href="#" target="_blank" rel="noopener"><span data-i="navCta">Agendar</span></a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO: the tide rises over the promise and becomes the next section -->
+  <section class="hero" id="top">
+    <div class="hero__stage">
+      <canvas class="tide" aria-hidden="true"></canvas>
+
+      <div class="hero__text">
+        <div class="hero__copy" id="heroCopy">
+          <p class="eyebrow"><span class="eyebrow__dot"></span><span data-i="eyebrow">Odontología general y estética · Costa del Este</span></p>
+          <h1 class="h1" data-ih="h1">Tu próxima cita, <em>a un mensaje</em> de distancia.</h1>
+          <p class="lead" data-i="lead">Limpiezas, ortodoncia invisible e implantes. Escríbenos por WhatsApp y te confirmamos el mismo día.</p>
+        </div>
+        <div class="hero__copy hero__copy--under" aria-hidden="true">
+          <p class="eyebrow"><span class="eyebrow__dot"></span><span data-i="eyebrow">Odontología general y estética · Costa del Este</span></p>
+          <p class="h1" data-ih="h1">Tu próxima cita, <em>a un mensaje</em> de distancia.</p>
+          <p class="lead" data-i="lead">Limpiezas, ortodoncia invisible e implantes. Escríbenos por WhatsApp y te confirmamos el mismo día.</p>
+        </div>
+      </div>
+
+      <div class="hero__book" aria-labelledby="bookTitle">
+        <p class="hero__booktitle" id="bookTitle" data-i="bookTitle">Agenda tu evaluación</p>
+        <div class="slots" id="slots" role="group" aria-labelledby="bookTitle"></div>
+        <a class="btn js-wa" href="#" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.6-.3.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4Z"/></svg>
+          <span data-i="waBtn">Pedir cita por WhatsApp</span>
+        </a>
+      </div>
+
+      <ul class="hero__facts" id="facts"></ul>
+
+      <div class="hero__cue" aria-hidden="true"><span data-i="cue">Desliza</span><i></i></div>
+      <div class="gauge" aria-hidden="true"><span class="gauge__val">0.0</span><span class="gauge__unit">m</span><i class="gauge__bar"><b></b></i></div>
+    </div>
+  </section>
+
+  <!-- PROCESS: an implant, drawn step by step as you scroll -->
+  <section class="proc" id="implante" aria-labelledby="procTitle">
+    <div class="proc__stage">
+      <div class="proc__text">
+        <p class="kicker" data-i="impKicker">El proceso</p>
+        <h2 class="h2" id="procTitle" data-ih="impTitle">Un implante, <em>paso a paso</em>.</h2>
+        <ol class="steps" id="steps"></ol>
+        <div class="rail" aria-hidden="true"><i class="rail__fill"></i></div>
+      </div>
+      <div class="proc__art">
+        <svg class="implant" viewBox="0 0 400 460" role="img" aria-labelledby="artTitle">
+          <title id="artTitle" data-i="artTitle">Ilustración de un implante dental colocándose en el hueso</title>
+          <defs>
+            <pattern id="bonePat" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.2" fill="#2f6b6b"/><circle cx="10" cy="10" r=".9" fill="#2f6b6b"/></pattern>
+            <linearGradient id="crownG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4fbfa"/><stop offset="1" stop-color="#cfe6e3"/></linearGradient>
+            <linearGradient id="scanG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4cc3c4" stop-opacity="0"/><stop offset=".5" stop-color="#4cc3c4" stop-opacity=".55"/><stop offset="1" stop-color="#4cc3c4" stop-opacity="0"/></linearGradient>
+            <clipPath id="screwClip"><path d="M184 262h32l-3 140c-1 10-6 18-13 18s-12-8-13-18Z"/></clipPath>
+            <clipPath id="boneClip"><path d="M0 250 Q100 236 200 246 T400 248 V460 H0Z"/></clipPath>
+          </defs>
+          <!-- bone -->
+          <path class="bone" d="M0 250 Q100 236 200 246 T400 248 V460 H0Z" fill="#0c3134"/>
+          <path d="M0 250 Q100 236 200 246 T400 248 V460 H0Z" fill="url(#bonePat)" opacity=".7"/>
+          <!-- neighbour teeth -->
+          <g class="tooth tooth--l" fill="none" stroke="#9fc9c5" stroke-width="2">
+            <path d="M18 214c-4-50 8-92 50-92s54 42 50 92c-2 18-10 26-16 30H34c-6-4-14-12-16-30Z" fill="#0f2c30"/>
+            <path d="M40 244c2 50 8 96 22 120M96 244c-2 50-8 96-22 120"/>
+          </g>
+          <g class="tooth tooth--r" fill="none" stroke="#9fc9c5" stroke-width="2">
+            <path d="M282 214c-4-50 8-92 50-92s54 42 50 92c-2 18-10 26-16 30H298c-6-4-14-12-16-30Z" fill="#0f2c30"/>
+            <path d="M304 244c2 50 8 96 22 120M360 244c-2 50-8 96-22 120"/>
+          </g>
+          <!-- gum -->
+          <path class="gum" d="M0 232 C40 214 90 214 120 230 C150 246 168 232 200 232 C232 232 250 246 280 230 C310 214 360 214 400 232 V262 C300 252 100 252 0 262Z" fill="#d98b80" opacity=".85"/>
+          <!-- step 1: gap marker -->
+          <g class="mark">
+            <circle cx="200" cy="200" r="58" fill="none" stroke="#4cc3c4" stroke-width="1.5" stroke-dasharray="4 7"/>
+            <path d="M188 200h24M200 188v24" stroke="#4cc3c4" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+          <!-- step 2: 3D scan -->
+          <g class="scan" clip-path="url(#boneClip)">
+            <g stroke="#4cc3c4" stroke-opacity=".22" stroke-width="1">
+              <path d="M0 280H400M0 320H400M0 360H400M0 400H400M0 440H400M120 240V460M160 240V460M200 240V460M240 240V460M280 240V460"/>
+            </g>
+            <rect class="scan__beam" x="0" y="230" width="400" height="44" fill="url(#scanG)"/>
+          </g>
+          <!-- step 4: osseointegration -->
+          <g class="osseo" fill="#4cc3c4">
+            <circle cx="172" cy="300" r="3"/><circle cx="228" cy="310" r="3"/><circle cx="168" cy="340" r="2.5"/><circle cx="232" cy="350" r="2.5"/>
+            <circle cx="174" cy="378" r="3"/><circle cx="226" cy="388" r="3"/><circle cx="180" cy="410" r="2"/><circle cx="220" cy="414" r="2"/>
+            <circle cx="160" cy="320" r="1.8"/><circle cx="240" cy="330" r="1.8"/><circle cx="162" cy="364" r="1.8"/><circle cx="238" cy="372" r="1.8"/>
+          </g>
+          <!-- step 3: implant screw -->
+          <g class="screw">
+            <path d="M184 262h32l-3 140c-1 10-6 18-13 18s-12-8-13-18Z" fill="#9db4b8"/>
+            <g clip-path="url(#screwClip)"><g class="threads" stroke="#5f7a7e" stroke-width="3" stroke-linecap="round">
+              <path d="M180 240l40-6M180 258l40-6M180 276l40-6M180 294l40-6M180 312l40-6M180 330l40-6M180 348l40-6M180 366l40-6M180 384l40-6M180 402l40-6M180 420l40-6"/>
+            </g></g>
+            <path d="M184 262h32" stroke="#dfe9ea" stroke-width="2"/>
+          </g>
+          <!-- step 5: abutment + crown -->
+          <path class="abut" d="M188 262l-3-30h30l-3 30Z" fill="#b9cbcd"/>
+          <g class="crown">
+            <path d="M142 214c-4-50 8-92 58-92s62 42 58 92c-2 18-10 26-16 30h-84c-6-4-14-12-16-30Z" fill="url(#crownG)"/>
+            <path d="M164 140c10-8 22-10 30-8" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none" opacity=".8"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc" id="tratamientos" aria-labelledby="svcTitle">
+    <div class="wrap">
+      <div class="svc__head">
+        <h2 class="h2" id="svcTitle" data-ih="svcTitle">Tratamientos</h2>
+        <p class="sub" data-i="svcSub">Precios de referencia. Tu presupuesto exacto sale de la evaluación.</p>
+      </div>
+      <ol class="svc__list" id="services"></ol>
+    </div>
+  </section>
+
+  <section class="visit" aria-labelledby="visitTitle">
+    <div class="wrap">
+      <h2 class="h2" id="visitTitle" data-ih="visitTitle">Te esperamos en <em>Costa del Este</em>.</h2>
+      <div class="visit__grid">
+        <div><h3 data-i="whereT">Dónde estamos</h3><p id="address"></p><p><a id="mapLink" class="link" target="_blank" rel="noopener" data-i="mapLink">Abrir en Google Maps</a></p></div>
+        <div><h3 data-i="hoursT">Horario</h3><table class="hours" id="hours"></table></div>
+        <div><h3 data-i="payT">Pagos</h3><p data-i="payP"></p></div>
+      </div>
+      <a class="btn btn--lg js-wa" href="#" target="_blank" rel="noopener"><span data-i="waBtn">Pedir cita por WhatsApp</span></a>
+      <p class="phone" id="phoneNote"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="foot__word" aria-hidden="true">Mareas</p>
+    <p class="foot__note" id="foot"></p>
+  </div>
+</footer>
+
+<a class="wa-float js-wa" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.6-.3.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4Z"/></svg>
+</a>
+
+<script src="assets/js/gsap.min.js" defer></script>
+<script src="assets/js/ScrollTrigger.min.js" defer></script>
+<script src="assets/js/SplitText.min.js" defer></script>
+<script src="assets/js/lenis.min.js" defer></script>
+<script src="copy.js" defer></script>
+<script src="main.js" defer></script>
+</body>
+</html>
