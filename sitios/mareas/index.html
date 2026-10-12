@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Clínica Dental Mareas · Costa del Este</title>
 <meta name="description" content="Odontología general y estética en Costa del Este. Limpiezas, ortodoncia invisible e implantes. Agenda por WhatsApp.">
-<meta name="theme-color" content="#04171b">
+<meta name="theme-color" content="#06161b">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Fraunces-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Figtree-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="assets/img/mar-2400.webp" media="(min-width: 700px)">
+<link rel="preload" as="image" href="assets/img/mar-movil.webp" media="(max-width: 699px)">
 <link rel="stylesheet" href="assets/fonts/fonts.css">
 <link rel="stylesheet" href="styles.css">
 <script>document.documentElement.classList.add("js")</script>
@@ -33,22 +35,26 @@
 </header>
 
 <main>
-  <!-- HERO: the tide rises over the promise and becomes the next section -->
+  <!-- HERO: text-led, so the background is a real photograph of the sea.
+       On scroll the camera sinks below the surface. -->
   <section class="hero" id="top">
     <div class="hero__stage">
-      <canvas class="tide" aria-hidden="true"></canvas>
+      <div class="hero__media" aria-hidden="true">
+        <picture>
+          <source media="(max-width: 699px)" srcset="assets/img/mar-movil.webp">
+          <source media="(max-width: 1300px)" srcset="assets/img/mar-1200.webp 1200w, assets/img/mar-2400.webp 2400w" sizes="100vw">
+          <img class="hero__img" src="assets/img/mar-2400.webp" alt="" width="2400" height="1340" decoding="async" fetchpriority="high">
+        </picture>
+        <div class="hero__deep"></div>
+        <div class="hero__caustics"></div>
+        <div class="hero__shade"></div>
+        <div class="hero__light"></div>
+      </div>
 
-      <div class="hero__text">
-        <div class="hero__copy" id="heroCopy">
-          <p class="eyebrow"><span class="eyebrow__dot"></span><span data-i="eyebrow">Odontología general y estética · Costa del Este</span></p>
-          <h1 class="h1" data-ih="h1">Tu próxima cita, <em>a un mensaje</em> de distancia.</h1>
-          <p class="lead" data-i="lead">Limpiezas, ortodoncia invisible e implantes. Escríbenos por WhatsApp y te confirmamos el mismo día.</p>
-        </div>
-        <div class="hero__copy hero__copy--under" aria-hidden="true">
-          <p class="eyebrow"><span class="eyebrow__dot"></span><span data-i="eyebrow">Odontología general y estética · Costa del Este</span></p>
-          <p class="h1" data-ih="h1">Tu próxima cita, <em>a un mensaje</em> de distancia.</p>
-          <p class="lead" data-i="lead">Limpiezas, ortodoncia invisible e implantes. Escríbenos por WhatsApp y te confirmamos el mismo día.</p>
-        </div>
+      <div class="hero__copy" id="heroCopy">
+        <p class="eyebrow"><span class="eyebrow__dot"></span><span data-i="eyebrow">Odontología general y estética · Costa del Este</span></p>
+        <h1 class="h1" data-ih="h1">Tu próxima cita, <em>a un mensaje</em> de distancia.</h1>
+        <p class="lead" data-i="lead">Limpiezas, ortodoncia invisible e implantes. Escríbenos por WhatsApp y te confirmamos el mismo día.</p>
       </div>
 
       <div class="hero__book" aria-labelledby="bookTitle">
@@ -61,13 +67,15 @@
       </div>
 
       <ul class="hero__facts" id="facts"></ul>
-
       <div class="hero__cue" aria-hidden="true"><span data-i="cue">Desliza</span><i></i></div>
-      <div class="gauge" aria-hidden="true"><span class="gauge__val">0.0</span><span class="gauge__unit">m</span><i class="gauge__bar"><b></b></i></div>
+
+      <!-- revealed as the camera goes under -->
+      <p class="hero__under" data-ih="under">Debajo de cada sonrisa hay <em>una estructura</em> que tiene que durar.</p>
     </div>
   </section>
 
-  <!-- PROCESS: an implant, drawn step by step as you scroll -->
+  <!-- PROCESS: image-led, so a plain light background and a real implant
+       that assembles piece by piece, annotated like a technical drawing. -->
   <section class="proc" id="implante" aria-labelledby="procTitle">
     <div class="proc__stage">
       <div class="proc__text">
@@ -76,64 +84,21 @@
         <ol class="steps" id="steps"></ol>
         <div class="rail" aria-hidden="true"><i class="rail__fill"></i></div>
       </div>
-      <div class="proc__art">
-        <svg class="implant" viewBox="0 0 400 460" role="img" aria-labelledby="artTitle">
-          <title id="artTitle" data-i="artTitle">Ilustración de un implante dental colocándose en el hueso</title>
-          <defs>
-            <pattern id="bonePat" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.2" fill="#2f6b6b"/><circle cx="10" cy="10" r=".9" fill="#2f6b6b"/></pattern>
-            <linearGradient id="crownG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4fbfa"/><stop offset="1" stop-color="#cfe6e3"/></linearGradient>
-            <linearGradient id="scanG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4cc3c4" stop-opacity="0"/><stop offset=".5" stop-color="#4cc3c4" stop-opacity=".55"/><stop offset="1" stop-color="#4cc3c4" stop-opacity="0"/></linearGradient>
-            <clipPath id="screwClip"><path d="M184 262h32l-3 140c-1 10-6 18-13 18s-12-8-13-18Z"/></clipPath>
-            <clipPath id="boneClip"><path d="M0 250 Q100 236 200 246 T400 248 V460 H0Z"/></clipPath>
-          </defs>
-          <!-- bone -->
-          <path class="bone" d="M0 250 Q100 236 200 246 T400 248 V460 H0Z" fill="#0c3134"/>
-          <path d="M0 250 Q100 236 200 246 T400 248 V460 H0Z" fill="url(#bonePat)" opacity=".7"/>
-          <!-- neighbour teeth -->
-          <g class="tooth tooth--l" fill="none" stroke="#9fc9c5" stroke-width="2">
-            <path d="M18 214c-4-50 8-92 50-92s54 42 50 92c-2 18-10 26-16 30H34c-6-4-14-12-16-30Z" fill="#0f2c30"/>
-            <path d="M40 244c2 50 8 96 22 120M96 244c-2 50-8 96-22 120"/>
-          </g>
-          <g class="tooth tooth--r" fill="none" stroke="#9fc9c5" stroke-width="2">
-            <path d="M282 214c-4-50 8-92 50-92s54 42 50 92c-2 18-10 26-16 30H298c-6-4-14-12-16-30Z" fill="#0f2c30"/>
-            <path d="M304 244c2 50 8 96 22 120M360 244c-2 50-8 96-22 120"/>
-          </g>
-          <!-- gum -->
-          <path class="gum" d="M0 232 C40 214 90 214 120 230 C150 246 168 232 200 232 C232 232 250 246 280 230 C310 214 360 214 400 232 V262 C300 252 100 252 0 262Z" fill="#d98b80" opacity=".85"/>
-          <!-- step 1: gap marker -->
-          <g class="mark">
-            <circle cx="200" cy="200" r="58" fill="none" stroke="#4cc3c4" stroke-width="1.5" stroke-dasharray="4 7"/>
-            <path d="M188 200h24M200 188v24" stroke="#4cc3c4" stroke-width="1.5" stroke-linecap="round"/>
-          </g>
-          <!-- step 2: 3D scan -->
-          <g class="scan" clip-path="url(#boneClip)">
-            <g stroke="#4cc3c4" stroke-opacity=".22" stroke-width="1">
-              <path d="M0 280H400M0 320H400M0 360H400M0 400H400M0 440H400M120 240V460M160 240V460M200 240V460M240 240V460M280 240V460"/>
-            </g>
-            <rect class="scan__beam" x="0" y="230" width="400" height="44" fill="url(#scanG)"/>
-          </g>
-          <!-- step 4: osseointegration -->
-          <g class="osseo" fill="#4cc3c4">
-            <circle cx="172" cy="300" r="3"/><circle cx="228" cy="310" r="3"/><circle cx="168" cy="340" r="2.5"/><circle cx="232" cy="350" r="2.5"/>
-            <circle cx="174" cy="378" r="3"/><circle cx="226" cy="388" r="3"/><circle cx="180" cy="410" r="2"/><circle cx="220" cy="414" r="2"/>
-            <circle cx="160" cy="320" r="1.8"/><circle cx="240" cy="330" r="1.8"/><circle cx="162" cy="364" r="1.8"/><circle cx="238" cy="372" r="1.8"/>
-          </g>
-          <!-- step 3: implant screw -->
-          <g class="screw">
-            <path d="M184 262h32l-3 140c-1 10-6 18-13 18s-12-8-13-18Z" fill="#9db4b8"/>
-            <g clip-path="url(#screwClip)"><g class="threads" stroke="#5f7a7e" stroke-width="3" stroke-linecap="round">
-              <path d="M180 240l40-6M180 258l40-6M180 276l40-6M180 294l40-6M180 312l40-6M180 330l40-6M180 348l40-6M180 366l40-6M180 384l40-6M180 402l40-6M180 420l40-6"/>
-            </g></g>
-            <path d="M184 262h32" stroke="#dfe9ea" stroke-width="2"/>
-          </g>
-          <!-- step 5: abutment + crown -->
-          <path class="abut" d="M188 262l-3-30h30l-3 30Z" fill="#b9cbcd"/>
-          <g class="crown">
-            <path d="M142 214c-4-50 8-92 58-92s62 42 58 92c-2 18-10 26-16 30h-84c-6-4-14-12-16-30Z" fill="url(#crownG)"/>
-            <path d="M164 140c10-8 22-10 30-8" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none" opacity=".8"/>
-          </g>
-        </svg>
-      </div>
+
+      <figure class="proc__art">
+        <div class="implant" id="implant">
+          <div class="implant__grid" aria-hidden="true"></div>
+          <div class="implant__scan" aria-hidden="true"></div>
+          <div class="implant__ring" aria-hidden="true"></div>
+          <img class="part part--pilar" src="assets/img/pilar.webp" alt="" width="303" height="463" loading="lazy" decoding="async">
+          <img class="part part--tornillo" src="assets/img/tornillo.webp" alt="" width="230" height="632" loading="lazy" decoding="async">
+          <img class="part part--corona" src="assets/img/corona.webp" alt="" width="432" height="481" loading="lazy" decoding="async">
+          <div class="note note--corona"><i></i><span data-i="noteCrown">Corona de cerámica</span></div>
+          <div class="note note--pilar"><i></i><span data-i="noteAbut">Pilar de titanio</span></div>
+          <div class="note note--tornillo"><i></i><span data-i="noteScrew">Implante de titanio</span></div>
+        </div>
+        <figcaption class="sr-only" data-i="artTitle">Implante dental: corona, pilar y tornillo de titanio</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -142,6 +107,10 @@
       <div class="svc__head">
         <h2 class="h2" id="svcTitle" data-ih="svcTitle">Tratamientos</h2>
         <p class="sub" data-i="svcSub">Precios de referencia. Tu presupuesto exacto sale de la evaluación.</p>
+      </div>
+      <div class="photos">
+        <figure class="photo photo--a"><div class="photo__frame"><img src="assets/img/alineador.webp" alt="" width="1600" height="1195" loading="lazy" decoding="async" data-i-alt="altAligner"></div><figcaption data-i="capAligner">Ortodoncia invisible</figcaption></figure>
+        <figure class="photo photo--b"><div class="photo__frame"><img src="assets/img/carillas.webp" alt="" width="1600" height="1195" loading="lazy" decoding="async" data-i-alt="altVeneers"></div><figcaption data-i="capVeneers">Carillas a tu color</figcaption></figure>
       </div>
       <ol class="svc__list" id="services"></ol>
     </div>
