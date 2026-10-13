@@ -29,7 +29,7 @@ window.FARO_COPY = {
     },
     hero: {
       kicker: "Operaciones para negocios pequeños",
-      title: "Opera como empresa grande.<br><em>Sin pagar como una.</em>",
+      title: "Opera como <span class=\"nw\">empresa grande.</span><br><em>Sin pagar <span class=\"nw\">como una.</span></em>",
       lead:
         "Marketing, web, automatizaciones, correo, agenda, WhatsApp y finanzas. Lo montamos, lo llevamos y lo hacemos crecer. Tú vuelves a dirigir tu negocio.",
       cta: "Agenda una llamada",
@@ -46,6 +46,14 @@ window.FARO_COPY = {
       ],
       close: "No te falta talento.<br><em>Te falta sistema.</em>",
       sub: "Faro te lo monta, lo lleva y lo hace crecer contigo.",
+    },
+    stats: {
+      label: "En números",
+      items: [
+        { n: 7, text: "sistemas que trabajan por ti" },
+        { n: 1, text: "equipo que los monta y los lleva" },
+        { n: 0, text: "personas nuevas en tu nómina" },
+      ],
     },
     services: {
       label: "Servicios",
@@ -119,6 +127,8 @@ window.FARO_COPY = {
     how: {
       label: "Cómo trabajamos",
       title: "Del caos al sistema<br><em>en cuatro pasos.</em>",
+      // labels on the technical plan of the lighthouse that builds up with the steps
+      plan: ["Cimientos", "Estructura", "Linterna", "Luz"],
       steps: [
         { name: "Diagnóstico", body: "Una llamada corta. Vemos dónde se te escapan el tiempo y el dinero." },
         { name: "Plan", body: "Te proponemos los sistemas que más mueven la aguja, con un precio claro." },
@@ -195,7 +205,7 @@ window.FARO_COPY = {
     },
     hero: {
       kicker: "Operations for small businesses",
-      title: "Run like a big company.<br><em>Skip the big-company bill.</em>",
+      title: "Run like a <span class=\"nw\">big company.</span><br><em>Skip the <span class=\"nw\">big-company bill.</span></em>",
       lead:
         "Marketing, web, automations, email, scheduling, WhatsApp and finance. We set it up, run it and scale it. You get back to running your business.",
       cta: "Book a call",
@@ -212,6 +222,14 @@ window.FARO_COPY = {
       ],
       close: "You’re not short on talent.<br><em>You’re short on systems.</em>",
       sub: "Faro builds it, runs it and grows it with you.",
+    },
+    stats: {
+      label: "In numbers",
+      items: [
+        { n: 7, text: "systems working for you" },
+        { n: 1, text: "team that builds and runs them" },
+        { n: 0, text: "new people on your payroll" },
+      ],
     },
     services: {
       label: "Services",
@@ -284,6 +302,7 @@ window.FARO_COPY = {
     how: {
       label: "How it works",
       title: "From chaos to system<br><em>in four steps.</em>",
+      plan: ["Foundation", "Structure", "Lantern", "Light"],
       steps: [
         { name: "Diagnose", body: "One quick call. We find where your time and money are leaking." },
         { name: "Plan", body: "We propose the systems that move the needle most, with clear pricing." },
