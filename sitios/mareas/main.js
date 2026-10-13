@@ -40,11 +40,17 @@
   const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html) n.innerHTML = html; return n; };
   const pad = (i) => String(i + 1).padStart(2, "0");
 
+  // "3.200" in Spanish, "3,200" in English.
+  function countText(n, v) {
+    const dec = +(n.dataset.dec || 0);
+    return (dec ? v.toFixed(dec) : Math.round(v).toLocaleString("en").replace(/,/g, lang === "es" ? "." : ",")) + (n.dataset.suffix || "");
+  }
+
   function render() {
     const t = T[lang];
     root.lang = lang;
     $$("[data-i]").forEach((n) => { const v = t[n.dataset.i]; if (typeof v === "string") n.textContent = v; });
-    $$("[data-ih]").forEach((n) => { const v = t[n.dataset.ih]; if (typeof v === "string") n.innerHTML = v; });
+    $$("[data-ih]").forEach((n) => { const v = t[n.dataset.ih]; if (typeof v === "string") n.innerHTML = v.replace("{doc}", C.doctor); });
     $$("[data-i-alt]").forEach((n) => { const v = t[n.dataset.iAlt]; if (typeof v === "string") n.alt = v; });
 
     list($("#facts"), t.facts, () => el("li"), (li, v) => (li.textContent = v));
@@ -72,6 +78,24 @@
       () => el("li", "svc__row", '<span class="svc__i"></span><h3></h3><p></p><span class="svc__price"></span>'),
       (li, [h, p, pr], i) => { li.children[0].textContent = pad(i); li.children[1].textContent = h; li.children[2].textContent = p; li.children[3].textContent = pr; });
 
+    list($("#revs"), t.revs,
+      () => el("li", "rev", '<p class="rev__stars" aria-label="5/5">★★★★★</p><blockquote></blockquote><p class="rev__who"><b></b><span></span></p>'),
+      (li, [q, n, tr]) => { li.children[1].textContent = q; li.children[2].children[0].textContent = n; li.children[2].children[1].textContent = tr; });
+
+    list($("#faqs"), t.faqs,
+      () => el("details", "qa", "<summary><span></span><i aria-hidden=\"true\"></i></summary><p></p>"),
+      (d, [q, a]) => { d.querySelector("summary span").textContent = q; d.querySelector("p").textContent = a; });
+
+    const opts = (sel, items) => {
+      const i = Math.max(0, sel.selectedIndex);
+      list(sel, items, () => el("option"), (o, v) => (o.textContent = v));
+      sel.selectedIndex = i;
+    };
+    opts($("#fTreat"), t.treats);
+    opts($("#fDay"), t.fdays);
+
+    $$(".count").forEach((n) => { if (!n.dataset.run) n.textContent = countText(n, +n.dataset.to); });
+
     $("#hours").innerHTML = t.hours.map(([d, h]) => `<tr><td>${d}</td><td>${h}</td></tr>`).join("");
     $("#address").textContent = C.address;
     $("#mapLink").href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(C.mapsQuery)}`;
@@ -85,9 +109,16 @@
   const stage = $(".hero__stage");
   const hero = $(".hero");
   const nav = $("#nav"), waFloat = $(".wa-float");
-  const lightSections = [$(".proc"), $(".svc")];
+  // Sections with a light ground switch the nav to dark ink.
+  const lightSections = $$("[data-nav]");
 
   render();
+  $("#bookForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const t = T[lang];
+    const msg = t.waForm($("#fName").value.trim(), $("#fTreat").value, $("#fDay").value);
+    window.open(`https://wa.me/${C.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+  });
   let intro = null;
   $$(".lang button").forEach((b) => b.addEventListener("click", () => {
     if (b.dataset.lang === lang) return;
@@ -110,9 +141,9 @@
       let light = null;
       for (const s of lightSections) { const r = s.getBoundingClientRect(); if (r.top <= probe && r.bottom > probe) light = s; }
       // The end of the hero surfaces into paper, so treat it as light too.
-      const surfaced = !light && heroLight && +getComputedStyle(heroLight).opacity > 0.6;
+      const surfaced = !light && hero.getBoundingClientRect().bottom > probe && +getComputedStyle(heroLight).opacity > 0.6;
       nav.classList.toggle("on-light", !!light || surfaced);
-      nav.classList.toggle("on-sand", light === lightSections[1]);
+      nav.classList.toggle("on-sand", !!light && light.dataset.nav === "sand");
       waFloat.classList.toggle("is-on", y > hero.offsetHeight - window.innerHeight * 0.4);
     });
   }
@@ -257,7 +288,7 @@
         gsap.fromTo(frame, { clipPath: "inset(18% 10% 18% 10% round 18px)" }, { clipPath: "inset(0% 0% 0% 0% round 18px)", ease: "none", scrollTrigger: { trigger: f, start: "top 95%", end: "top 45%", scrub: 0.5 } });
         gsap.fromTo(pic, { scale: 1.18, yPercent: -4 }, { scale: 1, yPercent: 4, ease: "none", scrollTrigger: { trigger: f, start: "top bottom", end: "bottom top", scrub: 0.5 } });
       });
-      gsap.utils.toArray(".svc__head, .visit .h2, .visit__grid, .visit .btn").forEach((n) => {
+      gsap.utils.toArray(".svc__head, .visit .h2, .visit__grid").forEach((n) => {
         gsap.from(n, { y: 40, autoAlpha: 0, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: n, start: "top 88%", once: true } });
       });
       gsap.set(".svc__row", { y: 36, autoAlpha: 0 });
@@ -265,6 +296,27 @@
         start: "top 92%", once: true,
         onEnter: (b) => gsap.to(b, { y: 0, autoAlpha: 1, duration: 1, ease: "expo.out", stagger: 0.08, overwrite: true })
       });
+      /* Doctor: the portrait opens, the team photo drifts, the numbers count. */
+      const portrait = $(".doc__portrait .doc__frame"), team = $(".doc__team");
+      gsap.fromTo(portrait, { clipPath: "inset(14% 12% 14% 12% round 22px)" }, { clipPath: "inset(0% 0% 0% 0% round 22px)", ease: "none", scrollTrigger: { trigger: ".doc__art", start: "top 90%", end: "top 30%", scrub: 0.5 } });
+      gsap.fromTo($("img", portrait), { scale: 1.15 }, { scale: 1, ease: "none", scrollTrigger: { trigger: ".doc__art", start: "top bottom", end: "bottom top", scrub: 0.5 } });
+      gsap.fromTo(team, { yPercent: 18 }, { yPercent: -10, ease: "none", scrollTrigger: { trigger: ".doc__art", start: "top bottom", end: "bottom top", scrub: 0.6 } });
+      gsap.from(".doc__text > *", { y: 34, autoAlpha: 0, duration: 1.1, ease: "expo.out", stagger: 0.09, scrollTrigger: { trigger: ".doc__text", start: "top 80%", once: true } });
+      $$(".count").forEach((n) => {
+        const o = { v: 0 }; n.textContent = countText(n, 0); n.dataset.run = "1";
+        gsap.to(o, { v: +n.dataset.to, duration: 1.8, ease: "power2.out", onUpdate: () => (n.textContent = countText(n, o.v)), onComplete: () => delete n.dataset.run, scrollTrigger: { trigger: ".creds", start: "top 88%", once: true } });
+      });
+
+      /* Reviews and questions: cards rise in turn. */
+      gsap.from(".voices > .wrap > .kicker, .voices > .wrap > .h2", { y: 34, autoAlpha: 0, duration: 1.1, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".voices", start: "top 78%", once: true } });
+      gsap.set(".rev", { y: 50, autoAlpha: 0 });
+      ScrollTrigger.batch(".rev", { start: "top 90%", once: true, onEnter: (b) => gsap.to(b, { y: 0, autoAlpha: 1, duration: 1.1, ease: "expo.out", stagger: 0.1, overwrite: true }) });
+      gsap.from(".faq__title, .qa", { y: 28, autoAlpha: 0, duration: 1, ease: "expo.out", stagger: 0.06, scrollTrigger: { trigger: ".faq", start: "top 82%", once: true } });
+
+      /* Visit: the clinic photo settles behind the text. */
+      gsap.fromTo(".visit__bg img", { scale: 1.18, yPercent: -6 }, { scale: 1, yPercent: 6, ease: "none", scrollTrigger: { trigger: ".visit", start: "top bottom", end: "bottom top", scrub: 0.5 } });
+      gsap.from(".book", { y: 40, autoAlpha: 0, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: ".book", start: "top 90%", once: true } });
+
       gsap.from(".foot__word", { yPercent: 30, duration: 1.4, ease: "expo.out", scrollTrigger: { trigger: ".foot", start: "top 95%", once: true } });
     });
   }
