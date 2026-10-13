@@ -1,15 +1,20 @@
 /* =========================================================================
    Faro: behaviour
-   - Intro: the lamp lights, the beam draws the logo, the logo flies to the header
+   - Intro: the letters rise, the beam switches on, the logo flies to the header
+   - Bands: the header takes the tone of the band underneath, and the page
+     color travels from band to band as you scroll
    - Smooth scroll (Lenis) synced with GSAP ScrollTrigger
-   - Hero: headline letters rise, the frame shrinks into a card as you scroll
+   - Hero: the 3D lighthouse video (landscape or portrait), the camera settles,
+     headline letters rise, the frame shrinks into a card as you scroll
    - Problem: words light up one by one, then a circle of light opens the answer
+   - In numbers: the figures roll into place
    - Services: pinned horizontal track on big screens, swipe carousel elsewhere
    - Marquee whose speed and skew follow your scroll
-   - How it works: pinned stepper with rolling numbers
+   - How it works: pinned stepper; a technical plan of the lighthouse draws
+     itself step by step (foundation, structure, lantern, light)
    - Cursor + magnetic buttons + card tilt (mouse only), animated FAQ,
      contact spotlight, footer logo lit by the beam and by your cursor
-   - WhatsApp links, optional hero video, contact form (FormSubmit et al.)
+   - WhatsApp links, hero video, contact form (FormSubmit et al.)
    Everything degrades: with no JS or reduced motion the content is all there.
    ========================================================================= */
 
@@ -56,8 +61,46 @@
     }
     const max = root.scrollHeight - window.innerHeight;
     header.style.setProperty("--p", max > 0 ? Math.min(1, y / max).toFixed(4) : 0);
+    syncBands();
   }
+
+  /* =======================================================================
+     Bands: every section says which color it is (data-bg) and whether it is
+     dark (data-tone). The header (and the cursor) take the tone of the band
+     underneath them. With motion, the light bands go transparent and the page
+     color itself fades between cream and sand as you scroll (dark bands keep
+     painting their own espresso, so text never loses contrast mid-fade).
+     ======================================================================= */
+  const COLORS = { cream: "#fbf5ec", sand: "#f2e7d8", espresso: "#221913" };
+  const themeMeta = $('meta[name="theme-color"]');
+  let bands = [];
+  let pageColor = "";
+  const bandsOn = motion; // without motion each section keeps painting its own background
+  function bandAt(y) {
+    for (const b of bands) {
+      const r = b.getBoundingClientRect();
+      if (r.top <= y && r.bottom > y) return b;
+    }
+    return null;
+  }
+  function syncBands() {
+    if (!bands.length) bands = $$("[data-bg]");
+    const under = bandAt(header.offsetHeight / 2);
+    const tone = menuOpen ? "dark" : (under && under.dataset.tone) || "light";
+    if (header.dataset.tone !== tone) header.dataset.tone = tone;
+    if (!bandsOn) return;
+    // the next light band takes over as it enters the bottom fifth (dark bands paint themselves)
+    const band = bandAt(window.innerHeight * 0.8);
+    const c = band && band.dataset.tone !== "dark" && COLORS[band.dataset.bg];
+    if (c && c !== pageColor) {
+      pageColor = c;
+      root.style.setProperty("--page", c);
+      if (themeMeta) themeMeta.setAttribute("content", c);
+    }
+  }
+  if (bandsOn) root.classList.add("js-bands");
   window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", syncBands);
   onScroll();
 
   /* ---------- footer year ---------- */
@@ -89,24 +132,39 @@
     document.addEventListener("faro:menu", sync);
   }
 
-  /* ---------- hero video (optional, loaded after the page is ready) ---------- */
+  /* ---------- hero video: landscape or portrait, loaded after the page is ready ---------- */
   function setupHeroVideo() {
-    const v = CFG.heroVideo || {};
+    const cfg = CFG.heroVideo || {};
     const video = $(".hero__video");
+    const hero = $(".hero");
     const saveData = navigator.connection && navigator.connection.saveData;
-    if (!video || (!v.mp4 && !v.webm) || reduceMotion || saveData) return;
-    if (v.poster) video.poster = v.poster;
-    [["webm", "video/webm"], ["mp4", "video/mp4"]].forEach(([k, type]) => {
-      if (!v[k]) return;
-      const s = document.createElement("source");
-      s.src = v[k]; s.type = type;
-      video.appendChild(s);
-    });
-    video.hidden = false;
-    // the video has its own lighthouse, so the CSS beam steps aside once it is playing
-    video.addEventListener("playing", () => video.closest(".hero").classList.add("has-video"), { once: true });
-    video.load();
-    video.play().catch(() => {});
+    if (!video || reduceMotion || saveData) return; // the still poster stays
+    const portrait = window.matchMedia("(max-aspect-ratio: 9/10)");
+    let current = "", visible = true;
+    const h264 = video.canPlayType('video/mp4; codecs="avc1.42E01E"') !== "";
+    const play = () => { if (visible && !video.hidden) video.play().catch(() => {}); };
+    const pick = () => {
+      const v = cfg[portrait.matches ? "port" : "land"];
+      const src = v && ((h264 && v.mp4) || v.webm || v.mp4);
+      if (!src || src === current) return;
+      current = src;
+      hero.classList.remove("has-video");
+      if (v.poster) video.poster = v.poster;
+      video.src = src;
+      video.hidden = false;
+      // the first frame is the poster, so the swap from still to motion is seamless
+      video.addEventListener("playing", () => hero.classList.add("has-video"), { once: true });
+      play();
+    };
+    pick();
+    portrait.addEventListener("change", pick);
+    // only spend battery while the hero is on screen
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(([e]) => {
+        visible = e.isIntersecting;
+        if (visible) play(); else video.pause();
+      }).observe(hero);
+    }
   }
 
   /* ---------- service visuals only animate while visible (saves battery) ---------- */
@@ -134,6 +192,7 @@
     burger.setAttribute("aria-expanded", String(open));
     burger.setAttribute("aria-label", t(open ? "nav.close" : "nav.menu"));
     root.classList.toggle("menu-open", open);
+    syncBands();
     document.dispatchEvent(new CustomEvent("faro:menu"));
     if (open) {
       header.classList.remove("is-hidden");
@@ -288,11 +347,22 @@
     cur.classList.add("is-out");
     const dx = gsap.quickTo(dot, "x", { duration: 0.08 }), dy = gsap.quickTo(dot, "y", { duration: 0.08 });
     const rx = gsap.quickTo(ring, "x", { duration: 0.5, ease: "power3" }), ry = gsap.quickTo(ring, "y", { duration: 0.5, ease: "power3" });
+    // the cursor takes the tone of the band under it (dark ink on light, light ink on dark)
+    let py = 0, toneRaf = 0;
+    const syncTone = () => {
+      toneRaf = 0;
+      const b = menuOpen ? menu : bandAt(py);
+      const tone = (b && b.dataset.tone) || "light";
+      if (cur.dataset.tone !== tone) cur.dataset.tone = tone;
+    };
     window.addEventListener("pointermove", (e) => {
       if (e.pointerType !== "mouse") return;
       dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY);
       cur.classList.remove("is-out");
+      py = e.clientY;
+      if (!toneRaf) toneRaf = requestAnimationFrame(syncTone);
     }, { passive: true });
+    window.addEventListener("scroll", () => { if (!toneRaf) toneRaf = requestAnimationFrame(syncTone); }, { passive: true });
     root.addEventListener("mouseleave", () => cur.classList.add("is-out"));
     window.addEventListener("pointerdown", () => cur.classList.add("is-down"));
     window.addEventListener("pointerup", () => cur.classList.remove("is-down"));
@@ -333,7 +403,7 @@
     const box = $(".footer__logo");
     const lit = $(".footer__logo-lit");
     if (box && lit && finePointer && !reduceMotion) {
-      const LAMP = { x: 124.5 / 1559, y: 128 / 830 }; // lamp position inside the logo
+      const LAMP = { x: 81.5 / 1919, y: 93.2 / 785 }; // the lantern, inside the logo's viewBox
       box.addEventListener("pointermove", (e) => {
         const r = box.getBoundingClientRect();
         const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
@@ -479,7 +549,9 @@
     if (!motion) return;
     heroPlayed = true;
     const tl = gsap.timeline();
-    tl.to(heroChars, { yPercent: 0, rotate: 0, duration: fast ? 0.8 : 1.3, ease: "expo.out", stagger: fast ? 0.008 : 0.022 })
+    // the camera settles on the lighthouse while the words arrive
+    tl.fromTo(".hero__media picture, .hero__video", { scale: 1.14 }, { scale: 1, duration: fast ? 1.6 : 2.8, ease: "expo.out" }, 0)
+      .to(heroChars, { yPercent: 0, rotate: 0, duration: fast ? 0.8 : 1.3, ease: "expo.out", stagger: fast ? 0.008 : 0.022 }, 0)
       .fromTo(".hero .kicker, .hero__lead, .hero__ctas, .hero__scroll", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 1, ease: "expo.out", stagger: 0.08 }, fast ? 0.1 : 0.45);
     return tl;
   }
@@ -520,9 +592,9 @@
       gsap.timeline({ scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true, invalidateOnRefresh: true } })
         .fromTo(".hero__frame",
           { clipPath: "inset(0px 0px 0px 0px round 0px)" },
-          { clipPath: () => `inset(${vh() * 0.05}px ${vw() * 0.04}px ${vh() * 0.16}px ${vw() * 0.04}px round 28px)`, ease: "none" }, 0)
-        .to(".hero__media", { scale: 1.18, yPercent: 8, ease: "none" }, 0)
-        .to(".hero__inner", { yPercent: -28, autoAlpha: 0.1, ease: "none" }, 0);
+          { clipPath: () => `inset(${vh() * 0.05}px ${vw() * 0.04}px ${vh() * 0.16}px ${vw() * 0.04}px round 24px)`, ease: "none" }, 0)
+        .to(".hero__media", { scale: 1.16, yPercent: 6, ease: "none" }, 0)
+        .to(".hero__inner", { y: () => -vh() * 0.14, autoAlpha: 0, ease: "none" }, 0);
 
       /* ---------- headlines: lines rise out of a mask ---------- */
       $$("[data-split]").forEach((el) => {
@@ -554,12 +626,29 @@
         defaults: { ease: "none" },
         scrollTrigger: { trigger: ".problem__pin", pin: true, start: "top top", end: () => "+=" + vh() * (tall ? 2.8 : 2.2), scrub: 0.8, anticipatePin: 1, invalidateOnRefresh: true, refreshPriority: 3 },
       });
-      ptl.to(words, { color: "#f3eee4", duration: 0.25, stagger: 0.09 })
+      ptl.to(words, { color: "#221913", duration: 0.25, stagger: 0.09 })
         .to(".problem__stage", { scale: 0.92, autoAlpha: 0.25, duration: 1.1, ease: "power1.in" }, "+=0.35")
         .fromTo(".answer", { clipPath: "circle(0% at 50% 55%)" }, { clipPath: "circle(75% at 50% 55%)", duration: 1.3, ease: "power2.in" }, "<")
         .from(answerSplit.lines, { yPercent: 110, rotate: 3, transformOrigin: "0% 100%", duration: 0.9, stagger: 0.15, ease: "power3.out" }, "-=0.45")
         .from(".answer__sub", { y: 30, autoAlpha: 0, duration: 0.7, ease: "power3.out" }, "-=0.4")
         .to({}, { duration: 0.9 }); // hold on the answer
+
+      /* ---------- in numbers: each figure rolls through the digits and lands ---------- */
+      $$(".stat").forEach((el, i) => {
+        const n = $(".stat__n", el), txt = $(".stat__t", el);
+        const to = Number(n.dataset.n) || 0;
+        gsap.set([n, txt], { autoAlpha: 0, y: 48 });
+        whenSeen(el, () => {
+          const d = 0.12 * i;
+          const o = { v: to + 30 };
+          gsap.to([n, txt], { autoAlpha: 1, y: 0, duration: 1.2, ease: "expo.out", stagger: 0.1, delay: d });
+          gsap.to(o, {
+            v: to, duration: 1.9, ease: "power4.out", delay: d,
+            onUpdate: () => (n.textContent = ((Math.round(o.v) % 10) + 10) % 10),
+            onComplete: () => (n.textContent = to),
+          });
+        }, "top 85%");
+      });
 
       /* ---------- services ---------- */
       if (wide) {
@@ -625,13 +714,31 @@
       /* ---------- how it works: pinned stepper ---------- */
       const how = $(".how");
       const steps = $$(".step", how);
+      // the plan: every drawn line has pathLength="1", so 1 = hidden, 0 = drawn
+      const groups = $$(".plan__g", how);
+      const lines = (g) => $$("[pathLength]", g);
+      const fills = (g) => $$(".plan__label, .plan__beam, .plan__lamp", g);
+      const hidePlan = () => groups.forEach((g) => {
+        gsap.set(lines(g), { strokeDasharray: "1 1", strokeDashoffset: 1 });
+        gsap.set(fills(g), { autoAlpha: 0 });
+      });
+      const drawGroup = (tl, i, at, dur) => {
+        const g = groups[i];
+        if (!g) return;
+        tl.to(lines(g), { strokeDashoffset: 0, duration: dur, stagger: dur * 0.1, ease: "power2.inOut" }, at)
+          .to(fills(g), { autoAlpha: 1, duration: dur * 0.5, stagger: dur * 0.1, ease: "power1.out" }, at + dur * 0.55);
+      };
       if (tall && steps.length) {
         how.classList.add("is-pinned");
         const ticks = document.createElement("div");
         ticks.className = "how__ticks";
         ticks.setAttribute("aria-hidden", "true");
         ticks.innerHTML = steps.map((s) => `<span>${$(".step__name", s).textContent}</span>`).join("");
-        $(".how__stage", how).appendChild(ticks);
+        $(".how__steps", how).appendChild(ticks);
+        // the foundation is laid as the section arrives
+        hidePlan();
+        const ftl = gsap.timeline({ scrollTrigger: { trigger: how, start: "top 70%", end: "top 10%", scrub: 0.6, invalidateOnRefresh: true } });
+        drawGroup(ftl, 0, 0, 1);
         const tickEls = $$("span", ticks);
         cleanups.push(() => { how.classList.remove("is-pinned"); ticks.remove(); });
 
@@ -655,12 +762,18 @@
           htl.to(".how__digits", { yPercent: (-100 / n) * i, duration: 0.5, ease: "power3.inOut" }, at)
             .to(steps[i - 1], { autoAlpha: 0, y: -40, duration: 0.22, ease: "power2.in" }, at)
             .to(steps[i], { autoAlpha: 1, y: 0, duration: 0.35, ease: "power3.out" }, at + 0.24);
+          drawGroup(htl, i, at + 0.05, 0.6); // structure, lantern, then the light switches on
         }
         htl.to({}, { duration: 0.25 });
         tickEls[0].classList.add("is-on");
       } else {
         gsap.set(steps, { y: 40, autoAlpha: 0 });
         whenSeen($(".steps"), () => gsap.to(steps, { y: 0, autoAlpha: 1, duration: 1, ease: "expo.out", stagger: 0.1 }));
+        const plan = $(".plan", how);
+        if (plan && plan.offsetParent) {
+          hidePlan();
+          whenSeen(plan, () => { const tl = gsap.timeline(); groups.forEach((g, i) => drawGroup(tl, i, i * 0.5, 0.9)); });
+        }
       }
 
       /* ---------- results: placeholder cards rise, then drift at different speeds ---------- */
@@ -685,8 +798,9 @@
   if (motion) ScrollTrigger.addEventListener("refresh", checkReveals);
 
   /* =======================================================================
-     Intro: letters rise, the lamp lights, the beam draws, then the logo
-     flies into the header while the curtain lifts. Once per session.
+     Intro: the letters rise, the beam switches on (a flash, then it settles
+     into the logo's amber), then the logo flies into the header while the
+     cream curtain lifts on the lighthouse. Once per session.
      ======================================================================= */
   function runIntro() {
     const intro = $(".intro");
@@ -702,14 +816,12 @@
     const box = $(".intro__logo", intro);
     const svg = $("svg", box);
     const letters = $$(".logo-letters path", svg);
-    const lamp = $(".logo-lamp", svg), glow = $(".logo-glow", svg), beam = $(".logo-beam", svg);
+    const beam = $(".logo-beam", svg);
     const target = $(".brand svg");
 
     gsap.set(box, { opacity: 1 });
-    gsap.set(letters, { y: 140, opacity: 0 });
-    gsap.set(lamp, { scale: 0, transformOrigin: "50% 50%" });
-    gsap.set(glow, { scale: 0.2, opacity: 0, transformOrigin: "50% 50%" });
-    gsap.set(beam, { scaleX: 0, transformOrigin: "0% 50%" });
+    gsap.set(letters, { y: 160, opacity: 0 });
+    gsap.set(beam, { scaleX: 0, transformOrigin: "0% 50%", fill: "#ffd08a" });
 
     const finish = () => {
       root.classList.remove("is-intro");
@@ -719,17 +831,16 @@
     };
 
     const tl = gsap.timeline({ onComplete: finish });
-    tl.to(letters, { y: 0, opacity: 1, duration: 0.75, ease: "expo.out", stagger: 0.07 }, 0.1)
-      .to(lamp, { scale: 1, duration: 0.6, ease: "back.out(3)" }, 0.5)
-      .to(glow, { scale: 1, opacity: 1, duration: 0.8, ease: "expo.out" }, 0.55)
-      .to(beam, { scaleX: 1, duration: 0.7, ease: "expo.out" }, 0.75)
+    tl.to(letters, { y: 0, opacity: 1, duration: 0.8, ease: "expo.out", stagger: 0.07 }, 0.1)
+      .to(beam, { scaleX: 1, duration: 0.75, ease: "expo.out" }, 0.6)
+      .to(beam, { fill: "#c9741a", duration: 0.8, ease: "power2.out" }, 0.95)
       .add(() => {
         // FLIP: measure now (fonts and layout are settled) and fly to the header logo
         const a = svg.getBoundingClientRect(), b = target.getBoundingClientRect();
         tl.to(box, { x: b.left - a.left, y: b.top - a.top, scale: b.width / a.width, duration: 1.05, ease: "expo.inOut" }, 1.45);
       }, 1.4)
       .to($(".intro__bg", intro), { scaleY: 0, duration: 1.05, ease: "expo.inOut" }, 1.5)
-      .add(() => heroIn(false), 1.75);
+      .add(() => heroIn(false), 1.7);
   }
 
   /* =======================================================================

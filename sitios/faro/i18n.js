@@ -106,6 +106,57 @@
       </div>`,
   };
 
+
+  /* ---------- technical plan of the lighthouse (Cómo trabajamos) ----------
+     Four groups, one per step: foundation, structure, lantern, light.
+     Drawn lines use pathLength="1" so main.js can draw them with the steps. */
+  function planSvg(labels) {
+    const cx = 230;
+    const L = (y) => 175 + (560 - y) * (23 / 345); // tower's left edge at height y
+    const R = (y) => 2 * cx - L(y);
+    const d = (s) => `<path pathLength="1" d="${s}"/>`;
+    const lead = (s) => `<path class="plan__lead" pathLength="1" d="${s}"/>`;
+    const label = (txt, x, y, anchor) => `<text class="plan__label" x="${x}" y="${y}" text-anchor="${anchor || "end"}">${esc(txt)}</text>`;
+    const hatch = Array.from({ length: 15 }, (_, i) => `M${124 + i * 16} 602l10-10`).join("");
+    const g1 = [
+      d("M104 590H356"),
+      d("M140 590V560H320V590"),
+      d("M140 575H320M170 560V575M210 560V575M250 560V575M290 560V575M155 575V590M190 575V590M230 575V590M270 575V590M305 575V590"),
+      `<path class="plan__hatch" pathLength="1" d="${hatch}"/>`,
+      lead("M114 575H136"),
+      label(labels[0], 108, 579),
+    ];
+    const courses = [492, 424, 356, 288].map((y) => `M${L(y).toFixed(1)} ${y}H${R(y).toFixed(1)}`).join("");
+    const g2 = [
+      d(`M175 560L198 215M285 560L262 215`),
+      d(courses),
+      d("M218 560V534A12 12 0 0 1 242 534V560"),
+      d("M224 452h12v18h-12zM224 384h12v18h-12zM224 316h12v18h-12zM224 248h12v18h-12z"),
+      d("M332 560V215M326 560H338M326 215H338"),
+      lead(`M114 388H${(L(388) - 4).toFixed(1)}`),
+      label(labels[1], 108, 392),
+    ];
+    const posts = Array.from({ length: 9 }, (_, i) => `M${190 + i * 10} 207V195`).join("");
+    const g3 = [
+      d("M186 215H274V207H186Z"),
+      d(posts + "M188 195H272"),
+      d("M205 195V157H255V195M222 195V157M238 195V157"),
+      d("M199 157H261M205 157A25 22 0 0 1 255 157"),
+      d("M230 135V117"),
+      `<circle pathLength="1" cx="230" cy="114" r="3"/>`,
+      lead("M114 176H201"),
+      label(labels[2], 108, 180),
+    ];
+    const g4 = [
+      `<path class="plan__beam" d="M238 172L400 128V224L238 180Z"/>`,
+      `<path class="plan__ray" pathLength="1" d="M238 172L400 128M238 180L400 224"/>`,
+      `<circle class="plan__lamp" cx="230" cy="176" r="7"/>`,
+      label(labels[3], 396, 116, "end"),
+    ];
+    const grp = (i, parts) => `<g class="plan__g" data-g="${i}">${parts.join("")}</g>`;
+    return `<svg class="plan__svg" viewBox="0 0 400 640" focusable="false">${grp(0, g1)}${grp(1, g2)}${grp(2, g3)}${grp(3, g4)}</svg>`;
+  }
+
   /* ---------- list renderers (keyed by data-list) ---------- */
 
   const renderers = {
@@ -145,6 +196,15 @@
         `<span class="marquee__item">${esc(s.name)}</span><i class="marquee__dot"></i>`).join("");
       return `<div class="marquee__group">${group}</div><div class="marquee__group">${group}</div>`;
     },
+
+    // Big light figures: the number is real text, main.js only animates it
+    "stats.items": (items) => items.map((it) => `
+      <li class="stat">
+        <span class="stat__n" data-n="${Number(it.n)}">${Number(it.n)}</span>
+        <span class="stat__t">${esc(it.text)}</span>
+      </li>`).join(""),
+
+    "how.plan": (labels) => planSvg(labels),
 
     "how.steps": (items) => items.map((s, i) => `
       <li class="step" data-step="${i}">
