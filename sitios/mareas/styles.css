@@ -70,9 +70,13 @@ em{font-style:italic}
 
 /* ---------- hero ---------- */
 .hero{position:relative;background:var(--deep)}
-.hero__stage{position:relative;height:100svh;min-height:560px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:minmax(0,1fr) auto;column-gap:40px;row-gap:24px;padding:calc(var(--nav-h) + env(safe-area-inset-top,0px) + 12px) var(--gutter) max(28px, env(safe-area-inset-bottom,0px))}
+.hero__stage{position:relative;height:100svh;min-height:500px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:minmax(0,1fr) auto;column-gap:40px;row-gap:24px;padding:calc(var(--nav-h) + env(safe-area-inset-top,0px) + 12px) var(--gutter) max(28px, env(safe-area-inset-bottom,0px))}
 html.motion .hero{height:220svh}
-html.motion .hero__stage{position:sticky;top:0}
+html.motion .hero__stage{position:sticky;top:0;overflow:visible}
+/* Phones: the stage is 100svh so nothing hides under the browser bars, but
+   once the URL bar collapses the screen is taller (lvh). The photo layer
+   reaches down to the large viewport so no dark strip shows underneath. */
+html.motion .hero__media{bottom:auto;height:100%;height:max(100%, 100lvh)}
 
 .hero__media{position:absolute;inset:0;z-index:0;overflow:hidden;background:#0a1b22}
 .hero__media picture,.hero__img{position:absolute;inset:0;width:100%;height:100%}
@@ -132,7 +136,8 @@ html.motion .hero__under{display:block;position:absolute;left:var(--gutter);righ
 @media (max-height:539px){
   .hero__stage{height:auto;min-height:100svh}
   html.motion .hero{height:auto}
-  html.motion .hero__stage{position:relative}
+  html.motion .hero__stage{position:relative;overflow:hidden}
+  html.motion .hero__media{height:100%}
   html.motion .hero__under{display:none}
   .h1{font-size:clamp(2.2rem, 6.4vw, 4rem)}
   .hero__cue{display:none}
@@ -189,6 +194,7 @@ html.motion .rail{display:block;position:relative;height:2px;margin-top:clamp(20
   html.motion .proc__stage{grid-template-rows:minmax(0,1fr) auto;align-items:stretch;gap:10px;padding-bottom:max(24px, env(safe-area-inset-bottom,0px))}
   html.motion .proc__art{min-height:0;height:auto}
   .implant{height:min(44svh,420px)}
+  @media (max-height:620px){.implant{height:38svh}}
   html:not(.motion) .implant{height:380px}
   .note{right:-150%;font-size:10px;letter-spacing:.1em}
   .proc .h2{font-size:clamp(1.8rem,7.4vw,2.6rem);margin-bottom:12px}
