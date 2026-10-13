@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Clínica Dental Mareas · Costa del Este</title>
+<meta name="description" content="Odontología general y estética en Costa del Este. Limpiezas, ortodoncia invisible e implantes. Agenda por WhatsApp.">
+<meta name="theme-color" content="#06161b">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Fraunces-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Figtree-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="assets/img/mar-2400.webp" media="(min-width: 700px)">
+<link rel="preload" as="image" href="assets/img/mar-movil.webp" media="(max-width: 699px)">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body>
+
+<a class="skip" href="#tratamientos" data-i="skip">Saltar al contenido</a>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="Clínica Dental Mareas">
+    <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4c-4.2-2.3-11 0-10 8 .6 4.8 2 8.3 3 12.5.6 2.6 3.4 2.8 4 .2l1.2-5.3c.5-1.9 3.1-1.9 3.6 0l1.2 5.3c.6 2.6 3.4 2.4 4-.2 1-4.2 2.4-7.7 3-12.5 1-8-5.8-10.3-10-8Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 13c2.5-1.6 5.5 1.6 7 0s4.5-1.6 7 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span class="brand__name">Mareas</span>
+  </a>
+  <nav class="nav__links" aria-label="Secciones">
+    <a href="#implante" data-i="navProc">Proceso</a>
+    <a href="#tratamientos" data-i="navSvc">Tratamientos</a>
+    <a href="#doctora" data-i="navDoc">La doctora</a>
+    <a href="#preguntas" data-i="navFaq">Preguntas</a>
+  </nav>
+  <div class="nav__right">
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="es" aria-pressed="true">ES</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="btn btn--sm nav__cta js-wa" href="#" target="_blank" rel="noopener"><span data-i="navCta">Agendar</span></a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO: text-led, so the background is a real photograph of the sea.
+       On scroll the camera sinks below the surface. -->
+  <section class="hero" id="top">
+    <div class="hero__stage">
+      <div class="hero__media" aria-hidden="true">
+        <picture>
+          <source media="(max-width: 699px)" srcset="assets/img/mar-movil.webp">
+          <source media="(max-width: 1300px)" srcset="assets/img/mar-1200.webp 1200w, assets/img/mar-2400.webp 2400w" sizes="100vw">
+          <img class="hero__img" src="assets/img/mar-2400.webp" alt="" width="2400" height="1340" decoding="async" fetchpriority="high">
+        </picture>
+        <div class="hero__deep"></div>
+        <div class="hero__caustics"></div>
+        <div class="hero__shade"></div>
+        <div class="hero__light"></div>
+      </div>
+
+      <div class="hero__copy" id="heroCopy">
+        <p class="eyebrow"><span class="eyebrow__dot"></span><span data-i="eyebrow">Odontología general y estética · Costa del Este</span></p>
+        <h1 class="h1" data-ih="h1">Tu próxima cita, <em>a un mensaje</em> de distancia.</h1>
+        <p class="lead" data-i="lead">Limpiezas, ortodoncia invisible e implantes. Escríbenos por WhatsApp y te confirmamos el mismo día.</p>
+      </div>
+
+      <div class="hero__book" aria-labelledby="bookTitle">
+        <p class="hero__booktitle" id="bookTitle" data-i="bookTitle">Agenda tu evaluación</p>
+        <p class="hero__booknote" data-i="bookNote">Evaluación $35, se descuenta de tu tratamiento.</p>
+        <div class="slots" id="slots" role="group" aria-labelledby="bookTitle"></div>
+        <a class="btn js-wa" href="#" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.6-.3.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4Z"/></svg>
+          <span data-i="waBtn">Pedir cita por WhatsApp</span>
+        </a>
+      </div>
+
+      <ul class="hero__facts" id="facts"></ul>
+      <div class="hero__cue" aria-hidden="true"><span data-i="cue">Desliza</span><i></i></div>
+
+      <!-- revealed as the camera goes under -->
+      <p class="hero__under" data-ih="under">Debajo de cada sonrisa hay <em>una estructura</em> que tiene que durar.</p>
+    </div>
+  </section>
+
+  <!-- PROCESS: image-led, so a plain light background and a real implant
+       that assembles piece by piece, annotated like a technical drawing. -->
+  <section class="proc" id="implante" data-nav="light" aria-labelledby="procTitle">
+    <div class="proc__stage">
+      <div class="proc__text">
+        <p class="kicker" data-i="impKicker">El proceso</p>
+        <h2 class="h2" id="procTitle" data-ih="impTitle">Un implante, <em>paso a paso</em>.</h2>
+        <ol class="steps" id="steps"></ol>
+        <div class="rail" aria-hidden="true"><i class="rail__fill"></i></div>
+      </div>
+
+      <figure class="proc__art">
+        <div class="implant" id="implant">
+          <div class="implant__grid" aria-hidden="true"></div>
+          <div class="implant__scan" aria-hidden="true"></div>
+          <div class="implant__ring" aria-hidden="true"></div>
+          <img class="part part--pilar" src="assets/img/pilar.webp" alt="" width="303" height="463" loading="lazy" decoding="async">
+          <img class="part part--tornillo" src="assets/img/tornillo.webp" alt="" width="230" height="632" loading="lazy" decoding="async">
+          <img class="part part--corona" src="assets/img/corona.webp" alt="" width="432" height="481" loading="lazy" decoding="async">
+          <div class="note note--corona"><i></i><span data-i="noteCrown">Corona de cerámica</span></div>
+          <div class="note note--pilar"><i></i><span data-i="noteAbut">Pilar de titanio</span></div>
+          <div class="note note--tornillo"><i></i><span data-i="noteScrew">Implante de titanio</span></div>
+        </div>
+        <figcaption class="sr-only" data-i="artTitle">Implante dental: corona, pilar y tornillo de titanio</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="svc" id="tratamientos" data-nav="sand" aria-labelledby="svcTitle">
+    <div class="wrap">
+      <div class="svc__head">
+        <h2 class="h2" id="svcTitle" data-ih="svcTitle">Tratamientos</h2>
+        <p class="sub" data-i="svcSub">Precios de referencia. Tu presupuesto exacto sale de la evaluación.</p>
+      </div>
+      <div class="photos">
+        <figure class="photo photo--a"><div class="photo__frame"><img src="assets/img/alineador.webp" alt="" width="1600" height="1195" loading="lazy" decoding="async" data-i-alt="altAligner"></div><figcaption data-i="capAligner">Ortodoncia invisible</figcaption></figure>
+        <figure class="photo photo--b"><div class="photo__frame"><img src="assets/img/carillas.webp" alt="" width="1600" height="1195" loading="lazy" decoding="async" data-i-alt="altVeneers"></div><figcaption data-i="capVeneers">Carillas a tu color</figcaption></figure>
+      </div>
+      <ol class="svc__list" id="services"></ol>
+    </div>
+    <div class="ins" aria-labelledby="insTitle">
+      <p class="ins__t wrap" id="insTitle" data-i="insT">Aceptamos las principales aseguradoras</p>
+      <div class="ins__track" aria-hidden="true"><div class="ins__run"><span>ASSA</span><span>SURA</span><span>MAPFRE</span><span>Pan-American Life</span><span>BMI</span><span>ASSA</span><span>SURA</span><span>MAPFRE</span><span>Pan-American Life</span><span>BMI</span></div></div>
+      <ul class="sr-only"><li>ASSA</li><li>SURA</li><li>MAPFRE</li><li>Pan-American Life</li><li>BMI</li></ul>
+    </div>
+  </section>
+
+  <!-- DOCTOR: real people, on the night sea. -->
+  <section class="doc" id="doctora" aria-labelledby="docTitle">
+    <div class="wrap doc__grid">
+      <div class="doc__text">
+        <p class="kicker" data-i="docKicker">Tu doctora</p>
+        <h2 class="h2" id="docTitle" data-ih="docTitle">Hola, soy la <em>Dra. Andrea Morales</em>.</h2>
+        <blockquote class="doc__quote" data-i="docQuote">«Mi trabajo es que salgas sonriendo, y que vuelvas tranquilo.»</blockquote>
+        <p class="doc__bio" data-i="docBio">Odontóloga con especialidad en rehabilitación oral e implantología.</p>
+        <dl class="creds">
+          <div><dt><span class="count" data-to="15" data-suffix="+">15+</span></dt><dd data-i="c1">años de práctica</dd></div>
+          <div><dt><span class="count" data-to="3200" data-sep="1">3.200</span></dt><dd data-i="c2">pacientes atendidos</dd></div>
+          <div><dt><span class="count" data-to="4.9" data-dec="1">4.9</span><i aria-hidden="true">★</i></dt><dd data-i="c3">promedio en Google</dd></div>
+        </dl>
+      </div>
+      <div class="doc__art">
+        <figure class="doc__portrait"><div class="doc__frame"><img src="assets/img/doctora.webp" alt="" width="900" height="1241" loading="lazy" decoding="async" data-i-alt="altDoc"></div></figure>
+        <figure class="doc__team"><div class="doc__frame"><img src="assets/img/consulta.webp" alt="" width="900" height="1350" loading="lazy" decoding="async" data-i-alt="altTeam"></div><figcaption data-i="capTeam">Cada plan se explica antes de empezar</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- VOICES: reviews and questions on a plain light ground. -->
+  <section class="voices" id="preguntas" data-nav="light" aria-labelledby="rvTitle">
+    <div class="wrap">
+      <p class="kicker" data-i="rvKicker">Reseñas</p>
+      <h2 class="h2" id="rvTitle" data-ih="rvTitle">Lo que dicen <em>nuestros pacientes</em>.</h2>
+      <ul class="revs" id="revs"></ul>
+      <p class="revs__note" data-i="rvNote">Reseñas de ejemplo para esta demostración.</p>
+      <div class="faq">
+        <h2 class="h2 faq__title" data-ih="faqTitle">Preguntas <em>frecuentes</em>.</h2>
+        <div class="faq__list" id="faqs"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="visit" id="agendar" aria-labelledby="visitTitle">
+    <div class="visit__bg" aria-hidden="true">
+      <picture>
+        <source media="(max-width: 899px)" srcset="assets/img/clinica-1000.webp">
+        <img src="assets/img/clinica-2000.webp" alt="" width="2000" height="1336" loading="lazy" decoding="async">
+      </picture>
+    </div>
+    <div class="wrap">
+      <h2 class="h2" id="visitTitle" data-ih="visitTitle">Te esperamos en <em>Costa del Este</em>.</h2>
+      <div class="visit__grid">
+        <div><h3 data-i="whereT">Dónde estamos</h3><p id="address"></p><p><a id="mapLink" class="link" target="_blank" rel="noopener" data-i="mapLink">Abrir en Google Maps</a></p></div>
+        <div><h3 data-i="hoursT">Horario</h3><table class="hours" id="hours"></table></div>
+        <div><h3 data-i="payT">Pagos</h3><p data-i="payP"></p></div>
+      </div>
+      <form class="book" id="bookForm">
+        <p class="book__t" data-i="formTitle">Agenda en 30 segundos</p>
+        <label><span data-i="lName">Tu nombre</span><input id="fName" name="name" autocomplete="name" required></label>
+        <label><span data-i="lTreat">Tratamiento</span><select id="fTreat" name="treat"></select></label>
+        <label><span data-i="lDay">Día preferido</span><select id="fDay" name="day"></select></label>
+        <button class="btn btn--lg" type="submit"><span data-i="formBtn">Enviar por WhatsApp</span></button>
+      </form>
+      <p class="phone" id="phoneNote"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="foot__word" aria-hidden="true">Mareas</p>
+    <p class="foot__note" id="foot"></p>
+  </div>
+</footer>
+
+<a class="wa-float js-wa" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.6-.3.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4Z"/></svg>
+</a>
+
+<script src="assets/js/gsap.min.js" defer></script>
+<script src="assets/js/ScrollTrigger.min.js" defer></script>
+<script src="assets/js/SplitText.min.js" defer></script>
+<script src="assets/js/lenis.min.js" defer></script>
+<script src="copy.js" defer></script>
+<script src="main.js" defer></script>
+</body>
+</html>
