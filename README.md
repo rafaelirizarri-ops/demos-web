@@ -17,4 +17,4 @@ El proyecto `demos-webs` publica la carpeta `sitios/` (ver `netlify.toml` en la 
 Una demo nueva = una carpeta nueva en `sitios/`. Cada cambio que entra a `main` se publica solo.
 Si un cliente cierra, se le crea su propio proyecto de Netlify con Base directory `sitios/<carpeta>` y su dominio.
 
-`capturas/` tiene screenshots de QA (escritorio, móvil, oscuro) y el "antes". Ver `FLUJO-DE-TRABAJO.md`.
+Las capturas de QA y del "antes" ya no van en el repo, porque todo `sitios/` es público: están en la carpeta del proyecto, en `capturas/<cliente>/<ronda>/`. Las reglas de trabajo están en las Instrucciones del proyecto, los datos técnicos en `CLAUDE.md` y el resumen del flujo en `FLUJO-DE-TRABAJO.md`.
