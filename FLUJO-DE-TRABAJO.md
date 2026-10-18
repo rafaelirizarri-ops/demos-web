@@ -1,7 +1,9 @@
 # Cómo trabajamos cada sitio (versión corta)
 
+> Las reglas completas están en las Instrucciones del proyecto y los datos técnicos en `CLAUDE.md`. Si algo de aquí choca con ellas, ganan ellas.
+
 1. **Prospecto.** Sale de `knowledge/claude/prospectos-ronda-1.md`. Confirmar en Google Maps.
-2. **Captura del "antes".** Claude toma screenshot con Playwright de su web actual (o de su perfil de Fresha/IG si no tiene web).
+2. **Captura del "antes".** Claude toma screenshot con Playwright de su web actual (o de su perfil de Fresha/IG si no tiene web). Desde la nube esos sitios están bloqueados: se hace con la computadora de Rafa conectada, o Rafa la manda.
 3. **Borrador.** Dos caminos, el que salga mejor:
    - Netlify genera el primer borrador y el código se sube al repo, o
    - Claude lo construye directo en el repo.
@@ -10,8 +12,8 @@
    - `redesign-existing-projects`: mejorar un sitio que ya existe (Netlify o del cliente).
    - `minimalist-ui`: cuando el negocio pide algo sobrio (spa, clínica, barbería premium).
    - `web-design-guidelines`: auditoría final (accesibilidad, contraste, móvil) antes de mostrarlo.
-5. **QA con Playwright.** Screenshots en escritorio, móvil y modo oscuro; revisar que nada se salga de la pantalla.
+5. **QA con Playwright y Lighthouse.** La lista está en `CLAUDE.md`. Las capturas van a la carpeta del proyecto (`capturas/<cliente>/<ronda>/`), no al repo, porque todo `sitios/` es público.
 6. **GitHub = la fuente de verdad.** Un repo `demos-web` con una carpeta por cliente (`sitios/<cliente>/`). Cada cambio queda guardado y se puede revertir.
-7. **Netlify conectado al repo.** Cada push publica solo. Un sitio de Netlify por cliente apuntando a su carpeta (Base directory = `sitios/<cliente>`).
-8. **Mensaje al prospecto** (lo mandas tú): captura antes/después + link de Netlify. Claude nunca contacta ni publica sin tu OK.
+7. **Netlify conectado al repo.** Un solo sitio (`demos-webs`) publica todo `sitios/`. Cada PR tiene su vista previa; fusionar publica todas las demos a la vez, y solo se fusiona con el OK de Rafa. Si un cliente cierra, se le crea su propio proyecto de Netlify con Base directory = `sitios/<cliente>` y su dominio.
+8. **Mensaje al prospecto:** captura antes/después + link. Claude lo redacta. Por correo lo envía desde el Gmail de Rafa cuando Rafa escribe "manda"; por WhatsApp o Instagram lo manda Rafa.
 9. **Si cierra:** dominio propio en Netlify, fotos reales, horario confirmado.
