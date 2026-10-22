@@ -1,0 +1,8 @@
+{
+  "name": "conpav-media-src",
+  "private": true,
+  "type": "module",
+  "description": "Image pipeline for sitios/conpav (development only)",
+  "scripts": { "images": "node images.mjs" },
+  "dependencies": { "sharp": "0.34.4" }
+}
