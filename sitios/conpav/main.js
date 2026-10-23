@@ -3,10 +3,12 @@
    - Header: a thin line after 8px of scroll; aria-current follows the section
    - Menu (below 1024px): full screen, Escape closes it, focus stays inside
    - WhatsApp float: shows once the hero is left, hides while Contact is on screen
-   - Reveals: section titles rise in; the main photo of each work fills from
-     the bottom up, like concrete filling the formwork ("colado")
-   - La cala: the inspection opening. Scroll-linked with a CSS view timeline
-     (requestAnimationFrame fallback); two buttons on short windows
+   - Logo intro: the globe of the logo joins, turns and stops face on, then
+     CONPAV appears (a video; the SVG takes over when it ends)
+   - Motion (GSAP + ScrollTrigger + SplitText): the portada arrives, section
+     titles rise line by line, the main photo of each work fills from the
+     bottom up like concrete in the formwork ("colado"), and "Por dentro" is
+     the one scene tied to scroll: the parts of the slope get named, one by one
    - Quote form: validation in plain words, FormSubmit by fetch, and a
      WhatsApp message with what was typed if sending fails
    Without JS or with reduced motion everything is visible and usable.
@@ -18,9 +20,9 @@
   const root = document.documentElement;
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
-  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const hasIO = "IntersectionObserver" in window;
-  if (!hasIO) root.classList.remove("js-motion");
+  const hasGsap = !!(window.gsap && window.ScrollTrigger && window.SplitText);
+  if (!hasIO || !hasGsap) root.classList.remove("js-motion");
   const motion = root.classList.contains("js-motion");
 
   const WA_URL = "https://wa.me/50372277828";
@@ -99,81 +101,165 @@
   }
 
   /* =======================================================================
-     Reveals: titles rise 12px (60ms apart); work photos fill bottom-up once
+     Logo intro (portada). The video plays once, only when motion is
+     allowed; when it ends, fails or does not start, the SVG lockup (drawn
+     exactly where the last frame has it) takes its place. Without motion
+     the video is never loaded and the SVG is there from the start.
      ======================================================================= */
-  if (motion) {
-    const reveal = new IntersectionObserver((entries, obs) => {
-      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-in"); obs.unobserve(e.target); } });
-    }, { threshold: 0.2 });
-    $$("[data-reveal]").forEach((el) => {
-      const group = $$("[data-reveal]", el.parentElement);
-      el.style.transitionDelay = group.indexOf(el) * 60 + "ms";
-      reveal.observe(el);
-    });
-    $$(".work__photo").forEach((el) => reveal.observe(el));
+  const stage = $(".hero__stage");
+  const intro = stage && $(".hero__intro", stage);
+  if (intro && motion) {
+    let watchdog;
+    const done = () => { clearTimeout(watchdog); stage.classList.add("is-done"); };
+    intro.addEventListener("ended", done);
+    // A decode error lands on the video; a source that cannot play (wrong type, or a media query
+    // that does not match) fires on that <source>, so only the last one means none will play.
+    intro.addEventListener("error", done);
+    const sources = $$("source", intro);
+    sources[sources.length - 1].addEventListener("error", done);
+    // not started after a few seconds, or stuck halfway: show the logo
+    watchdog = setTimeout(() => { intro.pause(); done(); }, 3500);
+    intro.addEventListener("playing", () => {
+      clearTimeout(watchdog);
+      watchdog = setTimeout(() => { intro.pause(); done(); }, ((intro.duration || 5.2) - intro.currentTime + 3) * 1000);
+    }, { once: true });
+    sources.forEach((s) => { s.src = s.dataset.src; });
+    intro.load();
+    const playing = intro.play();
+    if (playing && playing.catch) playing.catch(done);
+  } else if (stage) {
+    stage.classList.add("is-done");
   }
 
   /* =======================================================================
-     La cala: the finished slope opens to show what holds it
+     Motion. Every starting state is in styles.css under .js-motion, so the
+     page paints already in place and GSAP only takes things to where they
+     end. Entrances run once; only the "Por dentro" scene depends on the
+     screen, so only it lives in a matchMedia context that is rebuilt on resize.
      ======================================================================= */
-  const cala = $("#cala");
-  if (cala && motion) {
-    const track = $(".cala__track", cala);
-    const frame = $(".cala__frame", cala);
-    const sw = $(".cala__switch", cala);
-    const [btnBase, btnInside] = $$("button", sw);
-    const cssTimeline = !!(window.CSS && CSS.supports && CSS.supports("view-timeline-name: --cala"));
-    let mode = "";
-    let open = false;
-    let ticking = false;
+  if (motion) {
+    gsap.registerPlugin(ScrollTrigger, SplitText);
+    ScrollTrigger.config({ ignoreMobileResize: true });
+    const EASE = "expo.out";
 
-    sw.hidden = false;
-    cala.classList.add("is-enhanced");
+    // Lines rise out of a mask. If the text re-splits while waiting (fonts,
+    // width), the new lines wait too; once the rise starts they stay put.
+    // The split is undone when the lines land, so the heading is plain text again.
+    const riseLines = (el) => {
+      let waiting = true;
+      const s = SplitText.create(el, {
+        type: "lines", mask: "lines", linesClass: "ln", autoSplit: true,
+        onSplit: (self) => { gsap.set(self.lines, { yPercent: waiting ? 105 : 0 }); },
+      });
+      gsap.set(el, { visibility: "visible" });
+      return (vars) => {
+        waiting = false;
+        return gsap.to(s.lines, Object.assign({ yPercent: 0, duration: 1.1, ease: EASE, stagger: 0.08, onComplete: () => s.revert() }, vars));
+      };
+    };
+    // Run once, the first time the element comes into view or is scrolled past
+    const once = (el, run, start = "top 85%") => {
+      let done = false;
+      const go = () => { if (!done) { done = true; run(); } };
+      ScrollTrigger.create({ trigger: el, start, end: "bottom top", once: true, onEnter: go, onLeave: go, onEnterBack: go });
+    };
 
-    const setPressed = (isOpen) => {
-      open = isOpen;
-      btnBase.setAttribute("aria-pressed", String(!isOpen));
-      btnInside.setAttribute("aria-pressed", String(isOpen));
-    };
-    // 0 when the track's top meets the window's top, 1 when its bottom meets the window's bottom
-    const progress = () => {
-      const r = track.getBoundingClientRect();
-      const run = r.height - window.innerHeight;
-      return run > 0 ? clamp(-r.top / run, 0, 1) : 0;
-    };
-    const update = () => {
-      ticking = false;
-      if (mode !== "scroll") return;
-      const p = progress();
-      if (!cssTimeline) frame.style.setProperty("--t", clamp((p - 0.15) / 0.6, 0, 1).toFixed(4));
-      if ((p >= 0.5) !== open) setPressed(p >= 0.5);
-    };
-    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
-    const setMode = () => {
-      const next = window.innerHeight >= 640 ? "scroll" : "toggle";
-      if (next === mode) return;
-      mode = next;
-      cala.classList.toggle("is-scroll", mode === "scroll");
-      cala.classList.toggle("is-toggle", mode === "toggle");
-      cala.classList.toggle("is-js-timeline", mode === "scroll" && !cssTimeline);
-      if (mode === "toggle") { frame.style.removeProperty("--t"); cala.classList.toggle("is-open", open); }
-      else { cala.classList.remove("is-open"); update(); }
-    };
-    const go = (toOpen) => {
-      if (mode === "scroll") {
-        const r = track.getBoundingClientRect();
-        const top = window.scrollY + r.top + (toOpen ? r.height - window.innerHeight : 0);
-        window.scrollTo({ top: Math.round(top), behavior: "smooth" });
-      } else {
-        setPressed(toOpen);
-        cala.classList.toggle("is-open", toOpen);
-      }
-    };
-    btnBase.addEventListener("click", () => go(false));
-    btnInside.addEventListener("click", () => go(true));
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", () => { setMode(); onScroll(); });
-    setMode();
+    /* ---------- portada: the offer arrives under the turning globe ---------- */
+    const heroTitle = riseLines($(".hero h1"));
+    gsap.timeline({ delay: 0.6 })
+      .add(heroTitle(), 0)
+      .fromTo(".hero__lead, .hero .btn-pair", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: EASE, stagger: 0.08 }, 0.25);
+
+    // the header logo appears once the portada's logo has gone under the header
+    const header = $(".header");
+    if (header && stage) {
+      ScrollTrigger.create({
+        trigger: stage, start: "bottom top+=72",
+        onEnter: () => header.classList.add("logo-on"),
+        onLeaveBack: () => header.classList.remove("logo-on"),
+      });
+    }
+
+    /* ---------- section titles and leads ---------- */
+    $$("main .section-title").forEach((el) => {
+      once(el, riseLines(el));
+    });
+    $$("main [data-reveal]:not(.section-title)").forEach((el) => {
+      gsap.set(el, { y: 20 });
+      once(el, () => gsap.to(el, { autoAlpha: 1, y: 0, duration: 0.9, ease: EASE, delay: 0.15 }));
+    });
+
+    /* ---------- lists arrive as lists: services, the works table, the facts ---------- */
+    [[".services__list > .service", 24], [".ledger tbody tr", 0], [".company__facts .facts__row", 16]].forEach(([sel, y]) => {
+      const items = $$(sel);
+      if (!items.length) return;
+      gsap.set(items, { autoAlpha: 0, y });
+      const show = (batch) => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.8, ease: EASE, stagger: 0.06, overwrite: true });
+      ScrollTrigger.batch(items, { start: "top 92%", end: "bottom top", once: true, onEnter: show, onLeave: show });
+    });
+
+    /* ---------- "colado": each work photo fills from the bottom, then its card ---------- */
+    $$(".work").forEach((work) => {
+      const pic = $(".work__photo picture", work);
+      const img = $("img", pic);
+      const card = $(".work__card", work);
+      gsap.set(img, { scale: 1.12 });
+      gsap.set(card, { autoAlpha: 0, y: 24 });
+      once(work, () => gsap.timeline()
+        .to(pic, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.2, ease: "power3.out" }, 0)
+        .to(img, { scale: 1, duration: 1.6, ease: EASE }, 0)
+        .to(card, { autoAlpha: 1, y: 0, duration: 0.9, ease: EASE }, 0.35), "top 80%");
+    });
+
+    /* ---------- contact: the details and the form ---------- */
+    const contactBits = $$(".contact .channels, .contact__form");
+    gsap.set(contactBits, { autoAlpha: 0, y: 24 });
+    once($(".contact"), () => gsap.to(contactBits, { autoAlpha: 1, y: 0, duration: 0.9, ease: EASE, stagger: 0.08, delay: 0.2 }), "top 70%");
+
+    /* ---------- "Por dentro": the one scene tied to scroll ----------
+       The slope under construction gets its parts named in the order they go
+       in: the mesh, the drain pipes, the shotcrete. Each cota sets its point,
+       draws its line out to the label, then the label is written. On large
+       screens the section holds still while it happens (pinned for about one
+       screen of scroll); on smaller ones it plays as the photo crosses the
+       screen. Scroll is never taken over: no snapping, no jumps. */
+    const inside = $(".inside");
+    const frame = $(".inside__frame");
+    if (inside && frame) {
+      const img = $("img", frame);
+      const cotas = $$(".cota", frame);
+      const labels = $$(".cotas__label", frame);
+      // with the object form the handler only runs while one query matches, hence both
+      gsap.matchMedia().add({
+        scene: "(min-width: 1024px) and (min-height: 640px)",
+        pass: "not all and (min-width: 1024px) and (min-height: 640px)",
+      }, (ctx) => {
+        const tl = gsap.timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: ctx.conditions.scene
+            ? { trigger: frame, start: "center 55%", end: "+=110%", pin: inside, scrub: 0.6, anticipatePin: 1 }
+            : { trigger: frame, start: "top 70%", end: "bottom 80%", scrub: 0.6 },
+        });
+        tl.fromTo(img, { scale: 1.08 }, { scale: 1, duration: 1 }, 0);
+        cotas.forEach((g, i) => {
+          const lines = $$("line", g);
+          const dot = $("circle", g);
+          const label = labels[i];
+          const a = +lines[0].getAttribute("x1"), b = +lines[0].getAttribute("y1");
+          const c = +lines[0].getAttribute("x2"), d = +lines[0].getAttribute("y2");
+          const at = 0.08 + i * 0.28;
+          const fromEnd = label.classList.contains("cotas__label--end");
+          tl.fromTo(dot, { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.05 }, at)
+            .fromTo(lines, { attr: { x2: a, y2: b } }, { attr: { x2: c, y2: d }, duration: 0.12 }, at + 0.03)
+            .fromTo(label, { clipPath: fromEnd ? "inset(0% 0% 0% 100%)" : "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.1 }, at + 0.14);
+        });
+        tl.to({}, { duration: 0.1 }); // hold the finished picture before the pin lets go
+      });
+    }
+
+    root.classList.add("motion-on");
+    // fonts change line breaks and heights: measure again once they are in
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
   }
 
   /* =======================================================================

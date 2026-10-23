@@ -9,7 +9,7 @@ Civil works are judged by what the concrete ends up covering: the mesh, the reba
 - The canvas is finished concrete.
 - The type is road-sign lettering (Barlow).
 - The orange is the logo's, the same as a traffic cone on site, and it only marks the action.
-- The signature gesture opens the concrete.
+- The signature gesture names what is inside the concrete.
 
 If a decision is not about the finished surface or what holds it, it goes.
 
@@ -17,22 +17,22 @@ If a decision is not about the finished surface or what holds it, it goes.
 
 - Nothing that is not confirmed gets written: no placeholder text, no filler, no invented figures.
 - Each work is named only by its main work (at most eight words), with its department and year. No clients, amounts, scope, people or place names below the department.
+- A photo not tied to a confirmed work is captioned by its type of work only, never by a work, place or year.
+- Two photos are never paired as one place unless the company confirms it (the slope photos are of different slopes).
 - No people's names, no team, no portraits. The site speaks only about the company.
 - Voice: sober, "usted", Spanish of El Salvador, sentence case everywhere.
 
-## Signature gesture: "la cala"
+## Signature gesture: "por dentro"
 
-On site, a *cala* is an inspection opening cut to see what is inside a wall or a pavement. On the page, a fixed frame shows a finished slope; as you scroll, a rectangle opens in its face and shows the slope from inside (mesh, drain pipes, shotcrete half applied) until it fills the frame. It is a before and after told backwards: first the finished work, then how it was made.
+A slope under construction, photographed by the company: on the left the mesh pinned to the ground with its drain pipes, on the right the same mesh already covered with shotcrete. As you scroll, its parts get named in the order they go in, the way a plan names them: **Malla**, **Tubo de drenaje**, **Concreto lanzado**. The finished slope looks like a smooth wall; this is what holds it.
 
-- **Photos:** `slope-finished` ("Terminado", source `d5e11b89`, crop `[640, 0, 800, 1000]`) and `slope-mesh` ("Por dentro", source `6ecce5f7`, crop `[360, 250, 840, 1050]`, blue channel −7 % so both concretes match). Both are 4:5, and the frame is never wider than 640 CSS px.
-- **Opening:** the inside photo sits on top, cut with `clip-path` from `inset(32% 34% 52% 46%)` to `inset(0)`, with a 1 px edge in the canvas colour.
-- **Scroll split:** 0–15 % finished, 15–75 % the opening grows, 75–100 % inside. The frame is sticky inside a 220vh track (160vh on phones), only when the window is 640 px tall or more.
-- **Timeline:** `view-timeline: --cala block` on `.cala__track`, `animation-range: contain 0% contain 100%`. Never `view()` on an element inside the sticky stage: its progress freezes while the stage is pinned. Without view timelines, `main.js` writes `--t` from a `requestAnimationFrame` loop with the same split.
-- **Labels:** "Terminado" sits on the base photo; "Por dentro" rides the opening's top-left corner on a frame-sized layer moved only with `transform`. Both are solid dark blocks.
-- **Controls:** two real buttons under the frame ("Terminado", "Por dentro"), `aria-pressed` flips at 50 %. With the sticky frame they scroll to each end of the track; in windows under 640 px tall they open and close the cut with a 600 ms `clip-path` transition, and the frame shrinks to fit the window.
-- **Without JS or with reduced motion:** a static diptych, side by side from 768 px and stacked on phones, each photo with its label, no buttons.
+- **Section:** "Lo que sostiene el talud", a dark band after Qué hacemos. Lead: "Un talud terminado se ve como una pared lisa. Por dentro lleva malla, tubos que sacan el agua y concreto lanzado." Caption by type only: "Estabilización de talud, en construcción".
+- **Photo:** `slope-mesh` (source `6ecce5f7`, crop `[360, 250, 840, 1050]`, 4:5). The frame is at most 560 CSS px wide, and on large screens never taller than the window under the header.
+- **Cotas:** an SVG in the photo's own 800 × 1000 grid, so each point stays on its object at any size. Each cota is a 5-unit dot on the object, a 1.5 px `#EEEAE2` line with a dark halo, and a label as a solid asphalt block (SC 600 14 px, `#EEEAE2` on `#1E1D1A`, 14.05:1). Labels name parts; they never carry measures. Points: mesh `(250, 540)`, drain pipe `(590, 428)`, shotcrete `(680, 210)`.
+- **Scroll:** on screens 1024 px wide and 640 px tall or more the section is pinned while the photo sits centred, for 110 % of a screen of scroll (`scrub: 0.6`); the photo settles from 1.08 to 1 and each cota draws in turn: dot, line, then the label wipes in. On smaller screens nothing is pinned; the same timeline plays as the photo crosses the screen. No snapping, no jumps.
+- **Without JS or with reduced motion:** the photo with all three cotas already drawn. The cotas are `aria-hidden`; the lead and the `alt` say the same in words.
 - Photos are never mirrored, stretched or filled with AI to make them line up.
-- The section ships when the photo pair is confirmed as the same slope. The CSS and JS are already in place; without `#cala` they do nothing.
+- Round 1 proposed "la cala" (a finished slope opening to show its inside). It was dropped on 2026-10-23: the two slope photos are of different slopes, and pairing them would say they are one.
 
 ## Palette A "Obra real"
 
@@ -67,9 +67,9 @@ Components read roles, never raw colours. Each section declares `data-tone="ligh
 |---|---|
 | Portada, Obras | light `--bg` |
 | Qué hacemos, Empresa | light `--bg-2` |
-| La cala, Turno de noche, Contacto, footer | dark |
+| Por dentro, Contacto, footer | dark |
 
-The two alternatives shown in round 1 were B "Turno de noche" (the whole page in night asphalt, the cala in light) and C "Plano técnico" (plan paper, plotter ink, dimension lines in the cala, orange only in the logo).
+The two alternatives shown in round 1 were B "Turno de noche" (the whole page in night asphalt) and C "Plano técnico" (plan paper, plotter ink, dimension lines, orange only in the logo). A "Turno de noche" section with the footbridge at night was also dropped on 2026-10-23: it added nothing the page needs.
 
 ## Type
 
@@ -82,7 +82,7 @@ Files are copied to `assets/fonts/` from `@fontsource/barlow@5.3.0` and `@fontso
 - Barlow 400: body, leads, captions, fields.
 - Barlow 500: nav, form labels, `strong`.
 - Semi Condensed 500: `h1` to `h3`, facts, the works list.
-- Semi Condensed 600: buttons and cala labels.
+- Semi Condensed 600: buttons and cota labels.
 
 Each weight comes as a `latin` and a `latin-ext` file. Only Semi Condensed 500 and Barlow 400 latin are preloaded.
 
@@ -99,7 +99,7 @@ Each weight comes as a `latin` and a `latin-ext` file. Only Semi Condensed 500 a
 | Button | SC 600 | 18 | 1 | +0.01em |
 | Nav, form labels | Barlow 500 | 16 | 1.2 | 0 |
 | Caption | Barlow 400 | 15 | 1.45 | 0 |
-| Fact labels, credit, cala labels | SC 500/600 | 14 | 1.3 | +0.01em |
+| Fact labels, credit, cota labels | SC 500/600 | 14 | 1.3 | +0.01em |
 
 Sizes use `clamp()` in `rem + vw` so zoom still works. Measure `46ch`. Nothing under 14 px; fields at 17–18 px so iOS does not zoom.
 
@@ -127,30 +127,37 @@ Sizes use `clamp()` in `rem + vw` so zoom still works. Measure `46ch`. Nothing u
 
 | Use | File | Source | Crop `[x, y, w, h]` | Max CSS width |
 |---|---|---|---|---|
-| Portada | `road-concrete-pour` | `909d1178` | `[0, 50, 1200, 1500]` | 960 |
-| Thumbnail, `og:image`, under the cala | `slope-street` | `492d2f0b` | d `[0, 133, 1600, 1067]`, m `[240, 0, 960, 1200]`, t `[80, 160, 1200, 800]`, og `[0, 300, 1600, 840]` | 1280 |
+| Carreteras thumbnail | `road-concrete-pour` | `909d1178` | d `[0, 275, 1200, 800]`, 480 only | 160 |
+| Taludes thumbnail, `og:image` | `slope-street` | `492d2f0b` | d `[0, 133, 1600, 1067]`, m `[240, 0, 960, 1200]`, t `[80, 160, 1200, 800]`, og `[0, 300, 1600, 840]` | 1280 |
 | Bases de puente sobre río | `bridge-footings` | `5efec4c1` | d `[0, 290, 1128, 752]`, m `[150, 200, 800, 1000]` | 902 |
 | Protección de talud | `retaining-wall-formwork` | `b4dc9b55` | `[252, 0, 896, 1120]` | 640 |
 | Tanque de agua potable | `tank-wall` | `831d2cc5` | d `[0, 0, 800, 533]`, m `[60, 0, 480, 600]` | 640 |
-| Turno de noche | `footbridge-night` | `eeb12f89` | d `[0, 110, 1176, 784]`, m `[268, 24, 908, 1135]` | 940 |
-| La cala | `slope-finished`, `slope-mesh` | see the cala | — | 640 |
+| Pasarelas thumbnail | `footbridge-night` | `eeb12f89` | d `[0, 110, 1176, 784]`, 480 only | 160 |
+| Por dentro | `slope-mesh` | `6ecce5f7` | `[360, 250, 840, 1050]`, blue channel −7 % (white balance) | 560 |
 
 ## Motion
 
-Sober, like concrete settling: it decelerates and never bounces. Only `transform`, `opacity` and `clip-path` animate, with easing `cubic-bezier(.2, .7, .2, 1)`.
+Level 2: GSAP 3.15 with ScrollTrigger and SplitText, self-hosted in `assets/js/` (copied from `sitios/faro/assets/js/`). Sober, like concrete settling: it decelerates (`expo.out`, `power3.out`) and never bounces. Only `transform`, `opacity`, `clip-path` and SVG line ends animate.
 
-- **La cala:** tied to scroll, no inertia.
-- **"Colado":** the main photo of each work block fills from the bottom up, like concrete filling formwork: `clip-path: inset(100% 0 0 0)` → `inset(0)`, 700 ms, once, when 20 % is visible. Thumbnails, the table and the portada never animate.
-- **Text:** section titles and leads rise 12 px and fade in over 400 ms, 60 ms apart. Never letter by letter.
+- **Portada (on load):** the logo intro plays once (see Portada under Components); 0.6 s in, the `h1` rises line by line out of a mask (1.1 s, 80 ms apart) and the lead and the button pair follow, so the offer is readable while the globe still turns.
+- **Section titles:** rise line by line out of a mask, once, as they enter; the split is undone when they land, so the heading is plain text again. Leads rise 20 px and fade in. Never letter by letter.
+- **Lists arrive as lists:** service rows, the works table and the company facts, 60 ms apart.
+- **"Colado":** the main photo of each work block fills from the bottom up, like concrete filling formwork (`clip-path: inset(100% 0 0 0)` → `inset(0)`, 1.2 s) while the photo settles from 1.12; then its fact card.
+- **"Por dentro":** the one scene tied to scroll (see the signature gesture).
 - **Interface:** hover and focus in 160–200 ms; the header's bottom line appears after 8 px of scroll.
-- **Never:** scroll-smoothing libraries, parallax, Ken Burns, counters, marquees, custom cursors, magnetic buttons, autoplay carousels.
-- **`prefers-reduced-motion: reduce`** turns all of it off: no reveals, the cala is the diptych, no smooth scrolling.
-- **Without JS** everything is visible: `.js` and `.js-motion` are set before first paint.
+- **Never:** scroll-jacking (snapping between sections, wheel turned into jumps, a page locked until an animation ends), scroll-smoothing libraries, parallax, counters, marquees, custom cursors, magnetic buttons, autoplay carousels.
+- **`prefers-reduced-motion: reduce`:** no GSAP motion at all, the cotas already drawn, no smooth scrolling.
+- **Without JS** everything is visible. `.js-motion` hides only the starting states and is set before first paint; `main.js` removes it if GSAP is missing, and if `main.js` never runs a CSS failsafe shows everything after 4 s.
 
 ## Components
 
 - **Focus:** a 3 px ring in `--focus`, 3 px offset, 4 px radius, on everything focusable.
 - **Header:** sticky, `--bg`, 64 px tall (72 on desktop), logo left, nav in Barlow 500 16 px `--fg-2` that turns `--fg` with a 2 px underline on hover and on the current section. Below 1024 px a 44 × 44 menu button opens a full-screen dark menu with "Escribir por WhatsApp" at the bottom. Escape closes it and focus stays inside.
+- **Portada:** centred, at least one screen tall under the header. A 4:3 stage (at most 720 px wide, and on screens 520 px wide and 560 px tall or more never taller than what the offer leaves) holds the logo intro, then the `h1` at `h2` size (36 → 64), the lead and the button pair, centred.
+  - **Intro video** (`assets/media/logo-intro-1200` from 700 px wide and `-960` below, each as WebM VP9 and MP4 H.264, 280–410 KB; rendered at 1440 × 1080, 30 fps, 5.2 s, no sound, plays once): the four orbit swooshes spiral in from outside and keep circling in a plane that leans back; the two ink parallels grow out from the axis and stay put, like a globe's latitudes; the two orange meridians come round from behind on an invisible sphere and turn with it, two turns, fast then slowing to face on, joined by six copies that close the globe all round while it is fast and fade as it slows; meridians seen through the globe are pale. The globe then rises and shrinks into the stacked lockup and the six letters rise from their baseline, 60 ms apart. Motion ends at 4.75 s (under the 5 s that would need a pause button).
+  - It is loaded only when motion is allowed (`main.js` sets the sources), muted, `playsinline`, `aria-hidden`; the stage's edges fade out so a codec's slightly different paper never shows as a box.
+  - When it ends, fails or has not started after 3.5 s, the stacked SVG (`role="img"`, "CONPAV"), placed exactly where the last frame draws it (left 13.49 %, top 18 %, width 73.02 % of the stage), fades in over 400 ms and the video fades out. Without JS or with reduced motion the SVG is there from the start and the video is never downloaded.
+  - Source: `media-src/logo-intro/` (HyperFrames + Three.js, see its README).
 - **Button pair (portada):** 52 px tall, SC 600 18 px, no arrows.
   - Primary: `--action` fill, `--action-fg` text, `--action-edge`, and the monochrome WhatsApp glyph inline.
   - Secondary: transparent with a 2 px `--fg` edge, `--bg-2` on hover.
@@ -171,18 +178,19 @@ Sober, like concrete settling: it decelerates and never bounces. Only `transform
 - On dark bands the ink turns into the dark tone's `--fg`; the orange stays.
 - "S.A de C.V." is left out of the mark on the web because it cannot be read at 30 px; the full legal name is in the footer.
 - Never add helmets, cranes, cones, gears, buildings, perspective roads, bricks, wrenches, shields, hexagons or gradients. No new or "improved" version without the company's approval.
+- **Intro (2026-10-23, asked by Rafa):** the mark is animated, never redrawn. The globe's own eight strokes join, turn on its axis and stop face on, then the letters come up; the last frame is the stacked SVG, pixel for pixel. See Portada under Components.
 
 ## What each reference gave
 
 - **Squarespace:** full-bleed bands that alternate light and dark (here, concrete and asphalt) and radii with intent.
 - **Awwwards:** achromatic discipline with one functional accent, and paired buttons.
 - **Apple:** a change of band instead of borders or shadows, and facts as text, not pills.
-- **Jesko Jets:** the real beats the illustrated, slow motion, and the thin technical line (the cala's edge).
+- **Jesko Jets:** the real beats the illustrated, slow motion, and the thin technical line (the cotas on the real photo).
 - **Dala:** one gesture the whole page serves, and one accent.
 
 ## Don't
 
-- Construction stock (hard hat on blueprints, handshakes, engineer with tablet), 3D renders, machinery illustrations, emoji.
+- Construction stock (hard hat on blueprints, handshakes, engineer with tablet), 3D renders of buildings or machinery, machinery illustrations, emoji. The only 3D is the logo's own globe in the intro.
 - Gradients, hazard-tape stripes, concrete or rust textures, glass effects, big shadows.
 - Stencil, military or grunge lettering; Bebas or Impact in caps.
 - Hero with three icon cards, Mission / Vision / Values, an icon per service, uppercase eyebrows, decorative "01 / 02" numbering.
@@ -191,7 +199,8 @@ Sober, like concrete settling: it decelerates and never bounces. Only `transform
 
 ## Engineering notes
 
-- Plain HTML, CSS and JS; no build step. `main.js` is about 14 KB unminified and does nothing that the page needs to be readable.
+- Plain HTML, CSS and JS; no build step for the page. `main.js` is about 19 KB unminified and does nothing that the page needs to be readable. GSAP, ScrollTrigger and SplitText load with `defer` before it (about 125 KB unminified, 49 KB gzipped).
+- The intro video is the only built asset: `media-src/logo-intro/` holds its source (HyperFrames composition + Three.js, reading `assets/logo/conpav-stack.svg`) and the render and encode steps. Change the logo there and render again; never edit the video by hand.
 - Fonts and every asset are self-hosted under `assets/`.
 - While it lives on the faro-demos Worker the whole folder is `noindex` through `sitios/_headers` (`X-Robots-Tag`). `gracias.html` and `404.html` also carry `<meta name="robots" content="noindex">`.
 - The Worker answers any missing path under `/conpav/`, however deep, with `404.html`, so that page uses root-relative `/conpav/` paths; the other pages stay relative. On the client's own domain, `/conpav/` becomes `/` there and in the absolute URLs (`og:url`, `og:image`, JSON-LD `url`, the form's `_next`).

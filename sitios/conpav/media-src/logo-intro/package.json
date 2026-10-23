@@ -1,0 +1,11 @@
+{
+  "name": "conpav-logo-intro",
+  "private": true,
+  "type": "module",
+  "description": "Hero intro video for sitios/conpav (development only)",
+  "scripts": {
+    "build": "esbuild src/intro.js --bundle --format=iife --minify --target=es2020 --loader:.svg=text --outfile=intro.bundle.js",
+    "render": "npx hyperframes render --fps 30 --quality high --workers 4 --output renders/logo-intro.mp4"
+  },
+  "devDependencies": { "esbuild": "0.25.12", "hyperframes": "0.8.140", "three": "0.185.0" }
+}

@@ -11,8 +11,9 @@
    re-scoped inside [data-tone="light"] and [data-tone="dark"], so every
    component reads roles (--bg, --fg, --action...), never raw colours.
 
-   Signature gesture: "la cala", an inspection opening in a finished slope
-   (see .cala below and DESIGN.md). Hand-written, no build step.
+   Signature gesture: "por dentro", a slope under construction whose parts
+   get named as you scroll (see .inside below and DESIGN.md). Hand-written,
+   no build step.
    ========================================================================= */
 
 /* ---------- fonts: Barlow 1.408, OFL-1.1 (assets/fonts/OFL.txt). Files from @fontsource 5.3.0, byte-identical to Google Fonts ---------- */
@@ -76,8 +77,6 @@
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   --fast: 180ms;
 
-  /* the cala: where the opening starts on the finished slope (top right bottom left) */
-  --cala-edge: #E9E5DD;
 }
 @media (min-width: 768px) { :root { --gap: 24px; } }
 @media (min-width: 1024px) { :root { --header: 72px; } }
@@ -217,6 +216,10 @@ main:focus { outline: none; }
   min-height: var(--header); padding: 0 var(--margin);
 }
 .header__logo { display: inline-flex; align-items: center; min-height: 44px; color: var(--fg); }
+/* with motion, the header logo waits until the portada's own logo has been scrolled past */
+.js-motion:has(.hero__stage) .header__logo { opacity: 0; transition: opacity 300ms var(--ease); }
+.js-motion:has(.hero__stage) :is(.header.logo-on, .menu-open .header) .header__logo,
+.js-motion:has(.hero__stage) .header__logo:focus-visible { opacity: 1; }
 .logo { color: var(--fg); }
 .logo--h { height: 30px; width: auto; }
 .nav__list { display: flex; flex-wrap: wrap; gap: 0 24px; padding: 0; }
@@ -256,23 +259,29 @@ main:focus { outline: none; }
   html.menu-open { overflow: hidden; }
 }
 
-/* ---------- 1. hero ---------- */
-.hero { padding-bottom: var(--section); }
-.hero__text { padding: 40px var(--margin) 40px; }
-.hero__lead { margin-top: 20px; }
-.hero .btn-pair { margin-top: 32px; }
-.hero__media img { width: 100%; aspect-ratio: 4 / 5; max-height: 88svh; object-fit: cover; }
-.hero__media .caption { padding-inline: var(--margin); }
-@media (min-width: 1024px) {
-  .hero { display: grid; column-gap: var(--gap);
-    grid-template-columns:
-      [full-start] minmax(calc(var(--margin) - var(--gap)), 1fr)
-      [content-start] repeat(12, minmax(0, var(--col)))
-      [content-end] minmax(calc(var(--margin) - var(--gap)), 1fr) [full-end]; }
-  .hero__text { grid-column: 2 / 8; align-self: center; padding: 48px 0; }
-  .hero__media { grid-column: 8 / -1; max-width: 960px; }
-  .hero__media img { aspect-ratio: auto; height: min(100vh - var(--header), 900px); height: min(100svh - var(--header), 900px); max-height: none; }
-  .hero__media .caption { padding-inline: 0; }
+/* ---------- 1. hero: the logo intro, then the offer, all centred ---------- */
+/* The stage keeps the intro video's 4:3 frame. The SVG lockup sits exactly where the video's
+   last frame draws it (media-src/logo-intro: 64% of the frame height, centred), so the swap
+   at the end is invisible. */
+.hero { display: grid; align-content: center; justify-items: center; text-align: center;
+  min-height: calc(100vh - var(--header)); min-height: calc(100svh - var(--header));
+  padding: 16px var(--margin) var(--section); }
+.hero__stage { position: relative; width: min(100%, 720px); aspect-ratio: 4 / 3; }
+.hero__intro, .hero__lockup { position: absolute; }
+.hero__intro { inset: 0; width: 100%; height: 100%; display: none;
+  /* soft edges, so a codec's slightly different paper never shows as a box */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent), linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent), linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+  mask-composite: intersect; }
+.hero__lockup { left: 13.4924%; top: 18%; width: 73.0152%; height: auto; color: var(--fg); }
+.hero__text { display: grid; justify-items: center; }
+.hero h1 { font-size: var(--fs-h2); line-height: 1.05; }
+.hero__lead { margin-top: 16px; }
+.hero .btn-pair { justify-content: center; margin-top: 28px; }
+@media (min-width: 520px) and (min-height: 560px) {
+  /* stage and offer share the first screen: the stage takes what the text leaves */
+  .hero__stage { width: min(100%, 720px, (100vh - var(--header) - 340px) * 4 / 3); width: min(100%, 720px, (100svh - var(--header) - 340px) * 4 / 3); min-width: min(100%, 360px); }
 }
 
 /* ---------- 2. services: a typographic index ---------- */
@@ -354,16 +363,6 @@ main:focus { outline: none; }
   .ledger__year { grid-column: 1; grid-row: 1; }
   .ledger__dept { grid-column: 2; grid-row: 1; }
   .ledger__work { grid-column: 1 / -1; grid-row: 2; padding-top: 2px; }
-}
-
-/* ---------- 5. night shift ---------- */
-.night__grid { display: grid; gap: 32px; }
-.night__photo { max-width: 940px; }
-.night__photo img { width: 100%; }
-@media (min-width: 1024px) {
-  .night__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: start; }
-  .night .section-title { grid-column: 1 / 5; }
-  .night__photo { grid-column: 5 / -1; justify-self: end; width: 100%; }
 }
 
 /* ---------- 6. company ---------- */
@@ -461,110 +460,49 @@ main:focus { outline: none; }
 .page__back { margin-top: 12px; }
 
 /* =========================================================================
-   La cala: the inspection opening
-   Default (no JS, reduced motion): a static diptych, "Terminado" next to
-   "Por dentro". main.js adds .is-enhanced (the two photos stacked), then
-   .is-scroll (window 640px tall or more: the frame sticks and the opening
-   follows the scroll) or .is-toggle (shorter windows: the two buttons).
-   Scroll split: 0-15% finished, 15-75% the opening grows, 75-100% inside.
+   Por dentro: a slope under construction, its parts named on the photo.
+   The labels are always there (no JS, reduced motion); with motion they are
+   drawn one by one as the scene scrolls (main.js). The SVG uses the photo's
+   own 800 x 1000 grid, so every point stays on its object at any size.
    ========================================================================= */
-.cala__layout { display: grid; gap: 32px; }
-.cala__intro .lead { margin-top: 16px; }
-.cala__frame { display: grid; gap: var(--gap); }
-.cala__pane { position: relative; }
-.cala__pane img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
-.cala__tag { position: absolute; inset: 0; pointer-events: none; }
-.cala__tag span {
-  position: absolute; top: 0; left: 0; padding: 6px 10px;
-  background: var(--bg); color: var(--fg);
-  font: 600 0.875rem/1.3 var(--font-display); letter-spacing: 0.01em;
+.inside__grid { display: grid; gap: 32px; }
+.inside__text .lead { margin-top: 16px; }
+.inside__photo { width: min(100%, 560px); }
+.inside__frame { position: relative; }
+.inside__frame img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.cotas { position: absolute; inset: 0; pointer-events: none; }
+.cotas svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.cotas line { stroke: #EEEAE2; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.cotas line.cotas__halo { stroke: #1E1D1A; stroke-width: 4; stroke-opacity: 0.7; }
+.cotas circle { fill: #EEEAE2; stroke: #1E1D1A; stroke-width: 2; vector-effect: non-scaling-stroke; }
+.cotas__label {
+  position: absolute; transform: translateY(-100%); padding: 4px 8px;
+  font: 600 0.875rem/1.2 "Barlow Semi Condensed", "Barlow Semi Condensed Fallback", sans-serif; letter-spacing: 0.01em; white-space: nowrap;
+  background: #1E1D1A; color: #EEEAE2;
 }
-.cala__switch { display: flex; gap: 8px; margin-top: 16px; }
-.cala__switch[hidden] { display: none; }
-.cala__switch button {
-  min-height: 44px; min-width: 44px; padding: 0 16px;
-  border: 0; border-radius: var(--radius); background: transparent; color: var(--fg-2); cursor: pointer;
-  font: 600 1rem/1 var(--font-display); letter-spacing: 0.01em;
-  text-decoration: underline 2px transparent; text-underline-offset: 8px;
-  transition: color var(--fast) ease, text-decoration-color var(--fast) ease;
-}
-.cala__switch button:hover { color: var(--fg); }
-.cala__switch button[aria-pressed="true"] { color: var(--fg); text-decoration-color: currentColor; }
-.cala__ficha { margin-top: 24px; font-size: 0.9375rem; line-height: 1.45; color: var(--fg-2); }
-.cala__after { margin-top: 24px; }
-.cala__after img { width: 100%; }
-@media (min-width: 768px) { .cala__frame { grid-template-columns: 1fr 1fr; } }
-/* phones and tablets: title and lines before the frame, the work's line after it */
-@media (max-width: 1023px) {
-  .cala__intro { display: contents; }
-  .cala__intro .lead { margin-top: -16px; }
-  .cala__track { order: 1; }
-  .cala__ficha { order: 2; margin-top: 0; }
-  .cala__after { order: 3; margin-top: 0; }
-}
+.cotas__label--end { transform: translate(-100%, -100%); }
 @media (min-width: 1024px) {
-  .cala__layout { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
-  .cala__intro { grid-column: 1 / 9; }
-  .cala__track, .cala__after { grid-column: 1 / -1; }
-  .cala__frame { max-width: 1280px; }
-  .cala__after { margin-top: 64px; }
+  .inside__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: center; }
+  .inside__text { grid-column: 1 / 6; }
+  .inside__photo { grid-column: 7 / -1; justify-self: end; width: min(100%, 560px, (100vh - var(--header) - 96px) * 0.8); width: min(100%, 560px, (100svh - var(--header) - 96px) * 0.8); }
 }
 
-/* enhanced: the inside photo sits on top, cut by the opening */
-.cala.is-enhanced .cala__frame {
-  display: block; position: relative; aspect-ratio: 4 / 5; margin-inline: auto;
-  width: min(100%, 640px); overflow: hidden; /* the moving tag layer never widens the page */
-}
-.cala.is-enhanced .cala__pane { position: absolute; inset: 0; }
-.cala.is-enhanced .cala__pane img { height: 100%; aspect-ratio: auto; }
-.cala.is-enhanced .cala__cut { position: absolute; inset: 0; background: var(--cala-edge); clip-path: inset(32% 34% 52% 46%); }
-.cala.is-enhanced .cala__cut img { clip-path: inset(calc(32% + 1px) calc(34% + 1px) calc(52% + 1px) calc(46% + 1px)); }
-.cala.is-enhanced .cala__pane--inside .cala__tag { transform: translate(46%, 32%); }
-.cala.is-enhanced .cala__pane--inside .cala__tag span { top: 1px; left: 1px; }
-.cala.is-enhanced .cala__switch { justify-content: center; }
-@media (min-width: 1024px) {
-  .cala.is-enhanced .cala__intro { grid-column: 8 / -1; grid-row: 1; align-self: start; position: sticky; top: calc(var(--header) + 24px); }
-  .cala.is-enhanced .cala__track { grid-column: 1 / 7; grid-row: 1; }
-  .cala.is-enhanced .cala__frame { margin-inline: 0; }
-  .cala.is-enhanced .cala__switch { justify-content: flex-start; }
-}
-
-/* short windows: the buttons open and close it */
-.cala.is-toggle .cala__cut, .cala.is-toggle .cala__cut img { transition: clip-path 600ms var(--ease); }
-.cala.is-toggle .cala__pane--inside .cala__tag { transition: transform 600ms var(--ease); }
-.cala.is-toggle.is-open .cala__cut, .cala.is-toggle.is-open .cala__cut img { clip-path: inset(0); }
-.cala.is-toggle.is-open .cala__pane--inside .cala__tag { transform: none; }
-
-/* tall windows: the frame sticks while the track scrolls past */
-.cala.is-scroll .cala__track { height: 160vh; }
-.cala.is-scroll .cala__stage { position: sticky; top: calc(var(--header) + 16px); }
-.cala.is-scroll .cala__frame { width: min(100%, 640px, (100vh - var(--header) - 112px) * 0.8); width: min(100%, 640px, (100svh - var(--header) - 112px) * 0.8); }
-/* short windows: the frame and its buttons still fit on one screen */
-.cala.is-toggle .cala__frame { width: min(100%, 640px, max(240px, (100vh - var(--header) - 112px) * 0.8)); width: min(100%, 640px, max(240px, (100svh - var(--header) - 112px) * 0.8)); }
-@media (min-width: 1024px) {
-  .cala.is-scroll .cala__track { height: 220vh; }
-  .cala.is-scroll .cala__stage { top: calc(var(--header) + 24px); }
-}
-@supports (view-timeline-name: --cala) {
-  .cala.is-scroll .cala__track { view-timeline: --cala block; }
-  .cala.is-scroll .cala__cut { animation: cala-cut linear both; animation-timeline: --cala; animation-range: contain 0% contain 100%; }
-  .cala.is-scroll .cala__cut img { animation: cala-img linear both; animation-timeline: --cala; animation-range: contain 0% contain 100%; }
-  .cala.is-scroll .cala__pane--inside .cala__tag { animation: cala-tag linear both; animation-timeline: --cala; animation-range: contain 0% contain 100%; }
-}
-@keyframes cala-cut { 0%, 15% { clip-path: inset(32% 34% 52% 46%); } 75%, 100% { clip-path: inset(0); } }
-@keyframes cala-img { 0%, 15% { clip-path: inset(calc(32% + 1px) calc(34% + 1px) calc(52% + 1px) calc(46% + 1px)); } 75%, 100% { clip-path: inset(0); } }
-@keyframes cala-tag { 0%, 15% { transform: translate(46%, 32%); } 75%, 100% { transform: none; } }
-/* fallback without view timelines: main.js writes --t (0 closed, 1 open) on each frame */
-.cala.is-js-timeline .cala__cut { clip-path: inset(calc(32% * (1 - var(--t, 0))) calc(34% * (1 - var(--t, 0))) calc(52% * (1 - var(--t, 0))) calc(46% * (1 - var(--t, 0)))); }
-.cala.is-js-timeline .cala__cut img { clip-path: inset(calc((32% + 1px) * (1 - var(--t, 0))) calc((34% + 1px) * (1 - var(--t, 0))) calc((52% + 1px) * (1 - var(--t, 0))) calc((46% + 1px) * (1 - var(--t, 0)))); }
-.cala.is-js-timeline .cala__pane--inside .cala__tag { transform: translate(calc(46% * (1 - var(--t, 0))), calc(32% * (1 - var(--t, 0)))); }
-
-/* ---------- reveals (only with .js-motion, set before first paint) ---------- */
-.js-motion [data-reveal] { opacity: 0; transform: translateY(12px); transition: opacity 400ms var(--ease), transform 400ms var(--ease); }
-.js-motion [data-reveal].is-in { opacity: 1; transform: none; }
+/* ---------- motion (GSAP in main.js; these are only the starting states) ----------
+   .js-motion is set before first paint, so nothing flashes before it moves. main.js
+   removes it when GSAP is missing, and adds .motion-on once it has taken over; if
+   main.js never runs, the failsafe below shows everything after 4 s. */
+.js-motion :is(.hero h1, .section-title) { visibility: hidden; }
+.js-motion :is(.hero__lead, .hero .btn-pair, [data-reveal]:not(.section-title)) { opacity: 0; }
+.js-motion .hero__intro { display: block; transition: opacity 400ms var(--ease); }
+.js-motion .hero__lockup { opacity: 0; transition: opacity 400ms var(--ease); }
+.js-motion .hero__stage.is-done .hero__lockup { opacity: 1; }
+.js-motion .hero__stage.is-done .hero__intro { opacity: 0; }
 /* "colado": the main photo of each work fills from the bottom up, like concrete in the formwork */
-.js-motion .work__photo picture { clip-path: inset(100% 0 0 0); transition: clip-path 700ms cubic-bezier(0.2, 0.7, 0.2, 1); }
-.js-motion .work__photo.is-in picture { clip-path: inset(0); }
+.js-motion .work__photo picture { clip-path: inset(100% 0 0 0); }
+/* the line masks SplitText adds keep accents and descenders while the lines rise */
+.ln-mask { padding-block: 0.12em; margin-block: -0.12em; }
+@keyframes motion-failsafe { to { visibility: visible; opacity: 1; transform: none; clip-path: none; } }
+.js-motion:not(.motion-on) :is(.hero h1, .section-title, .hero__lead, .hero .btn-pair, .hero__lockup, .header__logo, [data-reveal], .work__photo picture) { animation: motion-failsafe 0s 4s forwards; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation: none !important; }

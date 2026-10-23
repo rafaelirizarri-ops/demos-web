@@ -4,26 +4,8 @@
       "id": "909d1178",
       "name": "road-concrete-pour",
       "crops": {
-        "d": { "rect": [0, 50, 1200, 1500], "widths": [480, 800, 1200] }
-      },
-      "budgetKB": { "1200": 200 }
-    },
-    {
-      "id": "0e244906",
-      "name": "curved-slab",
-      "crops": {
-        "d": { "rect": [0, 100, 1200, 1500], "widths": [480, 800, 1200] }
-      },
-      "budgetKB": { "1200": 200 }
-    },
-    {
-      "id": "350647b1",
-      "name": "trench-night-pour",
-      "adjust": { "channels": [1, 0.91, 0.95] },
-      "crops": {
-        "d": { "rect": [0, 0, 1200, 1500], "widths": [480, 800, 1200] }
-      },
-      "budgetKB": { "1200": 200 }
+        "d": { "rect": [0, 275, 1200, 800], "widths": [480] }
+      }
     },
     {
       "id": "831d2cc5",
@@ -32,13 +14,6 @@
       "crops": {
         "d": { "rect": [0, 0, 800, 533], "widths": [480, 800] },
         "m": { "rect": [60, 0, 480, 600], "widths": [480] }
-      }
-    },
-    {
-      "id": "d5e11b89",
-      "name": "slope-finished",
-      "crops": {
-        "d": { "rect": [640, 0, 800, 1000], "widths": [480, 800] }
       }
     },
     {
@@ -79,8 +54,7 @@
       "id": "eeb12f89",
       "name": "footbridge-night",
       "crops": {
-        "d": { "rect": [0, 110, 1176, 784], "widths": [480, 800] },
-        "m": { "rect": [268, 24, 908, 1135], "widths": [480, 800] }
+        "d": { "rect": [0, 110, 1176, 784], "widths": [480] }
       }
     }
   ]
