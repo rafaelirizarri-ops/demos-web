@@ -10,15 +10,15 @@ Static demo sites that Faro, a small web agency in Panama, builds for prospects 
 - Everything under `sitios/` is public on the internet, DESIGN.md and video sources included.
 
 ## Deploy
-- The Cloudflare Pages project `faro-demos` publishes all of `sitios/` (Git integration, production branch `main`, no build command, build output `sitios`). Merging any PR republishes every demo at `https://faro-demos.pages.dev/<client>/`. Merge only with Rafa's explicit OK, as a squash merge with the PR title as the commit title.
-- PR preview: Cloudflare comments the link on the PR. The branch alias is `https://<branch>.faro-demos.pages.dev/<client>/`, with the branch lowercased and every other character turned into `-` (`claude/conpav-sitio` → `claude-conpav-sitio`). Status check `Cloudflare Pages`. Previews send `X-Robots-Tag: noindex`; production does not.
-- Headers go in `sitios/_headers` and redirects in `sitios/_redirects` (Cloudflare syntax: one `*` per rule, `:name` for one path segment). Pages serves `x.html` at `/x` (308 redirect).
-- Netlify is retired. The old site `demos-webs` stays up only to 301 `demos-webs.netlify.app/*` to `faro-demos.pages.dev` (root `netlify.toml`): never delete it, and ignore its deploy previews. The per-site `netlify.toml` files (orthox, mareas, sen-vietnam) are leftovers; Cloudflare ignores them.
-- A client who signs gets their own Pages project (root directory `sitios/<client>`) and their domain.
+- The Cloudflare Worker `faro-demos` serves all of `sitios/` as static files (Workers Builds connected to this repo, config in the root `wrangler.jsonc`, whose `name` must stay `faro-demos` or the build fails). Merging any PR republishes every demo at `https://faro-demos.rafael-irizarri-bazan.workers.dev/<client>/`. Merge only with Rafa's explicit OK, as a squash merge with the PR title as the commit title.
+- PR preview: every other branch gets `https://<branch>-faro-demos.rafael-irizarri-bazan.workers.dev/<client>/`, with the branch lowercased and every other character turned into `-` (`claude/conpav-sitio` → `claude-conpav-sitio`). Cloudflare does not comment the link; the status check is `Workers Builds: faro-demos`. Previews send `X-Robots-Tag: noindex`; production does not. Both workers.dev toggles (Worker → Settings → Domains) must stay on, or Cloudflare answers error 1042.
+- Headers go in `sitios/_headers` and redirects in `sitios/_redirects` (Cloudflare syntax: one `*` per rule, `:name` for one path segment); neither file is served. `/x.html` and `/x/index.html` 307-redirect to `/x` and `/x/`. A missing page gets the nearest `404.html` up its folder tree (`sitios/<client>/404.html`), else a plain 404.
+- Netlify is retired. The old site `demos-webs` stays up only to 301 `demos-webs.netlify.app/*` to the Worker (root `netlify.toml`): never delete it, and ignore its deploy previews and the `demos-web` Netlify checks. The per-site `netlify.toml` files (orthox, mareas, sen-vietnam) are leftovers; Cloudflare ignores them.
+- A client who signs gets their own Worker or Pages project and their domain. A Worker custom domain needs the domain's DNS on Cloudflare.
 - Follow-up after a thread's PR is merged: `git fetch origin main && git checkout -B <branch> origin/main && git push --force-with-lease -u origin <branch>`.
 
 ## Cloud container limits
-- Checked 2026-10-23: `*.pages.dev` (production and previews), `*.netlify.app`, `formsubmit.co`, the CDNs, Unsplash, Instagram, Fresha and Google Maps answer from the container; Degusta does not. Open the Cloudflare preview yourself instead of asking Rafa. The policy has changed before: if a host fails, try it once more, then fall back below.
+- Checked 2026-10-23: `*.workers.dev` and `*.pages.dev` (production and previews), `*.netlify.app`, `formsubmit.co`, the CDNs, Unsplash, Instagram, Fresha and Google Maps answer from the container; Degusta does not. Open the Cloudflare preview yourself instead of asking Rafa. The policy has changed before: if a host fails, try it once more, then fall back below.
 - Self-host fonts and libraries in `sitios/<client>/assets/` anyway (speed, and no third party can break a demo).
 - Text from a blocked site: WebSearch or WebFetch. Photos, downloads and screenshots of a blocked site: Playwright on Rafa's computer when it is connected (folder `~/Documents/websites`), or ask Rafa.
 
