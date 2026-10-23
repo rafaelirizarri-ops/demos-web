@@ -1,10 +1,13 @@
-# Un solo proyecto de Netlify para todas las demos:
-#   demos-webs.netlify.app/orthox/  y  demos-webs.netlify.app/sen-vietnam/
+# Netlify is retired: the Cloudflare Worker faro-demos (wrangler.jsonc) publishes sitios/ now.
+# The old Netlify site stays up only so links already sent keep working:
+#   demos-webs.netlify.app/<path>  ->  faro-demos.faro-web.workers.dev/<path>  (301)
+# Deploy previews (deploy-preview-N--demos-webs.netlify.app) are not redirected.
 [build]
   publish = "sitios"
   command = ""
 
-[[headers]]
-  for = "/*/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+[[redirects]]
+  from = "https://demos-webs.netlify.app/*"
+  to = "https://faro-demos.faro-web.workers.dev/:splat"
+  status = 301
+  force = true
