@@ -10,12 +10,12 @@ Sitios demo para prospectos. Cada carpeta en `sitios/` es un sitio estático ind
 
 ## Cloudflare
 El Worker `faro-demos` de Cloudflare publica la carpeta `sitios/` tal cual (sin build; la configuración está en `wrangler.jsonc`). Cada demo queda en su propia ruta:
-- https://faro-demos.rafael-irizarri-bazan.workers.dev/orthox/
-- https://faro-demos.rafael-irizarri-bazan.workers.dev/sen-vietnam/
-- https://faro-demos.rafael-irizarri-bazan.workers.dev/mareas/
-- https://faro-demos.rafael-irizarri-bazan.workers.dev/faro/
+- https://faro-demos.faro-web.workers.dev/orthox/
+- https://faro-demos.faro-web.workers.dev/sen-vietnam/
+- https://faro-demos.faro-web.workers.dev/mareas/
+- https://faro-demos.faro-web.workers.dev/faro/
 
-Una demo nueva = una carpeta nueva en `sitios/`. Cada cambio que entra a `main` se publica solo, y cada rama tiene su vista previa en `https://<rama>-faro-demos.rafael-irizarri-bazan.workers.dev/<carpeta>/` (la rama en minúsculas, con `-` en vez de `/`). Los headers van en `sitios/_headers`.
+Una demo nueva = una carpeta nueva en `sitios/`. Cada cambio que entra a `main` se publica solo, y cada rama tiene su vista previa en `https://<rama>-faro-demos.faro-web.workers.dev/<carpeta>/` (la rama en minúsculas, con `-` en vez de `/`). Los headers van en `sitios/_headers`.
 Si un cliente cierra, se le crea su propio Worker (o proyecto de Pages) con su dominio.
 
 Netlify ya no se usa: el sitio viejo `demos-webs` solo redirige `demos-webs.netlify.app/...` al mismo camino en Cloudflare (ver `netlify.toml` en la raíz), para que los links ya enviados sigan sirviendo.

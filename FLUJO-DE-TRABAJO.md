@@ -12,6 +12,6 @@
    - `web-design-guidelines`: auditoría final (accesibilidad, contraste, móvil) antes de mostrarlo.
 5. **QA con Playwright y Lighthouse.** La lista está en `CLAUDE.md`. Las capturas van a la carpeta del proyecto (`capturas/<cliente>/<ronda>/`), no al repo, porque todo `sitios/` es público.
 6. **GitHub = la fuente de verdad.** Un repo `demos-web` con una carpeta por cliente (`sitios/<cliente>/`). Cada cambio queda guardado y se puede revertir.
-7. **Cloudflare conectado al repo.** Un solo Worker (`faro-demos`) publica todo `sitios/` en `faro-demos.rafael-irizarri-bazan.workers.dev/<cliente>/`. Cada PR tiene su vista previa, que Claude abre y revisa antes de pedir el OK; fusionar publica todas las demos a la vez, y solo se fusiona con el OK de Rafa. Si un cliente cierra, se le crea su propio Worker o proyecto de Pages con su dominio.
+7. **Cloudflare conectado al repo.** Un solo Worker (`faro-demos`) publica todo `sitios/` en `faro-demos.faro-web.workers.dev/<cliente>/`. Cada PR tiene su vista previa, que Claude abre y revisa antes de pedir el OK; fusionar publica todas las demos a la vez, y solo se fusiona con el OK de Rafa. Si un cliente cierra, se le crea su propio Worker o proyecto de Pages con su dominio.
 8. **Mensaje al prospecto:** captura antes/después + link. Claude lo redacta. Por correo lo envía desde el Gmail de Rafa cuando Rafa escribe "manda"; por WhatsApp o Instagram lo manda Rafa.
 9. **Si cierra:** su propio proyecto en Cloudflare con su dominio, fotos reales, horario confirmado.
