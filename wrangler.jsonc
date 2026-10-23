@@ -1,9 +1,9 @@
 {
-  // Cloudflare Worker "demos-web" (Workers Builds, connected to this repo) serves sitios/ as static files.
-  // main -> production: https://demos-web.<subdomain>.workers.dev/<client>/
-  // any other branch -> Preview: https://<branch>-demos-web.<subdomain>.workers.dev/<client>/ (sent with noindex)
+  // Cloudflare Worker "faro-demos" (Workers Builds, connected to this repo) serves sitios/ as static files.
+  // main -> production: https://faro-demos.<subdomain>.workers.dev/<client>/
+  // any other branch -> Preview: https://<branch>-faro-demos.<subdomain>.workers.dev/<client>/ (sent with noindex)
   // The name must match the Worker in the dashboard, or the build fails.
-  "name": "demos-web",
+  "name": "faro-demos",
   "compatibility_date": "2026-10-23",
   "assets": {
     "directory": "./sitios",
