@@ -9,6 +9,12 @@ Static demo sites that Faro, a small web agency in Panama, builds for prospects 
 - Code lives only in this repo. The folders under `/mnt/project-files/sitios/` are old copies: never edit them.
 - Everything under `sitios/` is public on the internet, DESIGN.md and video sources included.
 
+## Site builds
+- Every new site is level 2 (premium with motion) by default. Level 1 (simple: HTML, CSS and minimal JS, no GSAP) only when Rafa says "simple".
+- ALWAYS load the skills `design-playbook`, `impeccable` and `gsap-web-animation` at the start of every site build, and say in the thread and the PR which ones you loaded.
+- Level 2 requires GSAP + ScrollTrigger (self-hosted: copy them from `sitios/faro/assets/js/`) with at least a hero reveal, section reveals and one scroll-driven moment: a pinned or scrubbed image or video.
+- No scroll-jacking: never take scroll control from the visitor (forced snapping between sections, wheel or swipe turned into slide jumps, a page locked until an animation ends). Scroll-scrubbed hero video or image sequences are allowed. Encode a scrubbed video with every frame as a keyframe (ffmpeg `-g 1`, WebM next to MP4) or draw an image sequence on a canvas, and show a still frame under `prefers-reduced-motion`.
+
 ## Deploy
 - The Netlify site `demos-webs` publishes all of `sitios/` (root `netlify.toml`: `publish = "sitios"`, `command = ""`). Merging any PR republishes every demo at `https://demos-webs.netlify.app/<client>/`. Merge only with Rafa's explicit OK, as a squash merge with the PR title as the commit title.
 - PR preview: `https://deploy-preview-<N>--demos-webs.netlify.app/<client>/`, status check `netlify/demos-webs/deploy-preview`. The second project, `demos-web` (no s), is a duplicate: ignore it.
