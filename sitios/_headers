@@ -1,5 +1,5 @@
-# Cloudflare Pages reads this file from the root of the published folder (sitios/).
-# Syntax: https://developers.cloudflare.com/pages/configuration/headers/
+# The Cloudflare Worker (wrangler.jsonc) reads this file from the root of its assets folder (sitios/); it is not served.
+# Syntax: https://developers.cloudflare.com/workers/static-assets/headers/
 # One splat (*) per rule; :name matches a single path segment.
 
 # Fonts, scripts, images and video under each site's assets/ folder.

@@ -1,0 +1,17 @@
+{
+  // Cloudflare Worker "demos-web" (Workers Builds, connected to this repo) serves sitios/ as static files.
+  // main -> production: https://demos-web.<subdomain>.workers.dev/<client>/
+  // any other branch -> Preview: https://<branch>-demos-web.<subdomain>.workers.dev/<client>/ (sent with noindex)
+  // The name must match the Worker in the dashboard, or the build fails.
+  "name": "demos-web",
+  "compatibility_date": "2026-10-23",
+  "assets": {
+    "directory": "./sitios",
+    // A missing page gets the nearest 404.html up the folder tree (sitios/<client>/404.html), else a plain 404.
+    "not_found_handling": "404-page"
+  },
+  "workers_dev": true,
+  "preview_urls": true,
+  // Required for Worker Previews (the dashboard's preview command is `npx wrangler preview`).
+  "previews": {}
+}
