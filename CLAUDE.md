@@ -4,7 +4,7 @@ Static demo sites that Faro, a small web agency in Panama, builds for prospects 
 
 ## Structure
 - `sitios/<client>/` is one independent site in plain HTML/CSS/JS. There is no build, lint or test step. The only package.json files are tools: `sitios/faro/video-src/faro-3d` (renders a video) and `sitios/conpav/media-src` (sharp, generates the image crops; `node_modules/` is ignored).
-- Sites and status (update when one signs): `faro` (Faro's own site, indexed), `mareas` (fictional sample; the footer says so), `orthox` (prospect demo), `sen-vietnam` (prospect demo), `conpav` (client site in progress; `noindex` by header in the root `netlify.toml` while it lives on demos-webs, its own domain comes later).
+- Sites and status (update when one signs): `faro` (Faro's own site, indexed), `mareas` (fictional sample; the footer says so), `orthox` (prospect demo), `sen-vietnam` (prospect demo), `conpav` (client site in progress; `noindex` by header in `sitios/_headers` while it lives on faro-demos, its own domain comes later).
 - `sitios/<client>/DESIGN.md` is that site's design source of truth. Read it before editing and update it in the same PR. faro and conpav have one so far.
 - Code lives only in this repo. The folders under `/mnt/project-files/sitios/` are old copies: never edit them.
 - Everything under `sitios/` is public on the internet, DESIGN.md and video sources included.

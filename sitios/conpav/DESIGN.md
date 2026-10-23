@@ -193,5 +193,6 @@ Sober, like concrete settling: it decelerates and never bounces. Only `transform
 
 - Plain HTML, CSS and JS; no build step. `main.js` is about 14 KB unminified and does nothing that the page needs to be readable.
 - Fonts and every asset are self-hosted under `assets/`.
-- While it lives on demos-webs the whole folder is `noindex` through the root `netlify.toml` (`X-Robots-Tag`). `gracias.html` and `404.html` also carry `<meta name="robots" content="noindex">`.
+- While it lives on the faro-demos Worker the whole folder is `noindex` through `sitios/_headers` (`X-Robots-Tag`). `gracias.html` and `404.html` also carry `<meta name="robots" content="noindex">`.
+- The Worker answers any missing path under `/conpav/`, however deep, with `404.html`, so that page uses root-relative `/conpav/` paths; the other pages stay relative. On the client's own domain, `/conpav/` becomes `/` there and in the absolute URLs (`og:url`, `og:image`, JSON-LD `url`, the form's `_next`).
 - JSON-LD is a hand-written `Organization` with confirmed data only, including `openingHoursSpecification` for Monday to Friday 08:00–17:00 and Saturday 09:00–15:00.

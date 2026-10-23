@@ -6,3 +6,7 @@
 # Files there are not fingerprinted: give a changed file a new name so returning visitors get it.
 /:site/assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+# conpav: client site in progress, kept out of search engines until it moves to its own domain.
+/conpav/*
+  X-Robots-Tag: noindex
