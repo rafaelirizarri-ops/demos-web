@@ -1,0 +1,8 @@
+# Cloudflare Pages reads this file from the root of the published folder (sitios/).
+# Syntax: https://developers.cloudflare.com/pages/configuration/headers/
+# One splat (*) per rule; :name matches a single path segment.
+
+# Fonts, scripts, images and video under each site's assets/ folder.
+# Files there are not fingerprinted: give a changed file a new name so returning visitors get it.
+/:site/assets/*
+  Cache-Control: public, max-age=31536000, immutable

@@ -10,15 +10,17 @@ Static demo sites that Faro, a small web agency in Panama, builds for prospects 
 - Everything under `sitios/` is public on the internet, DESIGN.md and video sources included.
 
 ## Deploy
-- The Netlify site `demos-webs` publishes all of `sitios/` (root `netlify.toml`: `publish = "sitios"`, `command = ""`). Merging any PR republishes every demo at `https://demos-webs.netlify.app/<client>/`. Merge only with Rafa's explicit OK, as a squash merge with the PR title as the commit title.
-- PR preview: `https://deploy-preview-<N>--demos-webs.netlify.app/<client>/`, status check `netlify/demos-webs/deploy-preview`. The second project, `demos-web` (no s), is a duplicate: ignore it.
-- Per-site `netlify.toml` files (orthox, mareas, sen-vietnam) are only read by a client's own Netlify project; demos-webs ignores them.
+- The Cloudflare Pages project `faro-demos` publishes all of `sitios/` (Git integration, production branch `main`, no build command, build output `sitios`). Merging any PR republishes every demo at `https://faro-demos.pages.dev/<client>/`. Merge only with Rafa's explicit OK, as a squash merge with the PR title as the commit title.
+- PR preview: Cloudflare comments the link on the PR. The branch alias is `https://<branch>.faro-demos.pages.dev/<client>/`, with the branch lowercased and every other character turned into `-` (`claude/conpav-sitio` → `claude-conpav-sitio`). Status check `Cloudflare Pages`. Previews send `X-Robots-Tag: noindex`; production does not.
+- Headers go in `sitios/_headers` and redirects in `sitios/_redirects` (Cloudflare syntax: one `*` per rule, `:name` for one path segment). Pages serves `x.html` at `/x` (308 redirect).
+- Netlify is retired. The old site `demos-webs` stays up only to 301 `demos-webs.netlify.app/*` to `faro-demos.pages.dev` (root `netlify.toml`): never delete it, and ignore its deploy previews. The per-site `netlify.toml` files (orthox, mareas, sen-vietnam) are leftovers; Cloudflare ignores them.
+- A client who signs gets their own Pages project (root directory `sitios/<client>`) and their domain.
 - Follow-up after a thread's PR is merged: `git fetch origin main && git checkout -B <branch> origin/main && git push --force-with-lease -u origin <branch>`.
 
 ## Cloud container limits
-- Blocked: `*.netlify.app`, `api.netlify.com`, `formsubmit.co`, CDNs (unpkg, jsdelivr, cdnjs), Unsplash, Instagram and its CDN, Google Maps and its image hosts, Fresha, Degusta, and most reference sites. npm and Google Fonts work.
-- Self-host fonts and libraries in `sitios/<client>/assets/`.
-- Text from blocked sites: WebSearch or WebFetch. Photos, downloads and screenshots of blocked sites: Playwright on Rafa's computer when it is connected (folder `~/Documents/websites`), or ask Rafa.
+- Checked 2026-10-23: `*.pages.dev` (production and previews), `*.netlify.app`, `formsubmit.co`, the CDNs, Unsplash, Instagram, Fresha and Google Maps answer from the container; Degusta does not. Open the Cloudflare preview yourself instead of asking Rafa. The policy has changed before: if a host fails, try it once more, then fall back below.
+- Self-host fonts and libraries in `sitios/<client>/assets/` anyway (speed, and no third party can break a demo).
+- Text from a blocked site: WebSearch or WebFetch. Photos, downloads and screenshots of a blocked site: Playwright on Rafa's computer when it is connected (folder `~/Documents/websites`), or ask Rafa.
 
 ## QA
 ```
@@ -30,7 +32,7 @@ CHROME_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome npx -y lighthouse
 ```
 - Full checklist (improvement or new site): screenshots at 390, 768, 1280 and 1440; no console errors, broken links or missing files; nothing overflows; motion on a phone and with `prefers-reduced-motion`; keyboard focus and AA contrast; alt text, title and meta; an absolute `og:image` so the link shows a photo on WhatsApp; `noindex` on unsigned prospect demos; compare with the approved option and the previous round.
 - Targeted change: screenshots at 390 and 1280 plus the console.
-- Lighthouse runs locally without compression and swings about 10 points: report the median of 3. On `noindex` demos the `is-crawlable` audit fails by design; report SEO without it.
+- Lighthouse runs locally without compression and swings about 10 points: report the median of 3. On `noindex` demos the `is-crawlable` audit fails by design; report SEO without it. It can also run against the Cloudflare preview (real CDN and compression), where `is-crawlable` fails for every site because of the preview's `noindex` header.
 - The test Chromium has no H.264: ship WebM next to every MP4. Video: local HyperFrames CLI plus ffmpeg (see `sitios/faro/video-src/README.md`).
 - Forms: Faro uses FormSubmit (address in `config.js`; the first real send triggers an activation email). Test with `page.route('**/formsubmit.co/**', ...)`, never a real send. Mareas' form opens WhatsApp.
 - Screenshots go to `/mnt/project-files/capturas/<client>/<round>/`, never into the repo.
