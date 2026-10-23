@@ -1,0 +1,61 @@
+{
+  "photos": [
+    {
+      "id": "909d1178",
+      "name": "road-concrete-pour",
+      "crops": {
+        "d": { "rect": [0, 275, 1200, 800], "widths": [480] }
+      }
+    },
+    {
+      "id": "831d2cc5",
+      "name": "tank-wall",
+      "adjust": { "levels": [0.5, 99.5] },
+      "crops": {
+        "d": { "rect": [0, 0, 800, 533], "widths": [480, 800] },
+        "m": { "rect": [60, 0, 480, 600], "widths": [480] }
+      }
+    },
+    {
+      "id": "6ecce5f7",
+      "name": "slope-mesh",
+      "adjust": { "channels": [1, 1, 0.93] },
+      "crops": {
+        "d": { "rect": [360, 250, 840, 1050], "widths": [480, 800] }
+      }
+    },
+    {
+      "id": "492d2f0b",
+      "name": "slope-street",
+      "crops": {
+        "d": { "rect": [0, 133, 1600, 1067], "widths": [480, 800, 1200, 1600] },
+        "m": { "rect": [240, 0, 960, 1200], "widths": [480, 800] },
+        "t": { "rect": [80, 160, 1200, 800], "widths": [160, 320] }
+      },
+      "og": { "rect": [0, 300, 1600, 840] }
+    },
+    {
+      "id": "5efec4c1",
+      "name": "bridge-footings",
+      "adjust": { "levels": [0.5, 99.5] },
+      "crops": {
+        "d": { "rect": [0, 290, 1128, 752], "widths": [480, 800] },
+        "m": { "rect": [150, 200, 800, 1000], "widths": [480, 800] }
+      }
+    },
+    {
+      "id": "b4dc9b55",
+      "name": "retaining-wall-formwork",
+      "crops": {
+        "d": { "rect": [252, 0, 896, 1120], "widths": [480, 800] }
+      }
+    },
+    {
+      "id": "eeb12f89",
+      "name": "footbridge-night",
+      "crops": {
+        "d": { "rect": [0, 110, 1176, 784], "widths": [480] }
+      }
+    }
+  ]
+}
