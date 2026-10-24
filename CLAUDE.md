@@ -15,6 +15,15 @@ Static demo sites that Faro, a small web agency in Panama, builds for prospects 
 - Level 2 requires GSAP + ScrollTrigger (self-hosted: copy them from `sitios/faro/assets/js/`) with at least a hero reveal, section reveals and one scroll-driven moment: a pinned or scrubbed image or video.
 - No scroll-jacking: never take scroll control from the visitor (forced snapping between sections, wheel or swipe turned into slide jumps, a page locked until an animation ends). Scroll-scrubbed hero video or image sequences are allowed. Encode a scrubbed video with every frame as a keyframe (ffmpeg `-g 1`, WebM next to MP4) or draw an image sequence on a canvas, and show a still frame under `prefers-reduced-motion`.
 
+## Marketing-site floor
+Every site ships these; the QA pass checks them.
+- Sticky header: set `scroll-padding-top` on `html` to the header height, so anchor links and keyboard focus never land under the nav.
+- Full-screen hero and pinned sections: `height: 100vh` then `height: 100svh` on the next line, never bare `100vh`, so the hero isn't cut when the phone's browser bar shows. Use `100dvh` only for full-screen overlays such as the open mobile menu: it resizes when the bar hides, which makes pinned sections jump. Scroll-driven size changes come from GSAP, not from the unit.
+- Contact forms: every field gets the right `type`, `inputmode` and `autocomplete` (phone `tel`/`tel`, email `email`/`email`, name `name` or `given-name`), so phones open the right keyboard and autofill works.
+- Form errors: show each error next to its field, set `aria-invalid="true"` and `aria-describedby` to the message, and move focus to the first invalid field on submit.
+- Anything that moves on its own (testimonial carousel, logo marquee, autoplay video loop): visible pause button, pause on hover and focus, static under `prefers-reduced-motion`.
+- Layering: one small z-index scale as tokens (`--z-base`, `--z-sticky`, `--z-overlay`, `--z-modal`, `--z-toast`); no ad-hoc numbers like `9999`.
+
 ## Deploy
 - The Cloudflare Worker `faro-demos` serves all of `sitios/` as static files (Workers Builds connected to this repo, config in the root `wrangler.jsonc`, whose `name` must stay `faro-demos` or the build fails). Merging any PR republishes every demo at `https://faro-demos.faro-web.workers.dev/<client>/`. Merge only with Rafa's explicit OK, as a squash merge with the PR title as the commit title.
 - PR preview: every other branch gets `https://<branch>-faro-demos.faro-web.workers.dev/<client>/`, with the branch lowercased and every other character turned into `-` (`claude/conpav-sitio` → `claude-conpav-sitio`). Cloudflare does not comment the link; the status check is `Workers Builds: faro-demos`. Previews send `X-Robots-Tag: noindex`; production does not. Both workers.dev toggles (Worker → Settings → Domains) must stay on, or Cloudflare answers error 1042.
@@ -36,7 +45,7 @@ CHROME_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome npx -y lighthouse
   http://localhost:8765/<client>/ --only-categories=performance,accessibility,seo \
   --chrome-flags="--headless=new --no-sandbox" --output=json --output-path=<scratchpad>/lh.json --quiet
 ```
-- Full checklist (improvement or new site): screenshots at 390, 768, 1280 and 1440; no console errors, broken links or missing files; nothing overflows; motion on a phone and with `prefers-reduced-motion`; keyboard focus and AA contrast; alt text, title and meta; an absolute `og:image` so the link shows a photo on WhatsApp; `noindex` on unsigned prospect demos; compare with the approved option and the previous round.
+- Full checklist (improvement or new site): screenshots at 390, 768, 1280 and 1440; no console errors, broken links or missing files; nothing overflows; motion on a phone and with `prefers-reduced-motion`; keyboard focus and AA contrast; alt text, title and meta; an absolute `og:image` so the link shows a photo on WhatsApp; `noindex` on unsigned prospect demos; every rule in the Marketing-site floor; compare with the approved option and the previous round.
 - Targeted change: screenshots at 390 and 1280 plus the console.
 - Lighthouse runs locally without compression and swings about 10 points: report the median of 3. On `noindex` demos the `is-crawlable` audit fails by design; report SEO without it. It can also run against the Cloudflare preview (real CDN and compression), where `is-crawlable` fails for every site because of the preview's `noindex` header.
 - The test Chromium has no H.264: ship WebM next to every MP4. Video: local HyperFrames CLI plus ffmpeg (see `sitios/faro/video-src/README.md`).
