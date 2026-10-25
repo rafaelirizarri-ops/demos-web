@@ -13,7 +13,8 @@
    - Motion (GSAP + ScrollTrigger + SplitText, Lenis for smooth scroll):
      titles rise line by line, figures count up, the map lights the eight
      departments, lists arrive as lists
-   - Works: filter by area, with the count announced
+   - Works: filter by area, with the count announced; the photos stay closed
+     under the list until asked for, and a row's "Ver foto" opens them
    - Quote form: validation in plain words, FormSubmit by fetch, and a
      WhatsApp message with what was typed if sending fails
    Without JS or with reduced motion everything is visible and usable.
@@ -148,7 +149,8 @@
       const target = id.length > 1 && document.getElementById(id.slice(1));
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(id === "#inicio" ? 0 : target, { offset: -headerH() - 8, duration: 1.4 });
+      // Lenis already leaves html's scroll-padding-top (the header) above the target
+      lenis.scrollTo(id === "#inicio" ? 0 : target, { duration: 1.4 });
       history.replaceState(null, "", id);
       if (id !== "#inicio" && target !== $("#main")) {
         if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
@@ -361,7 +363,7 @@
     /* ---------- lists arrive as lists ---------- */
     // Opacity, never visibility: links and fields waiting to arrive stay in the tab order,
     // and tabbing to one scrolls it into view, which brings it in.
-    [[".figure", 24], [".areas__list > .area", 24], [".clients__list > .client", 24], [".ledger tbody tr", 0], [".company__facts .facts__row", 16], [".shot", 32]].forEach(([sel, y]) => {
+    [[".figure", 24], [".areas__list > .area", 24], [".clients__list > .client", 24], [".ledger tbody tr", 0], [".company__facts .facts__row", 16]].forEach(([sel, y]) => {
       const items = $$(sel);
       if (!items.length) return;
       gsap.set(items, { opacity: 0, y });
@@ -435,6 +437,31 @@
     });
     // "5 obras realizadas" under each area opens the list on that area
     $$(".area__count[data-filter]").forEach((a) => a.addEventListener("click", () => applyFilter(a.dataset.filter)));
+  }
+
+  /* =======================================================================
+     Photos: closed under the list until someone asks for them. A row's
+     "Ver foto" opens them first; the in-page link handler then goes there.
+     ======================================================================= */
+  const photos = $("#fotos");
+  if (photos) {
+    // the page grows or shrinks: Lenis and the triggers below measure again
+    const measure = () => { if (lenis) lenis.resize(); if (motion && window.ScrollTrigger) ScrollTrigger.refresh(); };
+    let fromLink = false;
+    photos.addEventListener("toggle", () => {
+      // a row's link measured before its glide began; measuring again now would stop it
+      if (!fromLink) measure();
+      fromLink = false;
+      if (photos.open && motion && window.gsap) {
+        gsap.fromTo($$(".shot", photos), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease: "expo.out", stagger: 0.06, overwrite: true });
+      }
+    });
+    $$(".ledger__photo").forEach((a) => a.addEventListener("click", () => {
+      if (photos.open) return;
+      photos.open = true;
+      fromLink = true;
+      measure();
+    }));
   }
 
   /* =======================================================================

@@ -4,6 +4,8 @@ The source of truth for `sitios/conpav`. Read it before editing the site and upd
 
 Round 3 (2026-10-25) replaced the round 2 world ("lo que queda adentro", a site about slopes). CONPAV is a general civil engineering firm, and the site now speaks to whoever hires one.
 
+Round 4 (2026-10-25, Rafa's notes on round 3): the whole site is graphite, the type is smaller and quieter, and the works' photos stay closed inside Obras realizadas until the visitor asks for them. It is a firm's record, not a product launch.
+
 ## Concept: "plano de luz" (a plan drawn in light)
 
 The company has eighteen works in eight departments since 2011, but few photos, and none of them shows a work whole. So the page explains what it does with a drawing that reads as a drawing, and proves it with what is real: the list of works, the map, the company facts and the photos it has.
@@ -33,7 +35,8 @@ Real client references first, but quality first: never fake proof.
 - A real photo is used when it holds up at its displayed size. It is captioned by its work, department and year only when the company confirms the pairing; otherwise by its type of work.
 - When there is no good photo, an illustration explains the kind of work, and it must read as an illustration (points of light, plans, a diagram). It is never captioned or placed as one of the company's works.
 - Never an AI-made or AI-retouched photo presented as a real work.
-- Real photos and drawings are never mixed in the same list: the works list has no images, the photos live together in "En obra", the drawing lives in the portada.
+- Real photos and drawings are never mixed in the same list: the works list has no images, the photos sit closed under it (see Photos), the drawing lives in the portada.
+- Nobody is made to look at the works: the page tells what the company does and lists what it did; the photos are there for whoever wants to see them.
 
 ## Signature gesture: the portada of points
 
@@ -44,6 +47,7 @@ One structure in points of light, with real depth, that the scroll moves through
 - **Arrival:** the structure assembles in building order (ground, river, piers, deck, road, slope, building floor by floor) in 2.8 s, while the title and the offer arrive.
 - **Ambient:** each point twinkles at its own pace, a few blink off, a slow band of light sweeps across and the camera drifts a little; at most 30 frames a second. "Pausar animación" stops all of it (WCAG 2.2.2), and it also rests while the pointer is on the text or keyboard focus is in the portada.
 - **Scroll:** the portada is 360 % of a screen tall and its drawing stays put (`position: sticky`) while the camera travels along a smooth path through five stops, lingering at each: Puentes (18 %), Obras hidráulicas (36 %), Carreteras (53 %), Estabilización (70 %), Edificación (86 %). The area in view turns orange and the rest dims; at both ends the whole structure is lit, warm. Five bars under the drawing fill on the way to each stop and name the one in view. The offer fades and rises out as the tour begins. Nothing takes the scroll: it only reads it.
+- **Weight per area:** Estabilización is one area of five (3 of 18 works), so the slope is drawn dim (faces 0.4, mesh 0.24) and reads as the hill under the building until the tour reaches it.
 - **Layout:** the structure keeps to the space the text leaves (to its right on wide screens, under it on tall ones) and the points behind the text dim to 15 %.
 - **Without WebGL or JS:** a still of the opening frame (`assets/img/dots-hero-d-1600`, `-m-800`), made by `media-src/dots/stills.cjs`. With reduced motion: the finished structure, still, no tour.
 - **Without a GPU** (software rendering, which is what lab tests like Lighthouse use): no assembly and no twinkle, and it draws only when the scroll moves the camera. Every frame there costs the main thread.
@@ -52,7 +56,7 @@ One structure in points of light, with real depth, that the scroll moves through
 
 Graphite, paper and the logo's orange, with steel for the quietest text (round 3, from Rafa's pick: `#F5F4F0`, `#292D32`, `#E87532` and `#A8ADB0`). The orange stays the logo's `#F28C6A` instead of `#E87532`, so the button and the mark match. About 95 % neutrals.
 
-Components read roles, never raw colours. Each section declares `data-tone="light"` or `data-tone="dark"`, and the tokens are re-scoped inside each tone. Contrast (WCAG 2.x) is given on `--bg` / `--bg-2` of the same tone.
+Components read roles, never raw colours. Each section declares `data-tone`, and the tokens are re-scoped inside each tone. Since round 4 every section, the header, the menu, the footer and the two small pages are `dark` (Rafa: the dark palette looks better). The light tone stays defined in `styles.css` for a page that may need paper later, but nothing uses it now. Contrast (WCAG 2.x) is given on `--bg` / `--bg-2` of the same tone.
 
 | Token | Light (paper) | Contrast | Dark (graphite) | Contrast |
 |---|---|---|---|---|
@@ -73,18 +77,13 @@ Components read roles, never raw colours. Each section declares `data-tone="ligh
 - The WhatsApp float is graphite with a paper glyph and a 2 px paper ring, not WhatsApp green (a white glyph on green is 1.98:1).
 - The header takes the tone of the section under it.
 
-**Bands**, at full bleed:
-
-| Section | Tone |
-|---|---|
-| Portada, Experiencia | dark |
-| Qué hacemos, Obras realizadas, Empresa | light `--bg` |
-| Para quién | light `--bg-2` |
-| En obra, Contacto, footer | dark |
+**Bands:** one graphite (`--bg`) from top to bottom; each section after the first opens with a 1 px `--line` hairline (`.band + .band`). Space and the hairline mark the chapters; there are no alternating bands. `--bg-2` is only for small surfaces: hovers, the form's summary.
 
 ## Type
 
-**Barlow** for text and **Barlow Semi Condensed** for headings, figures and buttons. Barlow (Jeremy Tribby, 2017) comes from California's public signage: plates, road signs, buses. The semi-condensed cut fits long technical words ("Estabilización") on a 350 px phone line.
+**Barlow** for text and **Barlow Semi Condensed** for headings, figures and buttons.
+
+Quiet, like an engineering firm's report (round 4; Rafa's references for type are vercel.com and pravah.com, against a product page like wise.com): the largest text on the page is the `h1` at 52 px, sections speak at 40 px, and size steps stay small so nothing shouts. Barlow (Jeremy Tribby, 2017) comes from California's public signage: plates, road signs, buses. The semi-condensed cut fits long technical words ("Estabilización") on a 350 px phone line.
 
 The logo keeps its own letters and is never imitated with a wide font.
 
@@ -92,17 +91,17 @@ Files are copied to `assets/fonts/` from `@fontsource/barlow@5.3.0` and `@fontso
 
 | Role | Face | 390 → 1440 px | Line height |
 |---|---|---|---|
-| `h1` | SC 500 | 40 → 80 | 1.0 |
-| Figures (2011, 18, 8) | SC 500, tabular | 56 → 112 | 0.9 |
-| `h2` | SC 500 | 36 → 64 | 1.05 |
-| `h3` | SC 500 | 24 → 32 | 1.15 |
-| Lead | Barlow 400 | 20 → 22 | 1.4 |
-| Body | Barlow 400 | 17 → 18 | 1.55 |
-| Fact values, works list | SC 500, tabular | 18 → 20 | 1.3 |
-| Contact channels | SC 500 | 28 → 32 | 1.2 |
-| Button | SC 600 | 18 | 1 |
+| `h1` | SC 500, −0.01em | 32 → 52 | 1.08 |
+| Figures (2011, 18, 8) | SC 500, tabular | 40 → 64 | 0.9 |
+| `h2` | SC 500, −0.005em | 28 → 40 | 1.12 |
+| `h3` | SC 500 | 20 → 24 | 1.2 |
+| Lead | Barlow 400 | 17 → 19 | 1.4 |
+| Body | Barlow 400 | 16 → 17 | 1.55 |
+| Fact values, works list | SC 500, tabular | 16 → 18 | 1.3 |
+| Contact channels | SC 500 | 20 → 24 | 1.1 |
+| Button | SC 600 | 16 | 1 |
 | Nav, labels | Barlow 500 | 16 | 1.2 |
-| Caption, map labels, tour names | Barlow 400–500 | 14–15 | 1.3–1.45 |
+| Caption, map labels, tour names, "Ver foto" | Barlow 400–500 | 14–15 | 1.3–1.45 |
 
 Sizes use `clamp()` in `rem + vw` so zoom still works. Measure `46ch`. Nothing under 14 px; fields at 17–18 px so iOS does not zoom.
 
@@ -123,33 +122,39 @@ Everything drawn is drawn in the portada's language: round dots on a grid, paper
 
 ## Photos
 
-All photos are the company's own, shown together in "En obra" ("Fotos tomadas por la empresa durante la construcción") in balanced columns (1, 2 or 3). The works list carries no images.
+All photos are the company's own. They sit closed under the works list, in Obras realizadas, behind one secondary button, «Ver fotos de obra (7)» (a `<details>`, so they work without JS and the lazy images load only once opened). Open, it reads «Ocultar las fotos», then the note "Fotos tomadas por la empresa durante la construcción." and the photos. The works list carries no images: the four works with a photo get a small «Ver foto» link in their row, which opens the photos and glides to that one (focus moves to it).
+
+- **Grid:** 1 column, 2 from 700 px, 3 from 1024 px, every photo cropped to 4:3 by `object-fit`. The footbridge leads across two cells (16:9 in two columns, 2.75 in three, so it matches one cell's height) and the finished slope takes two cells in three columns; slopes go last. Rows follow the HTML order.
 
 - **Sharpness:** no photo is shown wider than its source width ÷ 1.25.
 - **Allowed corrections:** white balance using the concrete as a grey card, and soft levels (0.5 / 99.5 percentiles) on hazy shots. Nothing else: no saturation, HDR, LUTs, black and white, grain, object removal or AI upscaling. Night shots keep their night.
 - **Crops** remove date stamps, burnt skies, legible plates and signs, and recognisable faces. Crews may appear, but no face is recognisable at 100 % in the widest file and no uniform shows legible letters or logos.
 - **Pipeline:** `media-src/images.mjs` (sharp 0.34.4) reads `media-src/photos.json` and writes AVIF, WebP and a JPEG fallback.
 
+In the order they appear:
+
 | Caption | File | Source | Crop `[x, y, w, h]` | Widths |
 |---|---|---|---|---|
-| Estabilización de talud | `slope-street` | `492d2f0b` | `[0, 133, 1600, 1067]` | 480, 800, 1200 |
-| Protección de talud · La Unión · 2019–2020 | `retaining-wall-formwork` | `b4dc9b55` | `[252, 0, 896, 1120]` | 480, 800 |
 | Pasarela peatonal · San Salvador · 2021–2022 | `footbridge-night` | `eeb12f89` | `[0, 110, 1176, 784]` | 480, 800 |
-| Estabilización de talud, en construcción | `slope-mesh` | `6ecce5f7` | `[360, 250, 840, 1050]`, blue −7 % | 480, 800 |
 | Bases de puente sobre río · Morazán · 2019 | `bridge-footings` | `5efec4c1` | `[0, 290, 1128, 752]`, levels | 480, 800 |
-| Tanque de agua potable · 2020 | `tank-wall` | `831d2cc5` | `[0, 0, 800, 533]`, levels | 480, 800 |
 | Pavimento de concreto recién colado | `road-concrete-pour` | `909d1178` | `[0, 275, 1200, 800]` | 480, 800 |
+| Tanque de agua potable · 2020 | `tank-wall` | `831d2cc5` | `[0, 0, 800, 533]`, levels | 480, 800 |
+| Protección de talud · La Unión · 2019–2020 | `retaining-wall-formwork` | `b4dc9b55` | `[252, 0, 896, 1120]` | 480, 800 |
+| Estabilización de talud | `slope-street` | `492d2f0b` | `[0, 133, 1600, 1067]` | 480, 800, 1200 |
+| Estabilización de talud, en construcción | `slope-mesh` | `6ecce5f7` | `[360, 250, 840, 1050]`, blue −7 % | 480, 800 |
+
+The footbridge is the widest photo with the least source (1176 px): it is shown at most 921 px wide in two columns and 845 px in three, inside the ÷ 1.25 rule.
 
 ## Motion
 
 Level 2: GSAP 3.15 with ScrollTrigger and SplitText, and Lenis 1.3.26 for smooth scrolling, all self-hosted in `assets/js/`. Sober, like concrete settling: it decelerates (`expo.out`) and never bounces. Only `transform`, `opacity` and `clip-path` animate on the page.
 
-- **Smooth scroll:** Lenis (`lerp: 0.1`) wired to ScrollTrigger and the GSAP ticker. It only eases the visitor's own scroll: no snapping, no jumps, anchors glide to their section. Off with reduced motion and while the menu is open.
+- **Smooth scroll:** Lenis (`lerp: 0.1`) wired to ScrollTrigger and the GSAP ticker. It only eases the visitor's own scroll: no snapping, no jumps, anchors glide to their section. `lenis.scrollTo(element)` already leaves `html`'s `scroll-padding-top` (the header) and the element's `scroll-margin-top` above it, so it gets no extra offset. Off with reduced motion and while the menu is open.
 - **Logo intro:** once per session, before the page (see Logo).
 - **Portada:** the structure assembles; without the intro the title rises line by line out of a mask (1.1 s, 80 ms apart); the lead and the buttons rise 20 px and fade in; the tour bars fade in last. With the intro the title is already there under the paper.
 - **The scroll tour:** the signature gesture, above.
 - **Section titles** rise line by line out of a mask, once; the split is undone when they land. Leads rise and fade. Never letter by letter.
-- **Lists arrive as lists:** figures, areas, clients, the works rows, facts and photos, 70 ms apart. Opacity only, never visibility, so links and fields waiting to arrive stay in the tab order.
+- **Lists arrive as lists:** figures, areas, clients, the works rows and facts, 70 ms apart. The photos rise in (60 ms apart) when they are opened, and the page re-measures so the tour and the reveals keep their place. Opacity only, never visibility, so links and fields waiting to arrive stay in the tab order.
 - **Figures:** "18" counts up once from 0 (1.6 s). It is the only counter, and it counts a real number.
 - **Map:** the worked departments light up from east to west, then their labels.
 - **Filters:** the rows that stay rise in quickly (0.5 s).
@@ -162,12 +167,11 @@ Level 2: GSAP 3.15 with ScrollTrigger and SplitText, and Lenis 1.3.26 for smooth
 - **Focus:** a 3 px ring in `--focus`, 3 px offset, 4 px radius, on everything focusable. The skip link is an orange block.
 - **Header:** sticky, 64 px tall (72 on desktop), logo left, nav (Qué hacemos, Para quién, Obras, Empresa, Contacto) in Barlow 500 16 px that marks the current section with a 2 px underline. It takes the tone of the section under it. Below 1024 px a 44 × 44 button opens a full-screen dark menu with "Escribir por WhatsApp" at the bottom; Escape closes it and focus stays inside.
 - **Portada:** the drawing fills the screen under the header. The text sits left on wide screens (at most 48 vw) and on top on phones: `h1` "Ingeniería civil en todo El Salvador, desde 2011", a lead naming the five areas and the clients, and the button pair. Under the drawing, the tour bars and the pause button (a visually hidden label on phones).
-- **Button pair:** 52 px tall, SC 600 18 px, no arrows. Primary: orange fill, graphite text, the WhatsApp glyph, the ink edge on paper. Secondary: transparent with a 2 px `--fg` edge.
+- **Button pair:** 48 px tall, SC 600 16 px, 20 px icon, no arrows. Primary: orange fill, graphite text, the WhatsApp glyph, the ink edge on paper. Secondary: transparent with a 2 px `--fg` edge.
 - **Experiencia:** `h2`, lead "Obra pública y privada desde 2011, de La Unión a Sonsonate.", four figures in a `<dl>` (Desde 2011, Obras realizadas 18, Departamentos 8, Clientes: Entidades públicas y privadas), then the map.
 - **Qué hacemos:** lead "Cinco áreas de la ingeniería civil, con equipo propio." One row per area: glyph, `h3`, one plain line, and a link "N obras realizadas" that filters the works list. Thin rules between rows; no cards.
 - **Para quién:** four columns under a rule, each an `h3` and one line.
-- **Obras realizadas:** filter buttons (Todas 18 and one per area with its count, `aria-pressed`, the count announced in a live region), then a real `<table>`: year, work, area (glyph and short name), department. On phones each row becomes three lines.
-- **En obra:** the seven photos in columns, each with its caption.
+- **Obras realizadas:** lead "Las 18 obras, de la más reciente a la más antigua. Las fotos están al final, para quien quiera verlas.", filter buttons (Todas 18 and one per area with its count, `aria-pressed`, the count announced in a live region), then a real `<table>`: year, work (with «Ver foto» where there is one), area (glyph and short name), department. On phones each row becomes three lines. Under it, the closed photos (see Photos).
 - **Empresa:** one paragraph and the facts as a `<dl>`: razón social, actividad, sede, desde, obras en, equipo propio.
 - **Contact:** channels as large links with a small label above. The form: nombre, empresa o entidad (optional), tipo de cliente (optional), teléfono o WhatsApp, correo (optional), tipo de obra (the five areas or "Otra"), departamento, and the message. Errors show on submit and then on leaving each field, never while typing; a message that clears on leaving a field keeps its line, invisible, until the next send, so the button never moves out from under a click. It posts to FormSubmit by `fetch`; if that fails, a WhatsApp link carries what was typed. Without JS it posts normally to `gracias.html`.
 - **Footer:** stacked logo, legal name, "San Salvador, El Salvador", nav and "Sitio por Faro". No copyright year.
@@ -181,10 +185,11 @@ Level 2: GSAP 3.15 with ScrollTrigger and SplitText, and Lenis 1.3.26 for smooth
 
 ## What each reference gave
 
-- **pravah.com** (Rafa's reference for this round): a technical subject drawn in points of light, with depth, that the scroll moves through. We took the idea of an explanatory drawing in light and a calm, continuous scroll; not its subject, palette or type.
+- **pravah.com** (Rafa's reference since round 3): a technical subject drawn in points of light, with depth, that the scroll moves through, and small, calm type. We took the idea of an explanatory drawing in light, a calm, continuous scroll and the modest type sizes; not its subject, palette or typefaces.
 - **Jesko Jets:** the real beats the illustrated where the real exists (the photos, the list), slow motion, thin technical lines.
 - **Apple:** a sticky scene the scroll plays through without taking control, and facts as text.
-- **Squarespace:** full-bleed bands that alternate dark and light.
+- **Vercel** (round 4): quiet type on a dark ground, small size steps, hairlines between sections instead of changing backgrounds.
+- **Squarespace:** full-bleed bands as chapters (round 3 alternated dark and light; round 4 keeps them all dark).
 - **Awwwards:** achromatic discipline with one functional accent, and paired buttons.
 - **Dala:** one gesture the whole page serves, a structure of points as the signature.
 
@@ -199,13 +204,14 @@ Level 2: GSAP 3.15 with ScrollTrigger and SplitText, and Lenis 1.3.26 for smooth
 - Hero with three icon cards, Mission / Vision / Values, uppercase eyebrows, decorative "01 / 02" numbering.
 - ISO or safety seals, testimonials, client logos.
 - Hero sliders, dark overlays on photos to carry text, parallax on photos.
+- Display type that shouts: headings over 52 px, or photos pushed at the visitor before they ask.
 
 ## Engineering notes
 
 - Plain HTML, CSS and JS; no build step for the page. `main.js` (26 KB, 9 KB gzipped) and `hero3d.js` (26 KB, 10 KB gzipped) do nothing the page needs to be readable. GSAP, ScrollTrigger, SplitText and Lenis load with `defer` before them (144 KB, 55 KB gzipped).
 - Built assets and their sources: the intro video (`media-src/logo-intro/`), the photos (`media-src/images.mjs`), the map and the glyphs (`media-src/dots/`, written into `index.html` between markers), the portada stills and the share image (`media-src/dots/stills.cjs`; run it again whenever the opening frame changes). Never edit an output by hand.
 - Layers come from the z-index tokens in `:root` (`--z-back` only inside the portada's isolated sticky, then base, sticky, overlay, modal and toast); no other numbers.
-- Lighthouse runs without a GPU, so it measures the portada's still mode. Round 3, local, median of 3: performance 87, accessibility 100.
+- Lighthouse runs without a GPU, so it measures the portada's still mode. Local, median of 3: performance 87 in round 3, 86 in round 4; accessibility 100 in both.
 - While it lives on the faro-demos Worker the whole folder is `noindex` through `sitios/_headers` (`X-Robots-Tag`). `gracias.html` and `404.html` also carry `<meta name="robots" content="noindex">`.
 - The Worker answers any missing path under `/conpav/` with `404.html`, so that page uses root-relative `/conpav/` paths; the other pages stay relative. On the client's own domain, `/conpav/` becomes `/` there and in the absolute URLs (`og:url`, `og:image`, JSON-LD `url`, the form's `_next`).
 - JSON-LD is a hand-written `Organization` with confirmed data only (areas in `knowsAbout`, opening hours Monday to Friday 08:00–17:00 and Saturday 09:00–15:00).

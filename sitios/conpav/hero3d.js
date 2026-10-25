@@ -177,7 +177,8 @@
     for (let x = -118; x < 128; x += 6) line([x, 0.08, 0], [x + 3, 0.08, 0], 0.3, 1, 3, out(x));
   }
 
-  // Cut slope: the face, its mesh, soil nails with plates, the toe wall and the crest
+  // Cut slope: the face, its mesh, soil nails with plates, the toe wall and the crest. Kept dim:
+  // one area of five, it reads as the hill under the building until the tour reaches it
   {
     const x0 = 56, x1 = 128;
     const at = (x, u) => { const h = HILL(x); return [x, u * h, TOE - u * h * RUN]; };
@@ -186,7 +187,7 @@
       const h = HILL(x);
       if (h < 0.6) continue;
       const lenFace = Math.hypot(h, h * RUN), n = Math.max(2, Math.round(lenFace / 1.1));
-      for (let i = 0; i <= n; i++) { const u = i / n, p = at(x, u); add(p[0], p[1], p[2], lit([0, RUN / Math.hypot(1, RUN), 1 / Math.hypot(1, RUN)], 0.5), 4, ord(x, u), true); }
+      for (let i = 0; i <= n; i++) { const u = i / n, p = at(x, u); add(p[0], p[1], p[2], lit([0, RUN / Math.hypot(1, RUN), 1 / Math.hypot(1, RUN)], 0.4), 4, ord(x, u), true); }
     }
     // mesh: two diagonal families
     for (let k = -30; k <= 70; k += 3.2) {
@@ -198,7 +199,7 @@
           if (HILL(x) < 1.5) continue;
           pts.push(at(x, u));
         }
-        for (let i = 1; i < pts.length; i++) line(pts[i - 1], pts[i], 0.6, 0.42, 4, ord(pts[i][0], 0.5));
+        for (let i = 1; i < pts.length; i++) line(pts[i - 1], pts[i], 0.6, 0.24, 4, ord(pts[i][0], 0.5));
       });
     }
     // soil nails with their plates
@@ -206,8 +207,8 @@
       const h = HILL(x);
       for (let u = 0.12; u <= 0.92; u += 2.8 / Math.max(h, 1)) {
         const p = at(x, u);
-        add(p[0], p[1], p[2] + 0.05, 1.15, 4, ord(x, u));
-        [[0.35, 0], [-0.35, 0], [0, 0.3], [0, -0.3]].forEach(([dx, dy]) => add(p[0] + dx, p[1] + dy, p[2] + 0.05 - dy * RUN, 0.75, 4, ord(x, u)));
+        add(p[0], p[1], p[2] + 0.05, 0.7, 4, ord(x, u));
+        [[0.35, 0], [-0.35, 0], [0, 0.3], [0, -0.3]].forEach(([dx, dy]) => add(p[0] + dx, p[1] + dy, p[2] + 0.05 - dy * RUN, 0.42, 4, ord(x, u)));
       }
     }
     line([x0 + 2, 1.6, TOE + 0.1], [x1, 1.6, TOE + 0.1], 0.3, 0.95, 4, (t) => 0.72 + 0.1 * t);   // toe wall
