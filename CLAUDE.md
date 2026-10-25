@@ -3,9 +3,9 @@
 Static demo sites that Faro, a small web agency in Panama, builds for prospects before they sign, plus Faro's own site. The working rules live in the project Instructions; this file holds the repo facts.
 
 ## Structure
-- `sitios/<client>/` is one independent site in plain HTML/CSS/JS. There is no build, lint or test step (the only package.json is `sitios/faro/video-src/faro-3d`, used to render a video).
-- Sites and status (update when one signs): `faro` (Faro's own site, indexed), `mareas` (fictional sample; the footer says so), `orthox` (prospect demo), `sen-vietnam` (prospect demo).
-- `sitios/<client>/DESIGN.md` is that site's design source of truth. Read it before editing and update it in the same PR. Only faro has one so far.
+- `sitios/<client>/` is one independent site in plain HTML/CSS/JS. There is no build, lint or test step. The only package.json files are tools: `sitios/faro/video-src/faro-3d` and `sitios/conpav/media-src/logo-intro` (each renders a hero video), and `sitios/conpav/media-src` (sharp: generates the image crops, and `dots/` builds the hero's point data and its still images; `node_modules/` is ignored).
+- Sites and status (update when one signs): `faro` (Faro's own site, indexed), `mareas` (fictional sample; the footer says so), `orthox` (prospect demo), `sen-vietnam` (prospect demo), `conpav` (client site in progress; `noindex` by header in `sitios/_headers` while it lives on faro-demos, its own domain comes later).
+- `sitios/<client>/DESIGN.md` is that site's design source of truth. Read it before editing and update it in the same PR. faro and conpav have one so far.
 - Code lives only in this repo. The folders under `/mnt/project-files/sitios/` are old copies: never edit them.
 - Everything under `sitios/` is public on the internet, DESIGN.md and video sources included.
 
@@ -33,7 +33,7 @@ Every site ships these; the QA pass checks them.
 - Follow-up after a thread's PR is merged: `git fetch origin main && git checkout -B <branch> origin/main && git push --force-with-lease -u origin <branch>`.
 
 ## Cloud container limits
-- Checked 2026-10-23: `*.workers.dev` and `*.pages.dev` (production and previews), `*.netlify.app`, `formsubmit.co`, the CDNs, Unsplash, Instagram, Fresha and Google Maps answer from the container; Degusta does not. Open the Cloudflare preview yourself instead of asking Rafa. The policy has changed before: if a host fails, try it once more, then fall back below.
+- Checked 2026-10-23: `*.workers.dev` and `*.pages.dev` (production and previews), `*.netlify.app`, `formsubmit.co`, the CDNs, Unsplash, Instagram, Fresha and Google Maps answer from the container; Degusta does not. Open the Cloudflare preview yourself instead of asking Rafa. The policy has changed before: if a host fails, try it once more, then fall back below. Checked 2026-10-25: the proxy refused `*.workers.dev` and the CDNs while the npm registry answered; WebFetch still opened the preview.
 - Self-host fonts and libraries in `sitios/<client>/assets/` anyway (speed, and no third party can break a demo).
 - Text from a blocked site: WebSearch or WebFetch. Photos, downloads and screenshots of a blocked site: Playwright on Rafa's computer when it is connected (folder `~/Documents/websites`), or ask Rafa.
 
@@ -54,3 +54,4 @@ CHROME_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome npx -y lighthouse
 
 ## Lessons learned
 One line each: `- YYYY-MM-DD: rule (why)`. Propose it in the thread first; it lands with that thread's PR, and Rafa's merge approves it.
+- 2026-10-25: when a client has no photos or poor ones, use illustration that reads as illustration (dots, plans, 3D) to explain what the company does, never to show a specific work, and never an AI image passed off as a real work (quality first, no fake proof).

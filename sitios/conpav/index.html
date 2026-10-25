@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="es-SV">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CONPAV | Ingeniería civil en El Salvador</title>
+  <meta name="description" content="CONPAV, empresa de ingeniería civil en El Salvador desde 2011: carreteras, puentes, obras hidráulicas, estabilización y edificación para entidades públicas y privadas.">
+  <meta name="theme-color" content="#292D32">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_SV">
+  <meta property="og:site_name" content="CONPAV">
+  <meta property="og:title" content="CONPAV | Ingeniería civil en El Salvador">
+  <meta property="og:description" content="Carreteras, puentes, obras hidráulicas, estabilización y edificación en todo El Salvador, desde 2011">
+  <meta property="og:url" content="https://faro-demos.faro-web.workers.dev/conpav/">
+  <meta property="og:image" content="https://faro-demos.faro-web.workers.dev/conpav/assets/og/conpav.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Logo de CONPAV junto a un dibujo en puntos de luz de un puente, una carretera y un talud">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/barlow-sc-500-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/barlow-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Before first paint: flag JS and motion (when the visitor allows it), and the logo intro
+    // on the first visit of the session, so nothing jumps.
+    (function (d) {
+      d.classList.add("js");
+      if (!matchMedia("(prefers-reduced-motion: no-preference)").matches) return;
+      d.classList.add("js-motion");
+      try { if (!sessionStorage.getItem("conpav-intro")) d.classList.add("intro-on"); } catch (e) { /* no storage: no intro */ }
+    })(document.documentElement);
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "CONPAV",
+    "alternateName": "Concretos y Pavimentos",
+    "legalName": "Concretos y Pavimentos, S.A. de C.V.",
+    "description": "CONPAV, empresa de ingeniería civil en El Salvador desde 2011: carreteras, puentes, obras hidráulicas, estabilización y edificación para entidades públicas y privadas.",
+    "url": "https://faro-demos.faro-web.workers.dev/conpav/",
+    "telephone": "+503 7227-7828",
+    "email": "cconpav15@gmail.com",
+    "address": { "@type": "PostalAddress", "addressLocality": "San Salvador", "addressCountry": "SV" },
+    "areaServed": { "@type": "Country", "name": "El Salvador" },
+    "knowsAbout": ["Carreteras y caminos", "Puentes y pasarelas", "Obras hidráulicas y drenaje", "Estabilización y mitigación", "Edificación y vivienda"],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "telephone": "+503 7227-7828",
+      "email": "cconpav15@gmail.com",
+      "areaServed": "SV",
+      "availableLanguage": "es",
+      "hoursAvailable": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "17:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "15:00" }
+      ]
+    }
+  }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Ir al contenido</a>
+  <!-- glyphs --><svg class="sprite" aria-hidden="true" focusable="false"><symbol id="g-carreteras" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.24" stroke-linecap="round" d="M1.5 14.5h0M2.17 12.79h0M2.84 11.07h0M3.51 9.36h0M4.19 7.64h0M4.86 5.93h0M5.53 4.21h0M6.2 2.5h0M14.5 14.5h0M13.83 12.79h0M13.16 11.07h0M12.49 9.36h0M11.81 7.64h0M11.14 5.93h0M10.47 4.21h0M9.8 2.5h0M8 13.6h0M8 11.6h0M8 8.4h0M8 6.6h0M8 4h0"/></symbol><symbol id="g-puentes" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.24" stroke-linecap="round" d="M0.8 5.5h0M2.4 5.5h0M4 5.5h0M5.6 5.5h0M7.2 5.5h0M8.8 5.5h0M10.4 5.5h0M12 5.5h0M13.6 5.5h0M15.2 5.5h0M4.6 7.3h0M4.6 8.88h0M4.6 10.45h0M4.6 12.02h0M4.6 13.6h0M11.4 7.3h0M11.4 8.88h0M11.4 10.45h0M11.4 12.02h0M11.4 13.6h0M0.8 3.6h0M15.2 3.6h0M4.6 3.6h0M6.3 3.6h0M8 3.6h0M9.7 3.6h0M11.4 3.6h0"/></symbol><symbol id="g-hidraulicas" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.24" stroke-linecap="round" d="M1.2 2h0M1.2 3.55h0M1.2 5.1h0M1.2 6.65h0M1.2 8.2h0M1.2 9.75h0M1.2 11.3h0M1.2 12.85h0M1.2 14.4h0M14.8 2h0M14.8 3.55h0M14.8 5.1h0M14.8 6.65h0M14.8 8.2h0M14.8 9.75h0M14.8 11.3h0M14.8 12.85h0M14.8 14.4h0M3.45 6.75h0M5.65 5.65h0M7.85 6.75h0M10.05 5.65h0M11.85 6.75h0M4.35 10.35h0M6.55 9.25h0M8.75 10.35h0M10.95 9.25h0M12.75 10.35h0M3.45 13.95h0M5.65 12.85h0M7.85 13.95h0M10.05 12.85h0M11.85 13.95h0"/></symbol><symbol id="g-estabilizacion" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.24" stroke-linecap="round" d="M1 14.6h0M2.75 14.6h0M4.5 14.6h0M6.25 14.6h0M8 14.6h0M9.75 14.6h0M11.5 14.6h0M13.25 14.6h0M15 14.6h0M3 12.6h0M4.18 11.38h0M5.36 10.16h0M6.53 8.93h0M7.71 7.71h0M8.89 6.49h0M10.07 5.27h0M11.24 4.04h0M12.42 2.82h0M13.6 1.6h0M8.2 12.4h0M11.2 12.4h0M14.2 12.4h0M11.2 9.4h0M14.2 9.4h0M14.2 6.4h0M10 9.6h0"/></symbol><symbol id="g-edificacion" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.24" stroke-linecap="round" d="M2 1.6h0M2 3.23h0M2 4.85h0M2 6.47h0M2 8.1h0M2 9.72h0M2 11.35h0M2 12.97h0M2 14.6h0M8 1.6h0M8 3.23h0M8 4.85h0M8 6.47h0M8 8.1h0M8 9.72h0M8 11.35h0M8 12.97h0M8 14.6h0M14 1.6h0M14 3.23h0M14 4.85h0M14 6.47h0M14 8.1h0M14 9.72h0M14 11.35h0M14 12.97h0M14 14.6h0M3.5 1.6h0M5 1.6h0M6.5 1.6h0M9.5 1.6h0M11 1.6h0M12.5 1.6h0M3.5 5.9h0M5 5.9h0M6.5 5.9h0M9.5 5.9h0M11 5.9h0M12.5 5.9h0M3.5 10.3h0M5 10.3h0M6.5 10.3h0M9.5 10.3h0M11 10.3h0M12.5 10.3h0M3.5 14.6h0M5 14.6h0M6.5 14.6h0M9.5 14.6h0M11 14.6h0M12.5 14.6h0"/></symbol></svg><!-- /glyphs -->
+  <svg class="sprite" aria-hidden="true" focusable="false"><symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></symbol></svg>
+
+  <!-- ============ LOGO INTRO: first visit of the session only, with motion. The globe joins and turns
+       three times, CONPAV appears, then the logo flies to the corner of the header. Any scroll, key or
+       tap skips it; the page underneath is already painted and never waits for it. ============ -->
+  <div class="intro" aria-hidden="true">
+    <div class="intro__stage">
+      <video class="intro__video" width="1440" height="1080" muted playsinline preload="none" disablepictureinpicture disableremoteplayback tabindex="-1">
+        <source data-src="assets/media/logo-intro-1200.webm" type="video/webm" media="(min-width: 700px)">
+        <source data-src="assets/media/logo-intro-1200.mp4" type="video/mp4" media="(min-width: 700px)">
+        <source data-src="assets/media/logo-intro-960.webm" type="video/webm">
+        <source data-src="assets/media/logo-intro-960.mp4" type="video/mp4">
+      </video>
+      <!-- the video's last frame, as two pieces that fly to the header logo -->
+      <div class="intro__lockup">
+        <svg class="intro__globe" viewBox="55.33 0.03 133.94 116.41" focusable="false"><path fill="currentColor" d="M157.5 9.7C132.6 16.6 116.5 23 97.3 38.3C79 52.9 65.6 71.7 73.9 93.3C42.2 78.4 54.6 48.2 84.7 31.4C105.8 19.6 127.4 11.4 157.5 9.7ZM79.6 57.4C114.1 69.2 130.2 68.9 166 56.4C145.6 76 103.3 78.1 79.6 57.4ZM96.7 41.6C117 41.1 128.2 46 153 31.9C143.9 46.1 112.8 52.1 96.7 41.6ZM173.1 84.5C158.5 113.5 120.5 125.8 93.8 108.5C129.8 105 144.9 101.1 173.1 84.5Z"/><path fill="#F28C6A" d="M70.3 33.4C84.8 2 124.1-9.3 150.5 8.4C109.9 12 95.4 17.1 70.3 33.4ZM171.6 22.7C199.2 35.3 192.6 65.2 164.7 81.9C136.4 98.8 117.8 103.9 87.4 106.2C118.1 97.8 131.2 91.9 147.9 77.7C168.8 59.9 176.6 47.5 171.6 22.7ZM129.7 15.9C148.5 25.3 153.1 55.6 146.2 79.4C140.1 100.1 104.5 99.1 88.3 83.7C111.5 91.3 136.5 97.9 141.4 77C146.2 56.9 142.9 30.4 129.7 15.9ZM106.8 21.8C101 39.6 97.9 40.5 97.9 62.2C97.9 79.3 104.1 93.1 111.7 102.4C99.2 96.8 92.1 77.4 91.8 63.5C91.4 47.1 96.3 31.6 106.8 21.8Z"/></svg>
+        <svg class="intro__letters" viewBox="0 128.6 244.6 32.2" focusable="false"><path fill="currentColor" d="M54.5 128.6H69.1C76.2 128.6 81.8 131.8 81.8 135.9V153.5C81.8 157.6 76.2 160.8 69.1 160.8H54.5C47.5 160.8 41.8 157.6 41.8 153.5V135.9C41.8 131.8 47.5 128.6 54.5 128.6ZM55.5 131.9C50.4 131.9 46 134 46 136.5V152.9C46 155.4 50.4 157.5 55.5 157.5H68.1C73.3 157.5 77.6 155.4 77.6 152.9V136.5C77.6 134 73.3 131.9 68.1 131.9H55.5ZM35.7 128.6V131.9H13.7C8.6 131.9 4.2 134 4.2 136.5V152.9C4.2 155.4 8.6 157.5 13.7 157.5H35.7V160.8H12.7C5.6 160.8 0 157.6 0 153.5V135.9C0 131.8 5.6 128.6 12.7 128.6ZM87.1 160.8V128.6H91.3L122.3 155.9V128.6H126.5V160.8H122.3L91.3 133.5V160.8ZM132.4 160.8V128.6H161.2C166.5 128.6 171.1 132 171.1 135.9V141.4C171.1 145.2 166.5 148.6 161.2 148.6H136.6V160.8ZM136.6 131.9V145.3H160.6C163.8 145.3 166.9 143.2 166.9 141.1V136.1C166.9 134 163.8 131.9 160.6 131.9H136.6ZM163.3 160.8L184.9 128.6H189.4L211 160.8H206.1L200.2 151.9H174.1L168.2 160.8ZM187.1 132.5L176.4 148.5H197.9L187.1 132.5ZM197.4 128.6H202.1L221 156L239.8 128.6H244.6L222.4 160.8H219.6Z"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ HEADER: its tone follows the section under it; below 1024px a full-screen menu ============ -->
+  <header class="header" data-tone="dark">
+    <div class="header__bar">
+      <a class="header__logo" href="#inicio" aria-label="CONPAV, inicio"><svg class="logo logo--h" viewBox="0 0 548.9 116.5" role="img" aria-label="CONPAV" focusable="false"><g class="logo__globe"><path fill="currentColor" d="M102.2 9.7C77.2 16.6 61.1 23 41.9 38.3C23.7 52.9 10.2 71.7 18.6 93.3C-13.1 78.4-.7 48.2 29.3 31.4C50.4 19.6 72 11.4 102.2 9.7ZM24.2 57.4C58.7 69.2 74.9 68.9 110.7 56.4C90.3 76 48 78.1 24.2 57.4ZM41.4 41.6C61.7 41.1 72.9 46 97.7 31.9C88.6 46.1 57.4 52.1 41.4 41.6ZM117.7 84.5C103.2 113.5 65.1 125.8 38.5 108.5C74.4 105 89.5 101.1 117.7 84.5Z"/><path fill="#F28C6A" d="M14.9 33.4C29.4 2 68.7-9.3 95.2 8.4C54.6 12 40.1 17.1 14.9 33.4ZM116.2 22.7C143.8 35.3 137.2 65.2 109.3 81.9C81.1 98.8 62.5 103.9 32 106.2C62.7 97.8 75.8 91.9 92.6 77.7C113.4 59.9 121.3 47.5 116.2 22.7ZM74.3 15.9C93.1 25.3 97.8 55.6 90.8 79.4C84.7 100.1 49.2 99.1 32.9 83.7C56.1 91.3 81.1 97.9 86.1 77C90.8 56.9 87.6 30.4 74.3 15.9ZM51.4 21.8C45.6 39.6 42.5 40.5 42.6 62.2C42.6 79.3 48.7 93.1 56.3 102.4C43.9 96.8 36.8 77.4 36.4 63.5C36 47.1 40.9 31.6 51.4 21.8Z"/></g><g class="logo__letters"><path fill="currentColor" d="M246.3 32.6H269.6C280.8 32.6 289.8 37.7 289.8 44.1V72.3C289.8 78.7 280.8 83.8 269.6 83.8H246.3C235.1 83.8 226.1 78.7 226.1 72.3V44.1C226.1 37.7 235.1 32.6 246.3 32.6ZM247.9 37.9C239.8 37.9 232.8 41.2 232.8 45.1V71.3C232.8 75.2 239.8 78.6 247.9 78.6H268C276.1 78.6 283.1 75.2 283.1 71.3V45.1C283.1 41.2 276.1 37.9 268 37.9H247.9ZM216.3 32.6V37.9H181.3C173.2 37.9 166.2 41.2 166.2 45.1V71.3C166.2 75.2 173.2 78.6 181.3 78.6H216.3V83.8H179.7C168.5 83.8 159.5 78.7 159.5 72.3V44.1C159.5 37.7 168.5 32.6 179.7 32.6ZM298.2 83.8V32.6H304.9L354.2 76V32.6H360.9V83.8H354.2L304.9 40.4V83.8ZM370.3 83.8V32.6H416.2C424.5 32.6 431.9 38 431.9 44.1V52.9C431.9 59 424.5 64.4 416.2 64.4H377V83.8ZM377 37.9V59.2H415.2C420.2 59.2 425.2 55.9 425.2 52.5V44.5C425.2 41.2 420.2 37.9 415.2 37.9H377ZM419.5 83.8L453.9 32.6H460.9L495.3 83.8H487.6L478.1 69.7H436.7L427.2 83.8ZM457.4 38.8L440.3 64.3H474.5L457.4 38.8ZM473.7 32.6H481.2L511.3 76.1L541.3 32.6H548.9L513.5 83.8H509Z"/></g></svg></a>
+      <nav class="nav" aria-label="Principal">
+        <ul class="nav__list" role="list">
+          <li><a href="#que-hacemos">Qué hacemos</a></li>
+          <li><a href="#para-quien">Para quién</a></li>
+          <li><a href="#obras">Obras</a></li>
+          <li><a href="#empresa">Empresa</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+      <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="menu" aria-label="Menú"><span></span><span></span></button>
+    </div>
+    <div class="menu" id="menu" data-tone="dark" hidden>
+      <ul class="menu__list" role="list">
+        <li><a href="#que-hacemos">Qué hacemos</a></li>
+        <li><a href="#para-quien">Para quién</a></li>
+        <li><a href="#obras">Obras</a></li>
+        <li><a href="#empresa">Empresa</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <a class="btn btn--primary menu__wa" href="https://wa.me/50372277828?text=Hola.%20Escribo%20desde%20el%20sitio%20web%20de%20CONPAV.%20Quiero%20cotizar%20una%20obra%20de%3A%20" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>Escribir por WhatsApp</a>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- ============ 1. PORTADA: one example structure in points of light (hero3d.js). Scrolling moves the
+         camera across it and lights each area in the logo's orange. It is a drawing, not a work. ============ -->
+    <section class="hero" id="inicio" data-tone="dark" aria-labelledby="inicio-title">
+      <div class="hero__sticky">
+        <canvas class="hero__canvas" aria-hidden="true"></canvas>
+        <noscript>
+          <picture class="hero__still">
+            <source media="(max-width: 699px)" type="image/webp" srcset="assets/img/dots-hero-m-800.webp">
+            <source media="(max-width: 699px)" srcset="assets/img/dots-hero-m-800.jpg">
+            <source type="image/webp" srcset="assets/img/dots-hero-d-1600.webp">
+            <img src="assets/img/dots-hero-d-1600.jpg" width="1600" height="1000" alt="">
+          </picture>
+        </noscript>
+        <div class="hero__text">
+          <h1 id="inicio-title">Ingeniería civil en todo El&nbsp;Salvador, desde&nbsp;2011</h1>
+          <p class="lead hero__lead">Carreteras, puentes, obras hidráulicas, estabilización y edificación para entidades públicas, constructoras y desarrolladores.</p>
+          <div class="btn-pair">
+            <a class="btn btn--primary" href="https://wa.me/50372277828?text=Hola.%20Escribo%20desde%20el%20sitio%20web%20de%20CONPAV.%20Quiero%20cotizar%20una%20obra%20de%3A%20" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>Escribir por WhatsApp</a>
+            <a class="btn btn--secondary" href="#obras">Ver obras realizadas</a>
+          </div>
+        </div>
+        <div class="hero__tour">
+          <ol class="tour" role="list" aria-label="Áreas que muestra el dibujo">
+            <li class="tour__item" data-area="puentes"><span class="tour__bar" aria-hidden="true"><span class="tour__fill"></span></span><span class="tour__name">Puentes</span></li>
+            <li class="tour__item" data-area="hidraulicas"><span class="tour__bar" aria-hidden="true"><span class="tour__fill"></span></span><span class="tour__name">Obras hidráulicas</span></li>
+            <li class="tour__item" data-area="carreteras"><span class="tour__bar" aria-hidden="true"><span class="tour__fill"></span></span><span class="tour__name">Carreteras</span></li>
+            <li class="tour__item" data-area="estabilizacion"><span class="tour__bar" aria-hidden="true"><span class="tour__fill"></span></span><span class="tour__name">Estabilización</span></li>
+            <li class="tour__item" data-area="edificacion"><span class="tour__bar" aria-hidden="true"><span class="tour__fill"></span></span><span class="tour__name">Edificación</span></li>
+          </ol>
+          <button type="button" class="hero__pause" aria-pressed="false" hidden><svg class="icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path class="hero__pause-bars" fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/><path class="hero__play" fill="currentColor" d="M8 5.5v13l10.5-6.5z"/></svg><span class="hero__pause-label">Pausar animación</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 2. EXPERIENCIA: the figures and the country in the same points of light ============ -->
+    <section class="band record" id="experiencia" data-tone="dark" aria-labelledby="experiencia-title">
+      <div class="wrap">
+        <div class="record__head">
+          <h2 id="experiencia-title" class="section-title">Experiencia en todo el&nbsp;país</h2>
+          <p class="lead" data-reveal>Obra pública y privada desde 2011, de La&nbsp;Unión a Sonsonate.</p>
+        </div>
+        <dl class="figures">
+          <div class="figure"><dt>Desde</dt><dd class="figure__n">2011</dd></div>
+          <div class="figure"><dt>Obras realizadas</dt><dd class="figure__n" data-count="18">18</dd></div>
+          <div class="figure"><dt>Departamentos</dt><dd class="figure__n" data-count="8">8</dd></div>
+          <div class="figure"><dt>Clientes</dt><dd class="figure__t">Entidades públicas y privadas</dd></div>
+        </dl>
+        <figure class="map">
+          <div class="map__art"><!-- map:dots --><svg class="map__dots" viewBox="0 0 66 37" fill="none" stroke-width="0.68" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="map__dept" data-dept="Ahuachapán" d="M6.5 11.5h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-3 1h0m3 0h0"/><path class="map__dept" data-dept="Cabañas" d="M37.5 12.5h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-11 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-12 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-11 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-11 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-10 1h0m1 0h0m1 0h0m5 0h0m1 0h0m1 0h0m1 0h0"/><path class="map__dept" data-dept="Cuscatlán" d="M26.5 11.5h0m1 0h0m1 0h0m-2 1h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-4 1h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m-2 1h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0"/><path class="map__dept" data-dept="La Paz" d="M29.5 22.5h0m1 0h0m1 0h0m1 0h0m-4 1h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m-1 1h0"/><path class="map__dept" data-dept="San Vicente" d="M36.5 18.5h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-9 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-10 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-9 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m-2 1h0m1 0h0m-1 1h0m1 0h0m-1 1h0m1 0h0m-1 1h0m-1 1h0"/><path class="map__dept" data-dept="Santa Ana" d="M19.5 0.5h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-9 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-9 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-9 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m3 0h0m1 0h0m-1 1h0m1 0h0"/><path class="map__dept is-worked" data-dept="La Libertad" d="M20.5 11.5h0m1 0h0m1 0h0m-2 1h0m1 0h0m1 0h0m-2 1h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m-4 1h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-9 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-9 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-10 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-9 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m0 1h0m1 0h0m1 0h0m0 1h0"/><path class="map__dept is-worked" data-dept="Sonsonate" d="M9.5 15.5h0m1 0h0m1 0h0m-2 1h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m2 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-9 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-11 1h0m1 0h0m2 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-10 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0"/><path class="map__dept is-worked" data-dept="San Salvador" d="M23.5 11.5h0m1 0h0m1 0h0m-2 1h0m1 0h0m1 0h0m-2 1h0m1 0h0m1 0h0m0 1h0m-1 1h0m1 0h0m1 0h0m-2 1h0m1 0h0m1 0h0m-2 1h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-4 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-4 1h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m-2 1h0m1 0h0m-1 1h0m1 0h0m-1 1h0m1 0h0"/><path class="map__dept is-worked" data-dept="La Unión" d="M60.5 15.5h0m2 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m1 0h0m-4 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m-4 1h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m6 0h0"/><path class="map__dept is-worked" data-dept="Morazán" d="M51.5 13.5h0m1 0h0m1 0h0m1 0h0m-4 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-4 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0"/><path class="map__dept is-worked" data-dept="San Miguel" d="M49.5 15.5h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-4 1h0m1 0h0m1 0h0m1 0h0m1 0h0m-2 1h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m-4 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-9 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-9 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-4 1h0m1 0h0m1 0h0m1 0h0m1 0h0m-4 1h0m1 0h0m1 0h0m0 1h0m0 1h0"/><path class="map__dept is-worked" data-dept="Usulután" d="M44.5 21.5h0m1 0h0m-2 1h0m1 0h0m1 0h0m1 0h0m1 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-9 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-10 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-13 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-15 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m2 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-10 1h0m1 0h0m4 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-9 1h0m2 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0"/><path class="map__dept is-worked" data-dept="Chalatenango" d="M22.5 1.5h0m5 0h0m-5 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-3 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-9 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-13 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-14 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-15 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-7 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-8 1h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m1 0h0m-6 1h0m1 0h0m1 0h0m1 0h0m1 0h0"/></svg><div class="map__labels" aria-hidden="true"><span class="map__label" data-dept="San Salvador" style="left: 39.48%; top: 51.54%">San Salvador</span><span class="map__label" data-dept="La Libertad" style="left: 31.4%; top: 56.67%">La Libertad</span><span class="map__label" data-dept="Sonsonate" style="left: 17.59%; top: 56.82%">Sonsonate</span><span class="map__label" data-dept="Chalatenango" style="left: 42.64%; top: 22.29%">Chalatenango</span><span class="map__label" data-dept="Usulután" style="left: 67.2%; top: 80.47%">Usulután</span><span class="map__label" data-dept="San Miguel" style="left: 76.98%; top: 67.78%">San Miguel</span><span class="map__label" data-dept="La Unión" style="left: 91.78%; top: 70.31%">La Unión</span><span class="map__label" data-dept="Morazán" style="left: 83.05%; top: 51.45%">Morazán</span></div><!-- /map:dots --></div>
+          <figcaption class="caption map__caption">Departamentos con obras realizadas: San Salvador, La Libertad, Sonsonate, Chalatenango, Usulután, San Miguel, La Unión y Morazán.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ 3. QUÉ HACEMOS: five areas, each with its dot glyph and its count of works ============ -->
+    <section class="band areas" id="que-hacemos" data-tone="dark" aria-labelledby="que-hacemos-title">
+      <div class="wrap">
+        <div class="areas__head">
+          <h2 id="que-hacemos-title" class="section-title">Qué hacemos</h2>
+          <p class="lead" data-reveal>Cinco áreas de la ingeniería civil, con equipo propio.</p>
+        </div>
+        <ul class="areas__list" role="list">
+          <li class="area" id="carreteras">
+            <svg class="glyph glyph--lg" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-carreteras"/></svg>
+            <h3 class="area__name">Carreteras y caminos</h3>
+            <p class="area__text">Construcción, ampliación, reconstrucción y mejoramiento de carreteras y caminos.</p>
+            <a class="area__count" href="#obras" data-filter="carreteras">5 obras realizadas</a>
+          </li>
+          <li class="area" id="puentes">
+            <svg class="glyph glyph--lg" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-puentes"/></svg>
+            <h3 class="area__name">Puentes y pasarelas</h3>
+            <p class="area__text">Puentes vehiculares, bases y estribos de concreto armado, reparación de puentes y pasarelas peatonales.</p>
+            <a class="area__count" href="#obras" data-filter="puentes">5 obras realizadas</a>
+          </li>
+          <li class="area" id="hidraulicas">
+            <svg class="glyph glyph--lg" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-hidraulicas"/></svg>
+            <h3 class="area__name">Obras hidráulicas y drenaje</h3>
+            <p class="area__text">Drenaje de aguas lluvias, protección de cauces, bóvedas y tanques de agua potable.</p>
+            <a class="area__count" href="#obras" data-filter="hidraulicas">4 obras realizadas</a>
+          </li>
+          <li class="area" id="estabilizacion">
+            <svg class="glyph glyph--lg" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-estabilizacion"/></svg>
+            <h3 class="area__name">Estabilización y mitigación</h3>
+            <p class="area__text">Protección de taludes, muros de concreto armado y mitigación en cárcavas y laderas.</p>
+            <a class="area__count" href="#obras" data-filter="estabilizacion">3 obras realizadas</a>
+          </li>
+          <li class="area" id="edificacion">
+            <svg class="glyph glyph--lg" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-edificacion"/></svg>
+            <h3 class="area__name">Edificación y vivienda</h3>
+            <p class="area__text">Construcción de viviendas y edificios.</p>
+            <a class="area__count" href="#obras" data-filter="edificacion">1 obra realizada</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 4. PARA QUIÉN: one column per kind of client ============ -->
+    <section class="band clients" id="para-quien" data-tone="dark" aria-labelledby="para-quien-title">
+      <div class="wrap">
+        <h2 id="para-quien-title" class="section-title">Para quién trabajamos</h2>
+        <ul class="clients__list" role="list">
+          <li class="client">
+            <h3 class="client__name">Entidades contratantes</h3>
+            <p>Obra pública de carreteras, puentes, drenaje y mitigación, en varios departamentos del país.</p>
+          </li>
+          <li class="client">
+            <h3 class="client__name">Constructoras</h3>
+            <p>Ejecutamos como subcontratista la obra civil de su proyecto: carreteras, puentes, drenaje, muros y estructuras, con equipo propio.</p>
+          </li>
+          <li class="client">
+            <h3 class="client__name">Desarrolladores inmobiliarios</h3>
+            <p>Viviendas, edificación y las obras que las acompañan: drenajes, muros y accesos.</p>
+          </li>
+          <li class="client">
+            <h3 class="client__name">Empresas y particulares</h3>
+            <p>Muros, drenajes, protección de terrenos y caminos de acceso.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 5. OBRAS REALIZADAS: all eighteen, the same format for every one, filterable by area ============ -->
+    <section class="band works" id="obras" data-tone="dark" aria-labelledby="obras-title">
+      <div class="wrap">
+        <div class="works__head">
+          <h2 id="obras-title" class="section-title">Obras realizadas</h2>
+          <p class="lead" data-reveal>Las 18 obras, de la más reciente a la más antigua. Las fotos están al final, para quien quiera verlas.</p>
+        </div>
+        <div class="filters" role="group" aria-label="Filtrar las obras por área" hidden>
+            <button type="button" class="filter" data-filter="all" aria-pressed="true">Todas <span class="filter__n">18</span></button>
+            <button type="button" class="filter" data-filter="carreteras" aria-pressed="false"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-carreteras"/></svg>Carreteras <span class="filter__n">5</span></button>
+            <button type="button" class="filter" data-filter="puentes" aria-pressed="false"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-puentes"/></svg>Puentes <span class="filter__n">5</span></button>
+            <button type="button" class="filter" data-filter="hidraulicas" aria-pressed="false"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-hidraulicas"/></svg>Obras hidráulicas <span class="filter__n">4</span></button>
+            <button type="button" class="filter" data-filter="estabilizacion" aria-pressed="false"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-estabilizacion"/></svg>Estabilización <span class="filter__n">3</span></button>
+            <button type="button" class="filter" data-filter="edificacion" aria-pressed="false"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-edificacion"/></svg>Edificación <span class="filter__n">1</span></button>
+        </div>
+        <p class="works__count" aria-live="polite"></p>
+        <table class="ledger">
+          <caption class="sr">Obras realizadas: año, obra, área y departamento</caption>
+          <thead>
+            <tr><th scope="col">Año</th><th scope="col">Obra</th><th scope="col">Área</th><th scope="col">Departamento</th></tr>
+          </thead>
+          <tbody>
+            <tr data-area="estabilizacion"><td class="ledger__year"><time datetime="2022">2022</time>–<time datetime="2023">2023</time></td><td class="ledger__work">Mitigación de cárcava y bóveda</td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-estabilizacion"/></svg>Estabilización</td><td class="ledger__dept">San Salvador</td></tr>
+            <tr data-area="puentes"><td class="ledger__year"><time datetime="2021">2021</time>–<time datetime="2022">2022</time></td><td class="ledger__work">Pasarela peatonal <a class="ledger__photo" href="#foto-pasarela">Ver foto</a></td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-puentes"/></svg>Puentes</td><td class="ledger__dept">San Salvador</td></tr>
+            <tr data-area="hidraulicas"><td class="ledger__year"><time datetime="2020">2020</time></td><td class="ledger__work">Tanque de agua potable <a class="ledger__photo" href="#foto-tanque">Ver foto</a></td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-hidraulicas"/></svg>Obras hidráulicas</td><td class="ledger__dept"><span aria-hidden="true">—</span><span class="sr">Sin dato</span></td></tr>
+            <tr data-area="carreteras"><td class="ledger__year"><time datetime="2020">2020</time></td><td class="ledger__work">Carretera de circunvalación</td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-carreteras"/></svg>Carreteras</td><td class="ledger__dept">San Miguel</td></tr>
+            <tr data-area="estabilizacion"><td class="ledger__year"><time datetime="2019">2019</time>–<time datetime="2020">2020</time></td><td class="ledger__work">Protección de talud <a class="ledger__photo" href="#foto-proteccion-talud">Ver foto</a></td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-estabilizacion"/></svg>Estabilización</td><td class="ledger__dept">La Unión</td></tr>
+            <tr data-area="puentes"><td class="ledger__year"><time datetime="2019">2019</time></td><td class="ledger__work">Bases de puente sobre río <a class="ledger__photo" href="#foto-bases-puente">Ver foto</a></td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-puentes"/></svg>Puentes</td><td class="ledger__dept">Morazán</td></tr>
+            <tr data-area="carreteras"><td class="ledger__year"><time datetime="2018">2018</time>–<time datetime="2019">2019</time></td><td class="ledger__work">Mejoramiento de camino</td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-carreteras"/></svg>Carreteras</td><td class="ledger__dept">La Unión</td></tr>
+            <tr data-area="carreteras"><td class="ledger__year"><time datetime="2018">2018</time></td><td class="ledger__work">Ampliación de carretera</td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-carreteras"/></svg>Carreteras</td><td class="ledger__dept">La Libertad</td></tr>
+            <tr data-area="edificacion"><td class="ledger__year"><time datetime="2016">2016</time></td><td class="ledger__work">Construcción de viviendas</td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-edificacion"/></svg>Edificación</td><td class="ledger__dept">Usulután</td></tr>
+            <tr data-area="estabilizacion"><td class="ledger__year"><time datetime="2015">2015</time>–<time datetime="2016">2016</time></td><td class="ledger__work">Mitigación con malla de alta resistencia</td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-estabilizacion"/></svg>Estabilización</td><td class="ledger__dept">La Libertad</td></tr>
+            <tr data-area="hidraulicas"><td class="ledger__year"><time datetime="2015">2015</time></td><td class="ledger__work">Obras de drenaje</td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-hidraulicas"/></svg>Obras hidráulicas</td><td class="ledger__dept"><span aria-hidden="true">—</span><span class="sr">Sin dato</span></td></tr>
+            <tr data-area="hidraulicas"><td class="ledger__year"><time datetime="2015">2015</time></td><td class="ledger__work">Obras de drenaje</td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-hidraulicas"/></svg>Obras hidráulicas</td><td class="ledger__dept">Usulután</td></tr>
+            <tr data-area="carreteras"><td class="ledger__year"><time datetime="2015">2015</time></td><td class="ledger__work">Construcción de carretera</td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-carreteras"/></svg>Carreteras</td><td class="ledger__dept">Chalatenango</td></tr>
+            <tr data-area="carreteras"><td class="ledger__year"><time datetime="2015">2015</time></td><td class="ledger__work">Reconstrucción de carretera</td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-carreteras"/></svg>Carreteras</td><td class="ledger__dept">Chalatenango</td></tr>
+            <tr data-area="hidraulicas"><td class="ledger__year"><time datetime="2015">2015</time></td><td class="ledger__work">Obras de drenaje y mitigación</td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-hidraulicas"/></svg>Obras hidráulicas</td><td class="ledger__dept">San Salvador</td></tr>
+            <tr data-area="puentes"><td class="ledger__year"><time datetime="2015">2015</time></td><td class="ledger__work">Reparación de puente y pasarela peatonal</td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-puentes"/></svg>Puentes</td><td class="ledger__dept">La Libertad</td></tr>
+            <tr data-area="puentes"><td class="ledger__year"><time datetime="2015">2015</time></td><td class="ledger__work">Puente vehicular y protección de cauce</td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-puentes"/></svg>Puentes</td><td class="ledger__dept">Sonsonate</td></tr>
+            <tr data-area="puentes"><td class="ledger__year"><time datetime="2011">2011</time>–<time datetime="2012">2012</time></td><td class="ledger__work">Puentes vehiculares</td><td class="ledger__area"><svg class="glyph glyph--sm" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="#g-puentes"/></svg>Puentes</td><td class="ledger__dept">La Unión</td></tr>
+          </tbody>
+        </table>
+        <details class="photos" id="fotos">
+          <summary class="btn btn--secondary photos__toggle"><span class="photos__show">Ver fotos de obra (7)</span><span class="photos__hide">Ocultar las fotos</span></summary>
+          <p class="photos__note">Fotos tomadas por la empresa durante la construcción.</p>
+          <div class="shots">
+            <figure class="shot shot--lead" id="foto-pasarela" tabindex="-1">
+              <picture>
+                <source type="image/avif" sizes="(min-width: 1024px) min(845px, 59vw), 90vw" srcset="assets/img/footbridge-night-d-480.avif 480w, assets/img/footbridge-night-d-800.avif 800w">
+                <source type="image/webp" sizes="(min-width: 1024px) min(845px, 59vw), 90vw" srcset="assets/img/footbridge-night-d-480.webp 480w, assets/img/footbridge-night-d-800.webp 800w">
+                <img src="assets/img/footbridge-night-d-800.jpg" width="800" height="533" alt="Pasarela peatonal de estructura metálica, terminada e iluminada de noche, sobre una avenida" loading="lazy" decoding="async">
+              </picture>
+              <figcaption class="caption">Pasarela peatonal · San Salvador · 2021–2022</figcaption>
+            </figure>
+            <figure class="shot" id="foto-bases-puente" tabindex="-1">
+              <picture>
+                <source type="image/avif" sizes="(min-width: 1024px) min(411px, 28.5vw), (min-width: 700px) 45vw, 100vw" srcset="assets/img/bridge-footings-d-480.avif 480w, assets/img/bridge-footings-d-800.avif 800w">
+                <source type="image/webp" sizes="(min-width: 1024px) min(411px, 28.5vw), (min-width: 700px) 45vw, 100vw" srcset="assets/img/bridge-footings-d-480.webp 480w, assets/img/bridge-footings-d-800.webp 800w">
+                <img src="assets/img/bridge-footings-d-800.jpg" width="800" height="533" alt="Encofrado apuntalado de la base de un puente en el cauce de un río, con la cuadrilla encima; a la izquierda, un puente metálico provisional" loading="lazy" decoding="async">
+              </picture>
+              <figcaption class="caption">Bases de puente sobre río · Morazán · 2019</figcaption>
+            </figure>
+            <figure class="shot">
+              <picture>
+                <source type="image/avif" sizes="(min-width: 1024px) min(411px, 28.5vw), (min-width: 700px) 45vw, 100vw" srcset="assets/img/road-concrete-pour-d-480.avif 480w, assets/img/road-concrete-pour-d-800.avif 800w">
+                <source type="image/webp" sizes="(min-width: 1024px) min(411px, 28.5vw), (min-width: 700px) 45vw, 100vw" srcset="assets/img/road-concrete-pour-d-480.webp 480w, assets/img/road-concrete-pour-d-800.webp 800w">
+                <img src="assets/img/road-concrete-pour-d-800.jpg" width="800" height="533" alt="Cuadrilla con cascos dando acabado a una franja de pavimento de concreto recién colado, junto a barreras de concreto; al fondo, un camión mezclador y el mar" loading="lazy" decoding="async">
+              </picture>
+              <figcaption class="caption">Pavimento de concreto recién colado</figcaption>
+            </figure>
+            <figure class="shot" id="foto-tanque" tabindex="-1">
+              <picture>
+                <source type="image/avif" sizes="(min-width: 1024px) min(411px, 28.5vw), (min-width: 700px) 45vw, 100vw" srcset="assets/img/tank-wall-d-480.avif 480w, assets/img/tank-wall-d-800.avif 800w">
+                <source type="image/webp" sizes="(min-width: 1024px) min(411px, 28.5vw), (min-width: 700px) 45vw, 100vw" srcset="assets/img/tank-wall-d-480.webp 480w, assets/img/tank-wall-d-800.webp 800w">
+                <img src="assets/img/tank-wall-d-800.jpg" width="800" height="533" alt="Pared de concreto recién desencofrada de un tanque, con las varillas del armado arriba" loading="lazy" decoding="async">
+              </picture>
+              <figcaption class="caption">Tanque de agua potable · 2020</figcaption>
+            </figure>
+            <figure class="shot" id="foto-proteccion-talud" tabindex="-1">
+              <picture>
+                <source type="image/avif" sizes="(min-width: 1024px) min(411px, 28.5vw), (min-width: 700px) 45vw, 100vw" srcset="assets/img/retaining-wall-formwork-d-480.avif 480w, assets/img/retaining-wall-formwork-d-800.avif 800w">
+                <source type="image/webp" sizes="(min-width: 1024px) min(411px, 28.5vw), (min-width: 700px) 45vw, 100vw" srcset="assets/img/retaining-wall-formwork-d-480.webp 480w, assets/img/retaining-wall-formwork-d-800.webp 800w">
+                <img src="assets/img/retaining-wall-formwork-d-800.jpg" width="800" height="1000" alt="Muro de concreto armado con encofrado metálico al lado de una carretera de montaña" loading="lazy" decoding="async">
+              </picture>
+              <figcaption class="caption">Protección de talud · La Unión · 2019–2020</figcaption>
+            </figure>
+            <figure class="shot shot--wide">
+              <picture>
+                <source type="image/avif" sizes="(min-width: 1024px) min(845px, 59vw), (min-width: 700px) 45vw, 100vw" srcset="assets/img/slope-street-d-480.avif 480w, assets/img/slope-street-d-800.avif 800w, assets/img/slope-street-d-1200.avif 1200w">
+                <source type="image/webp" sizes="(min-width: 1024px) min(845px, 59vw), (min-width: 700px) 45vw, 100vw" srcset="assets/img/slope-street-d-480.webp 480w, assets/img/slope-street-d-800.webp 800w, assets/img/slope-street-d-1200.webp 1200w">
+                <img src="assets/img/slope-street-d-800.jpg" width="800" height="533" alt="Talud terminado visto a lo largo de la calle, con concreto lanzado y tubos de drenaje, un muro de bloque al pie y acera nueva" loading="lazy" decoding="async">
+              </picture>
+              <figcaption class="caption">Estabilización de talud</figcaption>
+            </figure>
+            <figure class="shot">
+              <picture>
+                <source type="image/avif" sizes="(min-width: 1024px) min(411px, 28.5vw), (min-width: 700px) 45vw, 100vw" srcset="assets/img/slope-mesh-d-480.avif 480w, assets/img/slope-mesh-d-800.avif 800w">
+                <source type="image/webp" sizes="(min-width: 1024px) min(411px, 28.5vw), (min-width: 700px) 45vw, 100vw" srcset="assets/img/slope-mesh-d-480.webp 480w, assets/img/slope-mesh-d-800.webp 800w">
+                <img src="assets/img/slope-mesh-d-800.jpg" width="800" height="1000" alt="Talud en construcción: la malla fijada a la tierra, los tubos de drenaje y el concreto lanzado a medio aplicar" loading="lazy" decoding="async">
+              </picture>
+              <figcaption class="caption">Estabilización de talud, en construcción</figcaption>
+            </figure>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ 7. LA EMPRESA: one paragraph and the facts ============ -->
+    <section class="band company" id="empresa" data-tone="dark" aria-labelledby="empresa-title">
+      <div class="wrap company__grid">
+        <h2 id="empresa-title" class="section-title">La empresa</h2>
+        <p class="lead company__text" data-reveal>CONPAV es el nombre abreviado de Concretos y Pavimentos, <span class="nw">S.A. de C.V.</span>, empresa salvadoreña de ingeniería civil con sede en San Salvador. Desde 2011 ejecuta obra para entidades públicas y privadas en todo el país, con equipo propio.</p>
+        <dl class="facts company__facts">
+          <div class="facts__row"><dt>Razón social</dt><dd>Concretos y Pavimentos, <span class="nw">S.A. de C.V.</span></dd></div>
+          <div class="facts__row"><dt>Actividad</dt><dd>Construcción de obras de ingeniería civil</dd></div>
+          <div class="facts__row"><dt>Sede</dt><dd>San Salvador</dd></div>
+          <div class="facts__row"><dt>Desde</dt><dd>2011</dd></div>
+          <div class="facts__row"><dt>Obras en</dt><dd>San Salvador, La Libertad, Sonsonate, Chalatenango, Usulután, San Miguel, La Unión y Morazán</dd></div>
+          <div class="facts__row"><dt>Equipo propio</dt><dd>Retroexcavadora, concreteras y autohormigonera, equipos de concreto lanzado, perforadoras neumáticas de roca, compresor, compactadoras, rodo liso y plantas eléctricas</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ============ 8. CONTACTO: channels on the left, the quote form on the right ============ -->
+    <section class="band contact" id="contacto" data-tone="dark" aria-labelledby="contacto-title">
+      <div class="wrap contact__grid">
+        <div class="contact__info">
+          <h2 id="contacto-title" class="section-title">Cuéntenos de su proyecto</h2>
+          <p class="lead" data-reveal>Para cotizar nos sirve saber qué obra es, dónde está y, si los tiene, planos o fotos.</p>
+          <dl class="channels">
+            <div class="channel">
+              <dt>WhatsApp</dt>
+              <dd><a class="channel__link" href="https://wa.me/50372277828?text=Hola.%20Escribo%20desde%20el%20sitio%20web%20de%20CONPAV.%20Quiero%20cotizar%20una%20obra%20de%3A%20" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp al 7227-7828">7227-7828</a></dd>
+            </div>
+            <div class="channel">
+              <dt>Teléfono</dt>
+              <dd class="channel__pair"><a class="channel__link" href="tel:+50372277828">7227-7828</a> <a class="channel__link" href="tel:+50322746408">2274-6408</a></dd>
+            </div>
+            <div class="channel">
+              <dt>Correo</dt>
+              <dd><a class="channel__link channel__link--mail" href="mailto:cconpav15@gmail.com?subject=Solicitud%20de%20cotizaci%C3%B3n%20desde%20el%20sitio%20web">cconpav15@gmail.com</a></dd>
+            </div>
+            <div class="channel">
+              <dt>Horario</dt>
+              <dd class="channel__text">Lunes a viernes, de 8:00&nbsp;a.&nbsp;m. a 5:00&nbsp;p.&nbsp;m.; sábado, de 9:00&nbsp;a.&nbsp;m. a 3:00&nbsp;p.&nbsp;m.</dd>
+            </div>
+            <div class="channel">
+              <dt>Sede</dt>
+              <dd class="channel__text">San Salvador</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="contact__form">
+          <form class="quote" action="https://formsubmit.co/cconpav15@gmail.com" method="POST" data-quote>
+            <input type="hidden" name="_subject" value="Solicitud de cotización desde el sitio web">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://faro-demos.faro-web.workers.dev/conpav/gracias">
+            <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+            <p class="quote__summary" role="alert" hidden></p>
+
+            <div class="field">
+              <label for="f-nombre">Nombre</label>
+              <input id="f-nombre" name="nombre" type="text" autocomplete="name" required>
+              <p class="field__error" id="e-nombre" hidden></p>
+            </div>
+            <div class="field">
+              <label for="f-empresa">Empresa o entidad (opcional)</label>
+              <input id="f-empresa" name="empresa" type="text" autocomplete="organization">
+            </div>
+            <div class="field">
+              <label for="f-cliente">Tipo de cliente (opcional)</label>
+              <select id="f-cliente" name="cliente" autocomplete="off">
+                <option value="">Elija una opción</option>
+                <option>Entidad pública</option>
+                <option>Constructora</option>
+                <option>Desarrollador inmobiliario</option>
+                <option>Empresa</option>
+                <option>Particular</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-telefono">Teléfono o WhatsApp</label>
+              <p class="field__help" id="h-telefono">Ocho dígitos.</p>
+              <input id="f-telefono" name="telefono" type="tel" inputmode="tel" autocomplete="tel" required pattern="[+0-9 \(\)\-]{8,20}" aria-describedby="h-telefono">
+              <p class="field__error" id="e-telefono" hidden></p>
+            </div>
+            <div class="field">
+              <label for="f-email">Correo (opcional)</label>
+              <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email">
+              <p class="field__error" id="e-email" hidden></p>
+            </div>
+            <div class="field">
+              <label for="f-tipo">Tipo de obra (opcional)</label>
+              <select id="f-tipo" name="tipo" autocomplete="off">
+                <option value="">Elija una opción</option>
+                <option>Carreteras y caminos</option>
+                <option>Puentes y pasarelas</option>
+                <option>Obras hidráulicas y drenaje</option>
+                <option>Estabilización y mitigación</option>
+                <option>Edificación y vivienda</option>
+                <option>Otra</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-departamento">Departamento de la obra (opcional)</label>
+              <select id="f-departamento" name="departamento" autocomplete="off">
+                <option value="">Elija una opción</option>
+                <option>Ahuachapán</option>
+                <option>Cabañas</option>
+                <option>Chalatenango</option>
+                <option>Cuscatlán</option>
+                <option>La Libertad</option>
+                <option>La Paz</option>
+                <option>La Unión</option>
+                <option>Morazán</option>
+                <option>San Miguel</option>
+                <option>San Salvador</option>
+                <option>San Vicente</option>
+                <option>Santa Ana</option>
+                <option>Sonsonate</option>
+                <option>Usulután</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-mensaje">Cuéntenos de la obra</label>
+              <p class="field__help" id="h-mensaje">Qué hay que hacer, dónde y para cuándo. Si tiene planos o fotos, menciónelo.</p>
+              <textarea id="f-mensaje" name="mensaje" rows="5" required aria-describedby="h-mensaje"></textarea>
+              <p class="field__error" id="e-mensaje" hidden></p>
+            </div>
+
+            <div class="quote__fail" role="alert" hidden>
+              <p>No se pudo enviar la solicitud. Revise su conexión e inténtelo de nuevo, o envíela por WhatsApp con lo que ya escribió.</p>
+              <a class="btn btn--secondary quote__wa" href="https://wa.me/50372277828" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>Enviar por WhatsApp</a>
+            </div>
+
+            <button class="btn btn--primary quote__submit" type="submit">Enviar solicitud</button>
+          </form>
+          <div class="quote__done" role="status"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" data-tone="dark">
+    <div class="wrap footer__grid">
+      <a class="footer__logo" href="#inicio" aria-label="CONPAV, inicio"><svg class="logo logo--stack" viewBox="0 0 244.6 160.8" role="img" aria-label="CONPAV" focusable="false"><path fill="currentColor" d="M157.5 9.7C132.6 16.6 116.5 23 97.3 38.3C79 52.9 65.6 71.7 73.9 93.3C42.2 78.4 54.6 48.2 84.7 31.4C105.8 19.6 127.4 11.4 157.5 9.7ZM79.6 57.4C114.1 69.2 130.2 68.9 166 56.4C145.6 76 103.3 78.1 79.6 57.4ZM96.7 41.6C117 41.1 128.2 46 153 31.9C143.9 46.1 112.8 52.1 96.7 41.6ZM173.1 84.5C158.5 113.5 120.5 125.8 93.8 108.5C129.8 105 144.9 101.1 173.1 84.5Z"/><path fill="#F28C6A" d="M70.3 33.4C84.8 2 124.1-9.3 150.5 8.4C109.9 12 95.4 17.1 70.3 33.4ZM171.6 22.7C199.2 35.3 192.6 65.2 164.7 81.9C136.4 98.8 117.8 103.9 87.4 106.2C118.1 97.8 131.2 91.9 147.9 77.7C168.8 59.9 176.6 47.5 171.6 22.7ZM129.7 15.9C148.5 25.3 153.1 55.6 146.2 79.4C140.1 100.1 104.5 99.1 88.3 83.7C111.5 91.3 136.5 97.9 141.4 77C146.2 56.9 142.9 30.4 129.7 15.9ZM106.8 21.8C101 39.6 97.9 40.5 97.9 62.2C97.9 79.3 104.1 93.1 111.7 102.4C99.2 96.8 92.1 77.4 91.8 63.5C91.4 47.1 96.3 31.6 106.8 21.8Z"/><path fill="currentColor" d="M54.5 128.6H69.1C76.2 128.6 81.8 131.8 81.8 135.9V153.5C81.8 157.6 76.2 160.8 69.1 160.8H54.5C47.5 160.8 41.8 157.6 41.8 153.5V135.9C41.8 131.8 47.5 128.6 54.5 128.6ZM55.5 131.9C50.4 131.9 46 134 46 136.5V152.9C46 155.4 50.4 157.5 55.5 157.5H68.1C73.3 157.5 77.6 155.4 77.6 152.9V136.5C77.6 134 73.3 131.9 68.1 131.9H55.5ZM35.7 128.6V131.9H13.7C8.6 131.9 4.2 134 4.2 136.5V152.9C4.2 155.4 8.6 157.5 13.7 157.5H35.7V160.8H12.7C5.6 160.8 0 157.6 0 153.5V135.9C0 131.8 5.6 128.6 12.7 128.6ZM87.1 160.8V128.6H91.3L122.3 155.9V128.6H126.5V160.8H122.3L91.3 133.5V160.8ZM132.4 160.8V128.6H161.2C166.5 128.6 171.1 132 171.1 135.9V141.4C171.1 145.2 166.5 148.6 161.2 148.6H136.6V160.8ZM136.6 131.9V145.3H160.6C163.8 145.3 166.9 143.2 166.9 141.1V136.1C166.9 134 163.8 131.9 160.6 131.9H136.6ZM163.3 160.8L184.9 128.6H189.4L211 160.8H206.1L200.2 151.9H174.1L168.2 160.8ZM187.1 132.5L176.4 148.5H197.9L187.1 132.5ZM197.4 128.6H202.1L221 156L239.8 128.6H244.6L222.4 160.8H219.6Z"/></svg></a>
+      <p class="footer__legal">Concretos y Pavimentos, <span class="nw">S.A. de C.V.</span><br>San Salvador, El Salvador</p>
+      <ul class="footer__nav" role="list">
+        <li><a href="#que-hacemos">Qué hacemos</a></li>
+        <li><a href="#para-quien">Para quién</a></li>
+        <li><a href="#obras">Obras</a></li>
+        <li><a href="#empresa">Empresa</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <p class="footer__credit">Sitio por Faro</p>
+    </div>
+  </footer>
+
+  <a class="wa-float" href="https://wa.me/50372277828?text=Hola.%20Escribo%20desde%20el%20sitio%20web%20de%20CONPAV.%20Quiero%20cotizar%20una%20obra%20de%3A%20" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp" hidden><svg class="icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
+
+  <!-- Motion: GSAP, ScrollTrigger, SplitText and Lenis, self-hosted (assets/js); the portada in hero3d.js -->
+  <script src="assets/js/gsap.min.js" defer></script>
+  <script src="assets/js/ScrollTrigger.min.js" defer></script>
+  <script src="assets/js/SplitText.min.js" defer></script>
+  <script src="assets/js/lenis.min.js" defer></script>
+  <script src="hero3d.js" defer></script>
+  <script src="main.js" defer></script>
+</body>
+</html>
