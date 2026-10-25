@@ -1,6 +1,16 @@
-# Image pipeline
+# Media sources
 
-Development only: nothing in this folder is linked from the site. `images.mjs` turns the original photos into the responsive files that `index.html` uses, following `photos.json`. The originals never enter this repo.
+Development only: nothing in this folder is linked from the site.
+
+- `images.mjs` turns the original photos into the responsive files that `index.html` uses, following `photos.json` (below). The originals never enter this repo.
+- `logo-intro/`: the logo intro video (its own README).
+- `dots/`: the drawings in points of light.
+  - `map-dots.mjs` writes the dot map of El Salvador into `index.html` (between `<!-- map:dots -->` markers). Its outline is `slv.topo.json`, Natural Earth admin-1 boundaries (public domain) as packaged by datamaps 0.5.9 (MIT, Mark DiMarco).
+  - `glyphs.mjs` writes the five area glyphs as an SVG sprite into `index.html` (between `<!-- glyphs -->` markers).
+  - `stills.cjs` captures the opening frame of the portada (`hero3d.js`) as the still images for screens without WebGL or JS, and builds the share image `assets/og/conpav.jpg`. Run it whenever the opening frame changes; it needs the QA server and Playwright.
+  - Run the first two with `node <file>` from `dots/`; they only need Node.
+
+# Image pipeline
 
 ## Run
 
@@ -25,7 +35,7 @@ Only to `../assets/img/` and `../assets/og/`. It never touches the HTML.
 | `assets/img/<name>-<crop>-<width>.avif` | AVIF q45 (q40 at 1600 px), 4:2:0 |
 | `assets/img/<name>-<crop>-<width>.webp` | WebP q65 |
 | `assets/img/<name>-d-800.jpg` | JPEG q72, the fallback in `<img src>` |
-| `assets/og/<name>.jpg` | Open Graph image, 1200×630, JPEG q78 progressive (only for a photo with `og`) |
+| `assets/og/<name>.jpg` | Open Graph image, 1200×630, JPEG q78 progressive (only for a photo with `og`; today the share image comes from `dots/stills.cjs` instead) |
 
 Every output is sRGB without metadata (phone originals carry GPS) and is never wider than its crop: nothing is upscaled.
 

@@ -3,8 +3,7 @@
    The globe of the logo is treated as what it draws: a sphere seen from a
    little above. Its eight strokes play three parts:
    - the two orange meridians are lifted onto an invisible sphere and turn
-     with it on its own axis; while it is fast, six more meridians (copies
-     of the two) close the globe all round, and fade as it slows;
+     with it on its own axis, three calm turns that ease in and out;
    - the two ink parallels stay put, like the latitudes of a real globe,
      and grow out from the axis;
    - the four orbit swooshes spiral in from outside and keep circling the
@@ -33,8 +32,8 @@ const SUB = 8;           // motion blur: samples per frame
 const SHUTTER = 0.5;     // fraction of a frame the shutter stays open
 const DURATION = 5.2;
 
-const BG = new THREE.Color("#E9E5DD");    // light band of the site
-const INK = new THREE.Color("#1E1D1A");
+const BG = new THREE.Color("#F5F4F0");    // the site's paper
+const INK = new THREE.Color("#292D32");   // the site's graphite (the logo's ink is currentColor)
 const ORANGE = new THREE.Color("#F28C6A");
 const GHOST = 0.3;                        // strength of a meridian seen through the globe
 
@@ -48,12 +47,11 @@ const LOCK_Y = (H - STACK.h * K_END) / 2;
 const K_SPIN = (0.7 * H) / 116.5;
 
 /* ---------- timing (seconds) ---------- */
-const SPIN = { t0: 0.35, t1: 3.6, turns: 2 };     // meridians: fast, then slows to face on
-const ORBIT = { t0: 0.0, t1: 3.6, turns: -1, lean: 38 }; // swooshes: one turn the other way, leaning back
-const COPIES = { in: [0.45, 0.9], out: [2.3, 3.1] };
-const RISE = { t0: 3.2, t1: 4.1 };                // the globe moves up to make room for the letters
-const LETTERS = { t0: 3.55, stagger: 0.06, dur: 0.9 };
-const SHADE = { t0: 2.8, t1: 3.5, max: 0.22 };    // a touch of roundness while it turns
+const SPIN = { t0: 0.3, t1: 3.75, turns: 3 };    // meridians: three calm turns, stopping face on
+const ORBIT = { t0: 0.0, t1: 3.75, turns: -1, lean: 38 }; // swooshes: one turn the other way, leaning back
+const RISE = { t0: 3.4, t1: 4.15 };               // the globe moves up to make room for the letters
+const LETTERS = { t0: 3.7, stagger: 0.05, dur: 0.8 }; // the last letter lands at 4.75 s
+const SHADE = { t0: 3.0, t1: 3.65, max: 0.22 };   // a touch of roundness while it turns
 
 /* ---------- easing ---------- */
 const clamp01 = (x) => Math.min(1, Math.max(0, x));
@@ -65,14 +63,15 @@ const ramp = (t, a, b) => smooth(clamp01((t - a) / (b - a)));
 const DEG = Math.PI / 180;
 const TAU = 2 * Math.PI;
 
-// Turning: the integral of a velocity curve u(1-u)^3 (quick to peak, long smooth stop),
-// tabulated once so the stop lands exactly on a whole number of turns.
+// Turning: the integral of a velocity curve u(1-u)^1.5 (a soft start, a long smooth stop and
+// a low peak, so three turns never look fast), tabulated once so the stop lands exactly on a
+// whole number of turns.
 const TURN_LUT = (() => {
   const n = 2000, lut = new Float64Array(n + 1);
   let acc = 0;
   for (let i = 1; i <= n; i++) {
     const u = (i - 0.5) / n;
-    acc += u * Math.pow(1 - u, 3);
+    acc += u * Math.pow(1 - u, 1.5);
     lut[i] = acc;
   }
   for (let i = 0; i <= n; i++) lut[i] /= acc;
@@ -234,24 +233,18 @@ const parallels = [
   return { ...s, pivot, mat };
 });
 
-// Meridians: on the sphere, turning on its axis. Copy 0 is the logo's own; copies 1-3 sit
-// a quarter turn apart and only show while the globe is fast.
+// Meridians: the logo's own two, on the sphere, turning on its axis.
 const spin = new THREE.Group();
 scene.add(spin);
 const meridians = [];
 [{ shapes: G, order: ORDER.orange + 2 }, { shapes: Hm, order: ORDER.orange + 3 }].forEach((s) => {
   const geos = sphereGeometry(s.shapes, R_SPHERE + 0.6); // just over the parallels
-  for (let k = 0; k < 4; k++) {
-    const holder = new THREE.Group();
-    holder.rotation.y = (k * TAU) / 4;
-    spin.add(holder);
-    const back = strokeMaterial(ORANGE, -1), front = strokeMaterial(ORANGE, 1);
-    geos.forEach((g) => {
-      const mb = new THREE.Mesh(g, back); mb.renderOrder = ORDER.ghost; holder.add(mb);
-      const mf = new THREE.Mesh(g, front); mf.renderOrder = s.order; holder.add(mf);
-    });
-    meridians.push({ copy: k, back, front });
-  }
+  const back = strokeMaterial(ORANGE, -1), front = strokeMaterial(ORANGE, 1);
+  geos.forEach((g) => {
+    const mb = new THREE.Mesh(g, back); mb.renderOrder = ORDER.ghost; spin.add(mb);
+    const mf = new THREE.Mesh(g, front); mf.renderOrder = s.order; spin.add(mf);
+  });
+  meridians.push({ back, front });
 });
 
 /* ---------- letters (flat, frame pixels, y down) ---------- */
@@ -297,7 +290,7 @@ function pose(t) {
     s.mat.opacity = ramp(t, s.delay, s.delay + 0.35);
   });
   orbit.rotation.z = turned(t, ORBIT);
-  orbitPlane.rotation.x = ORBIT.lean * DEG * (1 - ramp(t, 1.0, 3.4));
+  orbitPlane.rotation.x = ORBIT.lean * DEG * (1 - ramp(t, 1.0, 3.55));
 
   // Parallels grow out from the axis.
   parallels.forEach((s) => {
@@ -309,10 +302,9 @@ function pose(t) {
   // Meridians come round from behind and turn with the globe.
   const enter = expoOut(clamp01((t - 0.3) / 1.2));
   spin.rotation.y = turned(t, SPIN) - 150 * DEG * (1 - enter);
-  const copies = ramp(t, ...COPIES.in) * (1 - ramp(t, ...COPIES.out));
   const shade = SHADE.max * (1 - ramp(t, SHADE.t0, SHADE.t1));
-  meridians.forEach(({ copy, back, front }) => {
-    const a = (copy === 0 ? ramp(t, 0.3, 0.6) : copies);
+  meridians.forEach(({ back, front }) => {
+    const a = ramp(t, 0.3, 0.6);
     back.uniforms.uAlpha.value = a;
     front.uniforms.uAlpha.value = a;
     front.uniforms.uShade.value = shade;

@@ -1,19 +1,19 @@
 /* =========================================================================
    CONPAV: styles
-   Concept: "lo que queda adentro" (what ends up inside). Civil works are
-   judged by what the concrete ends up covering: the mesh, the rebar, the
-   bridge footing, the drain under the road. The canvas is finished
-   concrete, the type is road-sign lettering (Barlow), and the orange comes
-   from the company's logo and only marks the action.
+   Concept: "plano de luz" (a blueprint of light). Civil engineering drawn
+   in points of light on graphite: the portada is one example structure in
+   3D dots, the country map and the area glyphs speak the same language,
+   and the company's real photos stand on their own further down.
 
-   Palette A "Obra real": warm concrete bands (light tone) and asphalt bands
-   (dark tone). Every section says its tone with data-tone; tokens are
-   re-scoped inside [data-tone="light"] and [data-tone="dark"], so every
-   component reads roles (--bg, --fg, --action...), never raw colours.
+   Palette (Rafa, 2026-10-25, from the ChatGPT proposal): paper #F5F4F0,
+   graphite #292D32, steel #A8ADB0 (decoration only on paper), and the
+   logo's orange #F28C6A for the action and for whatever is lit. Every
+   section says its tone with data-tone; tokens are re-scoped inside
+   [data-tone="light"] and [data-tone="dark"], so every component reads
+   roles (--bg, --fg, --action...), never raw colours.
 
-   Signature gesture: "por dentro", a slope under construction whose parts
-   get named as you scroll (see .inside below and DESIGN.md). Hand-written,
-   no build step.
+   Signature gesture: the portada of points (hero3d.js), whose camera
+   travels across the structure as you scroll. Hand-written, no build step.
    ========================================================================= */
 
 /* ---------- fonts: Barlow 1.408, OFL-1.1 (assets/fonts/OFL.txt). Files from @fontsource 5.3.0, byte-identical to Google Fonts ---------- */
@@ -53,9 +53,10 @@
 :root {
   --font-text: "Barlow", "Barlow Fallback", sans-serif;
   --font-display: "Barlow Semi Condensed", "Barlow Semi Condensed Fallback", sans-serif;
-  --fs-display: clamp(2.75rem, 1.729rem + 4.19vw, 5.5rem);      /* 44 -> 88 */
+  --fs-display: clamp(2.5rem, 1.5rem + 4.167vw, 5rem);         /* 40 -> 80 */
   --fs-h2:      clamp(2.25rem, 1.6rem + 2.667vw, 4rem);         /* 36 -> 64 */
-  --fs-h3:      clamp(1.75rem, 1.471rem + 1.143vw, 2.5rem);     /* 28 -> 40 */
+  --fs-h3:      clamp(1.5rem, 1.314rem + 0.762vw, 2rem);        /* 24 -> 32 */
+  --fs-figure:  clamp(3.5rem, 2.214rem + 5.357vw, 7rem);        /* 56 -> 112 */
   --fs-lead:    clamp(1.25rem, 1.204rem + 0.19vw, 1.375rem);    /* 20 -> 22 */
   --fs-body:    clamp(1.0625rem, 1.039rem + 0.095vw, 1.125rem); /* 17 -> 18 */
   --fs-value:   clamp(1.125rem, 1.079rem + 0.19vw, 1.25rem);    /* 18 -> 20: fact values, works list */
@@ -66,54 +67,61 @@
   --margin: clamp(20px, 5vw, 80px);
   --gap: 16px;
   --max: 1280px;
-  --col: calc((var(--max) - 11 * var(--gap)) / 12);
   --section: clamp(72px, 10vw, 128px);
   --header: 64px;
 
-  /* shape: concrete edges; 4px only on buttons, fields and focus; the WhatsApp float is round */
+  /* shape: 4px only on buttons, filters, fields and focus; the WhatsApp float is round */
   --radius: 4px;
 
   /* motion: settles like concrete, never bounces */
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   --fast: 180ms;
 
+  /* layers: one small scale, nothing ad hoc. --z-back only lives inside the hero's own
+     stacking context (isolation), under its text */
+  --z-back: -1;
+  --z-base: 0;
+  --z-sticky: 10;   /* header, WhatsApp float */
+  --z-overlay: 20;  /* open mobile menu */
+  --z-modal: 30;    /* logo intro */
+  --z-toast: 40;    /* skip link */
 }
 @media (min-width: 768px) { :root { --gap: 24px; } }
 @media (min-width: 1024px) { :root { --header: 72px; } }
 
-/* Palette A "Obra real". Contrast on --bg / --bg-2 of the same tone (WCAG 2.x) */
+/* Contrast on --bg / --bg-2 of the same tone (WCAG 2.x) */
 [data-tone="light"] {
-  --bg: #E9E5DD;      /* the pavement, lightened */
-  --bg-2: #DCD7CD;
-  --fg: #1E1D1A;      /* 13.42 / 11.75 */
-  --fg-2: #4A463F;    /*  7.47 /  6.54 */
-  --fg-3: #5C574E;    /*  5.71 /  5.00 */
-  --line: #C9C3B7;    /* decorative only */
-  --control: #7A746A; /*  3.69 /  3.23: borders of controls */
-  --field: #E9E5DD;
-  --action: #F28C6A;  /* the logo's orange: fills only, never text on light (1.91) */
-  --action-fg: #1E1D1A;  /* 7.01 */
-  --action-hover: #F59E80; /* 8.09 */
-  --action-edge: inset 0 0 0 2px #1E1D1A; /* the fill alone is 1.91 against the canvas */
-  --focus: #1E1D1A;
-  --error: #A3261B;   /*  5.86 /  5.14 */
+  --bg: #F5F4F0;      /* paper */
+  --bg-2: #EBE9E3;
+  --fg: #292D32;      /* graphite: 12.59 / 11.41 */
+  --fg-2: #4E535A;    /*  7.04 /  6.39 */
+  --fg-3: #5F646A;    /*  5.42 /  4.92 */
+  --line: #D6D4CD;    /* decorative only */
+  --control: #7A7F85; /*  3.67 /  3.33: borders of controls */
+  --field: #F5F4F0;
+  --action: #F28C6A;  /* the logo's orange: fills only, never text on paper (2.18) */
+  --action-fg: #292D32;    /* 5.76 */
+  --action-hover: #F59E80; /* 6.65 */
+  --action-edge: inset 0 0 0 2px #292D32; /* the fill alone is 2.18 against the paper */
+  --focus: #292D32;
+  --error: #A3261B;   /*  6.69 /  6.07 */
   color-scheme: light;
 }
 [data-tone="dark"] {
-  --bg: #1E1D1A;      /* asphalt */
-  --bg-2: #2A2925;
-  --fg: #EEEAE2;      /* 14.05 / 12.13 */
-  --fg-2: #BEB8AD;    /*  8.55 /  7.38 */
-  --fg-3: #9C968B;    /*  5.74 /  4.96 */
-  --line: #3A3833;
-  --control: #7E786E; /*  3.85 /  3.33 */
-  --field: #2A2925;
-  --action: #F28C6A;  /* 7.01 / 6.06 against the band: no edge needed */
-  --action-fg: #1E1D1A;
+  --bg: #292D32;      /* graphite */
+  --bg-2: #32373D;
+  --fg: #F5F4F0;      /* 12.59 / 10.91 */
+  --fg-2: #C5C9CC;    /*  8.31 /  7.20 */
+  --fg-3: #A8ADB0;    /* steel: 6.12 / 5.30 */
+  --line: #41474E;
+  --control: #8A9096; /*  4.30 /  3.72 */
+  --field: #32373D;
+  --action: #F28C6A;  /* 5.76 / 4.99 against the band: no edge needed */
+  --action-fg: #292D32;
   --action-hover: #F59E80;
   --action-edge: 0 0 0 0 transparent;
-  --focus: #F28C6A;   /*  7.01 /  6.06 */
-  --error: #FF9C8A;   /*  8.33 /  7.19 */
+  --focus: #F28C6A;
+  --error: #FF9C8A;   /*  6.84 /  5.93 */
   color-scheme: dark;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -127,32 +135,33 @@ html {
   scroll-padding-top: calc(var(--header) + 8px);
   scroll-padding-bottom: 96px; /* the WhatsApp float never hides what has focus */
 }
-@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+@media (prefers-reduced-motion: no-preference) { html:not(.lenis) { scroll-behavior: smooth; } }
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--fg);
+  background: #292D32;
+  color: #F5F4F0;
   font: 400 var(--fs-body)/1.55 var(--font-text);
   font-kerning: normal;
   font-synthesis: none;
 }
-img, svg, video { display: block; max-width: 100%; }
+img, svg, video, canvas { display: block; max-width: 100%; }
 img { height: auto; }
 picture { display: block; }
 h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: 500; text-wrap: balance; }
 h1 { font-size: var(--fs-display); line-height: 1.0; letter-spacing: -0.015em; }
 h2 { font-size: var(--fs-h2); line-height: 1.05; letter-spacing: -0.01em; }
-h3 { font-size: var(--fs-h3); line-height: 1.1; letter-spacing: -0.005em; }
+h3 { font-size: var(--fs-h3); line-height: 1.15; letter-spacing: -0.005em; }
 p { margin: 0; text-wrap: pretty; }
 ul, ol, dl, dd, figure { margin: 0; padding: 0; }
 [role="list"] { list-style: none; }
 a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
 strong { font-weight: 500; }
 .nw { white-space: nowrap; }
-.t-acento { line-height: 1.12; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 @media (max-width: 767px) {
   p, li, figcaption, dd { hyphens: auto; -webkit-hyphens: auto; hyphenate-limit-chars: 8 4 3; }
-  .channel dd, .ledger td, .facts dd { hyphens: manual; -webkit-hyphens: manual; }
+  .channel dd, .ledger td, .facts dd, .figure dd, .tour__name { hyphens: manual; -webkit-hyphens: manual; }
 }
 
 /* focus: 3px ring, 3px apart, 4px radius, on everything focusable */
@@ -160,12 +169,12 @@ strong { font-weight: 500; }
 main:focus { outline: none; }
 
 .skip {
-  position: absolute; left: 16px; top: 8px; z-index: 100;
+  position: absolute; left: 16px; top: 8px; z-index: var(--z-toast);
   padding: 12px 16px; border-radius: var(--radius);
-  background: #1E1D1A; color: #EEEAE2; font-weight: 500; text-decoration: none;
+  background: #F28C6A; color: #292D32; font-weight: 500; text-decoration: none;
   transform: translateY(-160%);
 }
-.skip:focus { transform: none; outline-color: #F28C6A; }
+.skip:focus { transform: none; outline: 3px solid #292D32; outline-offset: -7px; } /* outside any tone: its own ring, inside the block */
 
 /* ---------- layout ---------- */
 .wrap { width: 100%; max-width: calc(var(--max) + 2 * var(--margin)); margin-inline: auto; padding-inline: var(--margin); }
@@ -174,18 +183,7 @@ main:focus { outline: none; }
 .lead { font-size: var(--fs-lead); line-height: 1.4; max-width: var(--measure); color: var(--fg-2); }
 .section-title { max-width: 18ch; }
 .caption { font-size: 0.9375rem; line-height: 1.45; color: var(--fg-2); padding-top: 12px; }
-
-/* full-bleed grid from 1024px: 12 columns of the content plus a margin track on each side */
-@media (min-width: 1024px) {
-  .bleed {
-    display: grid;
-    column-gap: var(--gap);
-    grid-template-columns:
-      [full-start] minmax(calc(var(--margin) - var(--gap)), 1fr)
-      [content-start] repeat(12, minmax(0, var(--col)))
-      [content-end] minmax(calc(var(--margin) - var(--gap)), 1fr) [full-end];
-  }
-}
+.glyph { width: 1em; height: 1em; flex: none; }
 
 /* ---------- buttons ---------- */
 .btn {
@@ -203,11 +201,11 @@ main:focus { outline: none; }
 .btn-pair { display: flex; flex-wrap: wrap; gap: 12px; }
 @media (max-width: 519px) { .btn-pair .btn { flex: 1 1 100%; } }
 
-/* ---------- header ---------- */
+/* ---------- header: takes the tone of the section under it (main.js) ---------- */
 .header {
-  position: sticky; top: 0; z-index: 50;
+  position: sticky; top: 0; z-index: var(--z-sticky);
   background: var(--bg); color: var(--fg);
-  transition: box-shadow var(--fast) ease;
+  transition: background-color 300ms ease, color 300ms ease, box-shadow var(--fast) ease;
 }
 .header.is-scrolled { box-shadow: 0 1px 0 var(--line); }
 .header__bar {
@@ -216,12 +214,10 @@ main:focus { outline: none; }
   min-height: var(--header); padding: 0 var(--margin);
 }
 .header__logo { display: inline-flex; align-items: center; min-height: 44px; color: var(--fg); }
-/* with motion, the header logo waits until the portada's own logo has been scrolled past */
-.js-motion:has(.hero__stage) .header__logo { opacity: 0; transition: opacity 300ms var(--ease); }
-.js-motion:has(.hero__stage) :is(.header.logo-on, .menu-open .header) .header__logo,
-.js-motion:has(.hero__stage) .header__logo:focus-visible { opacity: 1; }
-.logo { color: var(--fg); }
+.logo { color: var(--fg); transition: color 300ms ease; }
 .logo--h { height: 30px; width: auto; }
+/* while the logo intro plays, its own logo is the one on screen */
+.intro-on .header__logo { opacity: 0; }
 .nav__list { display: flex; flex-wrap: wrap; gap: 0 24px; padding: 0; }
 .nav a {
   display: inline-flex; align-items: center; min-height: 44px;
@@ -246,7 +242,7 @@ main:focus { outline: none; }
   .menu-toggle[aria-expanded="true"] span:last-child { transform: translateY(-4.5px) rotate(-45deg); }
   .js .menu:not([hidden]) {
     display: flex; flex-direction: column; justify-content: space-between; gap: 32px;
-    position: fixed; inset: var(--header) 0 0 0; z-index: 49;
+    position: fixed; inset: var(--header) 0 0 0; z-index: var(--z-overlay);
     padding: 32px var(--margin) calc(32px + env(safe-area-inset-bottom));
     background: var(--bg); color: var(--fg); overflow-y: auto;
   }
@@ -259,123 +255,220 @@ main:focus { outline: none; }
   html.menu-open { overflow: hidden; }
 }
 
-/* ---------- 1. hero: the logo intro, then the offer, all centred ---------- */
-/* The stage keeps the intro video's 4:3 frame. The SVG lockup sits exactly where the video's
-   last frame draws it (media-src/logo-intro: 64% of the frame height, centred), so the swap
-   at the end is invisible. */
-.hero { display: grid; align-content: center; justify-items: center; text-align: center;
-  min-height: calc(100vh - var(--header)); min-height: calc(100svh - var(--header));
-  padding: 16px var(--margin) var(--section); }
-.hero__stage { position: relative; width: min(100%, 720px); aspect-ratio: 4 / 3; }
-.hero__intro, .hero__lockup { position: absolute; }
-.hero__intro { inset: 0; width: 100%; height: 100%; display: none;
+/* ---------- logo intro (first visit of the session, with motion) ----------
+   The stage keeps the video's 4:3 frame; the two SVG pieces sit exactly where the last frame
+   draws the logo (media-src/logo-intro: 64% of the frame height, centred), so the swap is
+   invisible. Then main.js flies them to the header logo. */
+.intro { display: none; }
+.intro-on .intro {
+  display: grid; place-items: center; position: fixed; inset: 0; z-index: var(--z-modal);
+  background: #F5F4F0; color: #292D32; pointer-events: none;
+}
+.intro__stage { position: relative; width: min(92vw, 760px, (100vh - 40px) * 4 / 3); width: min(92vw, 760px, (100svh - 40px) * 4 / 3); aspect-ratio: 4 / 3; }
+.intro__video { position: absolute; inset: 0; width: 100%; height: 100%;
   /* soft edges, so a codec's slightly different paper never shows as a box */
   -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent), linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
   -webkit-mask-composite: source-in;
   mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent), linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
   mask-composite: intersect; }
-.hero__lockup { left: 13.4924%; top: 18%; width: 73.0152%; height: auto; color: var(--fg); }
-.hero__text { display: grid; justify-items: center; }
-.hero h1 { font-size: var(--fs-h2); line-height: 1.05; }
-.hero__lead { margin-top: 16px; }
-.hero .btn-pair { justify-content: center; margin-top: 28px; }
-@media (min-width: 520px) and (min-height: 560px) {
-  /* stage and offer share the first screen: the stage takes what the text leaves */
-  .hero__stage { width: min(100%, 720px, (100vh - var(--header) - 340px) * 4 / 3); width: min(100%, 720px, (100svh - var(--header) - 340px) * 4 / 3); min-width: min(100%, 360px); }
+.intro__lockup { position: absolute; left: 13.4924%; top: 18%; width: 73.0152%; aspect-ratio: 244.6 / 160.8; opacity: 0; }
+.intro__globe, .intro__letters { position: absolute; height: auto; overflow: visible; transform-origin: 0 0; will-change: transform; }
+.intro__globe { left: 22.6206%; top: 0.0187%; width: 54.7588%; }
+.intro__letters { left: 0; top: 79.9751%; width: 100%; }
+
+/* ---------- 1. portada: the structure of points, the offer, the areas it shows ---------- */
+.hero { position: relative; background: var(--bg); color: var(--fg); }
+.hero__sticky {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: grid; grid-template-rows: 1fr auto;
+  min-height: calc(100vh - var(--header)); min-height: calc(100svh - var(--header));
+}
+/* with motion the hero is tall and its inside stays put while the camera travels (about
+   2.6 screens of scroll); scroll itself is never taken over */
+.js-motion .hero { height: 360vh; height: 360svh; }
+.js-motion .hero__sticky { position: sticky; top: var(--header); height: calc(100vh - var(--header)); height: calc(100svh - var(--header)); min-height: 520px; }
+.js-motion.no-webgl .hero { height: auto; }
+.js-motion.no-webgl .hero__sticky { position: relative; top: auto; height: auto; min-height: calc(100vh - var(--header)); min-height: calc(100svh - var(--header)); }
+.hero__canvas { position: absolute; inset: 0; z-index: var(--z-back); width: 100%; height: 100%; }
+.no-webgl .hero__canvas { display: none; }
+.hero__still { position: absolute; inset: 0; z-index: var(--z-back); }
+.hero__still img { width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; }
+/* the text and the tour sit on a soft shade, never on bright points (same layer as the
+   drawing, painted after it because it comes last) */
+.hero__sticky::after { content: ""; position: absolute; inset: auto 0 0 0; height: 34%; z-index: var(--z-back); pointer-events: none;
+  background: linear-gradient(to bottom, rgba(41, 45, 50, 0), rgba(41, 45, 50, 0.88)); }
+.hero__text {
+  grid-row: 1; align-self: start; width: 100%;
+  max-width: calc(var(--max) + 2 * var(--margin)); margin-inline: auto;
+  padding: clamp(24px, 6vh, 56px) var(--margin) 24px;
+}
+.hero h1 { max-width: 11.5ch; }
+.hero__lead { margin-top: 20px; max-width: 34ch; }
+.hero .btn-pair { margin-top: 28px; }
+@media (min-width: 900px) and (min-aspect-ratio: 23/20) {
+  .hero__text { align-self: center; padding-block: 24px; }
+  .hero__text > * { max-width: min(48vw, 680px); }
+  .hero h1 { max-width: 13ch; }
 }
 
-/* ---------- 2. services: a typographic index ---------- */
-.services .section-title { margin-bottom: 40px; }
-.services__list { padding: 0; border-bottom: 1px solid var(--line); }
-.service { display: grid; gap: 12px; padding: 32px 0; border-top: 1px solid var(--line); }
-.service__tech { color: var(--fg); max-width: var(--measure); }
-.service__plain { color: var(--fg-2); max-width: var(--measure); margin-top: 6px; }
-.service__link {
-  display: inline-flex; align-items: center; min-height: 44px; margin-top: 4px;
-  font-weight: 500; text-decoration-line: underline; text-decoration-thickness: 1px;
+.hero__tour {
+  grid-row: 2; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 32px;
+  width: 100%; max-width: calc(var(--max) + 2 * var(--margin)); margin-inline: auto;
+  padding: 0 var(--margin) calc(20px + env(safe-area-inset-bottom));
 }
-.service__link:hover { text-decoration-thickness: 2px; }
-.service__thumb { display: none; }
-@media (min-width: 768px) {
-  .service { grid-template-columns: repeat(8, minmax(0, 1fr)); column-gap: var(--gap); }
-  .service__name { grid-column: 1 / 4; }
-  .service__body { grid-column: 4 / -1; }
+.tour { display: flex; flex-wrap: wrap; gap: 4px 20px; padding: 0; }
+.tour__name { font: 500 1rem/1.3 var(--font-display); letter-spacing: 0.01em; color: var(--fg-2); }
+.tour__bar { display: none; }
+/* with the moving portada: five bars that fill as the camera reaches each area */
+.has-hero3d.js-motion .tour { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; flex: 1 1 auto; max-width: 820px; position: relative; }
+.has-hero3d.js-motion .tour__bar { display: block; position: relative; height: 2px; overflow: hidden; background: var(--line); }
+.tour__fill { position: absolute; inset: 0; background: var(--action); transform-origin: 0 50%; transform: scaleX(0); }
+.has-hero3d.js-motion .tour__name { display: block; padding-top: 10px; color: var(--fg-3); transition: color 300ms ease; }
+.has-hero3d.js-motion .tour__item.is-active .tour__name { color: var(--fg); }
+@media (max-width: 699px) {
+  /* on phones only the area in view is named, under the bars */
+  .has-hero3d.js-motion .tour { padding-bottom: 32px; }
+  .has-hero3d.js-motion .tour__name { position: absolute; left: 0; bottom: 0; padding: 0; opacity: 0; transition: opacity 300ms ease; white-space: nowrap; }
+  .has-hero3d.js-motion .tour__item.is-active .tour__name { opacity: 1; }
+  .hero__pause-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
+.hero__pause {
+  display: inline-flex; align-items: center; gap: 8px; flex: none;
+  min-width: 44px; min-height: 44px; padding: 0 12px; justify-content: center;
+  border: 1px solid var(--control); border-radius: var(--radius); background: rgba(41, 45, 50, 0.6); color: var(--fg);
+  font: 500 0.9375rem/1 var(--font-text); cursor: pointer;
+}
+.hero__pause[hidden] { display: none; }
+.hero__pause:hover { background: var(--bg-2); }
+.hero__pause .icon { width: 20px; height: 20px; }
+.hero__play { display: none; }
+.hero__pause[aria-pressed="true"] .hero__play { display: inline; }
+.hero__pause[aria-pressed="true"] .hero__pause-bars { display: none; }
+
+/* ---------- 2. experiencia: figures and the dot map ---------- */
+.record__head { display: grid; gap: 16px; }
+.figures {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px var(--gap);
+  margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--line);
+}
+.figure { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 10px; }
+.figure dt { font: 500 1rem/1.3 var(--font-text); color: var(--fg-2); }
+.figure__n { font: 500 var(--fs-figure)/0.9 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.figure__t { font: 500 var(--fs-h3)/1.1 var(--font-display); max-width: 11ch; padding-top: 0.2em; }
+@media (min-width: 1024px) { .figures { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+.map { margin-top: 64px; }
+.map__art { position: relative; max-width: 1040px; margin-inline: auto; }
+.map__dots { width: 100%; height: auto; overflow: visible; }
+.map__dept { stroke: #4A5159; transition: stroke 600ms var(--ease); }
+.map__dept.is-worked { stroke: #F28C6A; }
+.map__labels { position: absolute; inset: 0; pointer-events: none; }
+.map__label {
+  position: absolute; transform: translate(-50%, -50%);
+  padding: 4px 7px; border-radius: 2px; background: rgba(41, 45, 50, 0.82);
+  font: 600 0.875rem/1 var(--font-display); letter-spacing: 0.01em; color: #F5F4F0; white-space: nowrap;
+}
+.map__caption { max-width: 62ch; margin-inline: auto; text-align: center; padding-top: 20px; }
+@media (max-width: 767px) { .map__labels { display: none; } .map__caption { text-align: left; } }
+
+/* ---------- 3. qué hacemos: one row per area ---------- */
+.areas__head { display: grid; gap: 16px; margin-bottom: 48px; }
+.areas__list { padding: 0; border-bottom: 1px solid var(--line); }
+.area {
+  display: grid; grid-template-columns: 52px minmax(0, 1fr); column-gap: 20px; row-gap: 8px;
+  padding: 28px 0; border-top: 1px solid var(--line); align-items: start;
+}
+.glyph--lg { width: 52px; height: 52px; grid-row: span 3; color: var(--fg); transition: color 300ms ease; }
+.area__name { grid-column: 2; }
+.area__text { grid-column: 2; color: var(--fg-2); max-width: var(--measure); }
+.area__count {
+  grid-column: 2; justify-self: start; display: inline-flex; align-items: center; min-height: 44px;
+  font-weight: 500; text-decoration-line: underline;
+}
+.area__count:hover { text-decoration-thickness: 2px; }
+.area:hover .glyph--lg { color: var(--action); }
 @media (min-width: 1024px) {
-  .service { grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: start; }
-  .service__name { grid-column: 1 / 6; }
-  .service__body { grid-column: 6 / 11; }
-  .service__thumb { display: block; grid-column: 11 / -1; justify-self: end; width: 160px; }
-  .service__thumb img { width: 160px; aspect-ratio: 3 / 2; object-fit: cover; }
+  .area { grid-template-columns: 64px repeat(11, minmax(0, 1fr)); column-gap: var(--gap); align-items: center; padding: 32px 0; }
+  .glyph--lg { grid-row: 1; width: 64px; height: 64px; }
+  .area__name { grid-column: 2 / 6; grid-row: 1; }
+  .area__text { grid-column: 6 / 11; grid-row: 1; }
+  .area__count { grid-column: 11 / -1; grid-row: 1; justify-self: end; text-align: right; }
 }
 
-/* ---------- 4. works: blocks in a zigzag, then the list ---------- */
-.works__head { margin-bottom: 56px; }
-.works__head .lead { margin-top: 16px; }
-.work { margin-bottom: 72px; }
-.work__photo img { width: 100%; }
-.work__card { padding: 24px var(--margin) 0; }
-.work__card h3 { max-width: 16ch; }
-.facts { margin-top: 20px; border-top: 1px solid var(--line); }
-.facts__row { display: grid; grid-template-columns: minmax(7.5rem, 32%) 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
-.facts dt { font: 500 0.875rem/1.3 var(--font-display); letter-spacing: 0.01em; color: var(--fg-3); }
-.facts dd { font: 500 var(--fs-value)/1.3 var(--font-display); font-variant-numeric: tabular-nums; }
-@media (max-width: 1023px) {
-  .work__photo--small img { max-width: 480px; }
-}
-@media (min-width: 1024px) {
-  .work { display: grid; column-gap: var(--gap); align-items: end; margin-bottom: 112px;
-    grid-template-columns:
-      [full-start] minmax(calc(var(--margin) - var(--gap)), 1fr)
-      [content-start] repeat(12, minmax(0, var(--col)))
-      [content-end] minmax(calc(var(--margin) - var(--gap)), 1fr) [full-end]; }
-  /* photo: 7 columns out to the left edge; card: the other 5 */
-  .work__photo { grid-column: 1 / 9; grid-row: 1; justify-self: start; width: 100%; }
-  .work__card { grid-column: 9 / 14; grid-row: 1; padding: 0 0 8px; }
-  /* flipped: card on the left, photo out to the right edge */
-  .work--flip .work__photo { grid-column: 7 / -1; justify-self: end; }
-  .work--flip .work__card { grid-column: 2 / 7; }
-  /* never wider than the original crop / 1.25 */
-  .work__photo--wide { max-width: 902px; }
-  .work__photo--tall, .work__photo--small { max-width: 640px; }
-}
+/* ---------- 4. para quién: four columns under a rule ---------- */
+.clients__list { display: grid; gap: 40px var(--gap); margin-top: 48px; padding: 0; }
+.client { padding-top: 20px; border-top: 2px solid var(--fg); }
+.client p { margin-top: 12px; color: var(--fg-2); max-width: 40ch; }
+@media (min-width: 768px) { .clients__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .clients__list { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
-/* works list: a real table; on phones each row becomes two lines (visual only) */
-.works__list { margin-top: 24px; }
+/* ---------- 5. obras realizadas: filters and the table ---------- */
+.works__head { display: grid; gap: 16px; margin-bottom: 40px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.filters[hidden] { display: none; }
+.filter {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px;
+  border: 1px solid var(--control); border-radius: var(--radius); background: transparent; color: var(--fg);
+  font: 500 1rem/1 var(--font-text); cursor: pointer;
+  transition: background-color var(--fast) ease, color var(--fast) ease, border-color var(--fast) ease;
+}
+.filter .glyph { width: 18px; height: 18px; }
+.filter__n { color: var(--fg-3); font-variant-numeric: tabular-nums; }
+.filter:hover { background: var(--bg-2); }
+.filter[aria-pressed="true"] { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+.filter[aria-pressed="true"] .filter__n { color: #C5C9CC; }
+.works__count { min-height: 1.5em; margin: 16px 0 8px; font: 500 0.9375rem/1.5 var(--font-text); color: var(--fg-2); }
+.works__count:empty { margin: 0; min-height: 0; }
+
 .ledger { width: 100%; border-collapse: collapse; }
-.ledger__title { font-size: var(--fs-h3); padding-bottom: 24px; }
 .ledger th {
   text-align: left; font: 500 0.875rem/1.3 var(--font-display); letter-spacing: 0.01em; color: var(--fg-3);
   padding: 0 16px 10px 0; border-bottom: 1px solid var(--line);
 }
 .ledger td { padding: 14px 16px 14px 0; border-bottom: 1px solid var(--line); vertical-align: baseline; }
-.ledger tr { min-height: 56px; }
-.ledger__year { font: 500 var(--fs-value)/1.3 var(--font-display); font-variant-numeric: tabular-nums; white-space: nowrap; width: 9.5rem; }
+.ledger tr[hidden] { display: none; }
+.ledger__year { font: 500 var(--fs-value)/1.3 var(--font-display); font-variant-numeric: tabular-nums; white-space: nowrap; width: 8.5rem; }
 .ledger__work { font: 500 var(--fs-value)/1.3 var(--font-display); }
+.ledger__area { color: var(--fg-2); white-space: nowrap; }
+.ledger__area .glyph { display: inline-block; width: 18px; height: 18px; margin-right: 8px; vertical-align: -3px; color: var(--fg-3); }
 .ledger__dept { color: var(--fg-2); white-space: nowrap; }
 @media (min-width: 768px) { .ledger td { height: 56px; } }
 @media (max-width: 767px) {
   .ledger thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .ledger, .ledger tbody { display: block; }
   .ledger tr { display: grid; grid-template-columns: auto 1fr; column-gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .ledger tr[hidden] { display: none; }
   .ledger td { display: block; padding: 0; border: 0; height: auto; width: auto; }
-  .ledger__year, .ledger__dept { font: 400 0.875rem/1.4 var(--font-text); color: var(--fg-2); }
+  .ledger__year, .ledger__dept, .ledger__area { font: 400 0.875rem/1.4 var(--font-text); color: var(--fg-2); }
   .ledger__year { grid-column: 1; grid-row: 1; }
   .ledger__dept { grid-column: 2; grid-row: 1; }
   .ledger__work { grid-column: 1 / -1; grid-row: 2; padding-top: 2px; }
+  .ledger__area { grid-column: 1 / -1; grid-row: 3; padding-top: 4px; }
 }
 
-/* ---------- 6. company ---------- */
+/* ---------- 6. en obra: the photos in columns ---------- */
+.site__head { display: grid; gap: 16px; }
+.shots { columns: 1; column-gap: var(--gap); margin-top: 48px; }
+.shot { break-inside: avoid; margin-bottom: 40px; }
+.shot img { width: 100%; }
+@media (min-width: 700px) { .shots { columns: 2; } }
+@media (min-width: 1100px) { .shots { columns: 3; } }
+
+/* ---------- 7. company ---------- */
 .company__grid { display: grid; gap: 24px; }
+.facts { border-top: 1px solid var(--line); }
+.facts__row { display: grid; grid-template-columns: minmax(7.5rem, 32%) 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.facts dt { font: 500 0.875rem/1.3 var(--font-display); letter-spacing: 0.01em; color: var(--fg-3); }
+.facts dd { font: 500 var(--fs-value)/1.35 var(--font-display); }
 .company__facts { margin-top: 16px; }
 @media (min-width: 1024px) {
   .company__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 40px; }
   .company .section-title { grid-column: 1 / -1; }
-  .company__text { grid-column: 1 / 7; }
-  .company__facts { grid-column: 8 / -1; margin-top: 0; }
+  .company__text { grid-column: 1 / 6; }
+  .company__facts { grid-column: 7 / -1; margin-top: 0; }
 }
 
-/* ---------- 7. contact ---------- */
+/* ---------- 8. contact ---------- */
 .contact__grid { display: grid; gap: 56px; }
 .contact .lead { margin-top: 16px; }
 .channels { margin-top: 40px; display: grid; gap: 24px; }
@@ -413,6 +506,7 @@ main:focus { outline: none; }
 .field select { cursor: pointer; }
 .field [aria-invalid="true"] { border-color: var(--error); box-shadow: inset 0 0 0 1px var(--error); }
 .field__error { color: var(--error); font-size: 0.9375rem; line-height: 1.45; font-weight: 500; }
+:is(.field__error, .quote__summary).is-spent { visibility: hidden; } /* see check() in main.js */
 .quote__summary { padding: 14px 16px; border-left: 3px solid var(--error); background: var(--bg-2); color: var(--fg); font-weight: 500; }
 .quote__fail { display: grid; gap: 16px; padding: 16px; border-left: 3px solid var(--error); background: var(--bg-2); }
 .quote__fail[hidden], .quote__summary[hidden], .field__error[hidden] { display: none; }
@@ -441,68 +535,39 @@ main:focus { outline: none; }
   .footer__credit { grid-column: 11 / -1; justify-self: end; }
 }
 
-/* ---------- WhatsApp float: asphalt, not WhatsApp green (white on green is 1.98:1) ---------- */
+/* ---------- WhatsApp float: graphite, not WhatsApp green (white on green is 1.98:1) ---------- */
 .wa-float {
-  position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom)); z-index: 40;
+  position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom)); z-index: var(--z-sticky);
   display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%;
-  background: #1E1D1A; color: #EEEAE2; box-shadow: 0 0 0 2px #E9E5DD;
+  background: #292D32; color: #F5F4F0; box-shadow: 0 0 0 2px #F5F4F0;
   opacity: 0; visibility: hidden; transform: translateY(12px);
   transition: opacity 200ms ease, transform 200ms var(--ease), visibility 0s linear 200ms;
 }
 .wa-float .icon { width: 24px; height: 24px; }
 .wa-float.is-shown { opacity: 1; visibility: visible; transform: none; transition: opacity 200ms ease, transform 200ms var(--ease), visibility 0s; }
-.wa-float:focus-visible { outline-color: #F28C6A; }
+/* it floats over paper and graphite alike, so its focus ring is two-tone (paper, orange, graphite);
+   the transparent outline is what forced-colors mode draws */
+.wa-float:focus-visible { outline: 3px solid transparent; outline-offset: 4px; box-shadow: 0 0 0 2px #F5F4F0, 0 0 0 5px #F28C6A, 0 0 0 7px #292D32; }
 
 /* ---------- inner pages (gracias, 404) ---------- */
-.page { min-height: calc(100svh - var(--header) - 200px); }
+.page { min-height: calc(100vh - var(--header) - 200px); min-height: calc(100svh - var(--header) - 200px); }
 .page__inner { display: grid; gap: 20px; justify-items: start; }
 .page__inner h1 { max-width: 16ch; }
 .page__back { margin-top: 12px; }
 
-/* =========================================================================
-   Por dentro: a slope under construction, its parts named on the photo.
-   The labels are always there (no JS, reduced motion); with motion they are
-   drawn one by one as the scene scrolls (main.js). The SVG uses the photo's
-   own 800 x 1000 grid, so every point stays on its object at any size.
-   ========================================================================= */
-.inside__grid { display: grid; gap: 32px; }
-.inside__text .lead { margin-top: 16px; }
-.inside__photo { width: min(100%, 560px); }
-.inside__frame { position: relative; }
-.inside__frame img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
-.cotas { position: absolute; inset: 0; pointer-events: none; }
-.cotas svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.cotas line { stroke: #EEEAE2; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
-.cotas line.cotas__halo { stroke: #1E1D1A; stroke-width: 4; stroke-opacity: 0.7; }
-.cotas circle { fill: #EEEAE2; stroke: #1E1D1A; stroke-width: 2; vector-effect: non-scaling-stroke; }
-.cotas__label {
-  position: absolute; transform: translateY(-100%); padding: 4px 8px;
-  font: 600 0.875rem/1.2 "Barlow Semi Condensed", "Barlow Semi Condensed Fallback", sans-serif; letter-spacing: 0.01em; white-space: nowrap;
-  background: #1E1D1A; color: #EEEAE2;
-}
-.cotas__label--end { transform: translate(-100%, -100%); }
-@media (min-width: 1024px) {
-  .inside__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: center; }
-  .inside__text { grid-column: 1 / 6; }
-  .inside__photo { grid-column: 7 / -1; justify-self: end; width: min(100%, 560px, (100vh - var(--header) - 96px) * 0.8); width: min(100%, 560px, (100svh - var(--header) - 96px) * 0.8); }
-}
-
 /* ---------- motion (GSAP in main.js; these are only the starting states) ----------
    .js-motion is set before first paint, so nothing flashes before it moves. main.js
    removes it when GSAP is missing, and adds .motion-on once it has taken over; if
-   main.js never runs, the failsafe below shows everything after 4 s. */
-.js-motion :is(.hero h1, .section-title) { visibility: hidden; }
-.js-motion :is(.hero__lead, .hero .btn-pair, [data-reveal]:not(.section-title)) { opacity: 0; }
-.js-motion .hero__intro { display: block; transition: opacity 400ms var(--ease); }
-.js-motion .hero__lockup { opacity: 0; transition: opacity 400ms var(--ease); }
-.js-motion .hero__stage.is-done .hero__lockup { opacity: 1; }
-.js-motion .hero__stage.is-done .hero__intro { opacity: 0; }
-/* "colado": the main photo of each work fills from the bottom up, like concrete in the formwork */
-.js-motion .work__photo picture { clip-path: inset(100% 0 0 0); }
+   main.js never runs, the failsafe below shows everything after 4 s. While the logo
+   intro covers the page the h1 is left painted underneath, so it is never late. */
+.js-motion:not(.intro-on) .hero h1, .js-motion .section-title { visibility: hidden; }
+.js-motion :is(.hero__lead, .hero .btn-pair, .hero__tour, [data-reveal]:not(.section-title)) { opacity: 0; }
 /* the line masks SplitText adds keep accents and descenders while the lines rise */
 .ln-mask { padding-block: 0.12em; margin-block: -0.12em; }
 @keyframes motion-failsafe { to { visibility: visible; opacity: 1; transform: none; clip-path: none; } }
-.js-motion:not(.motion-on) :is(.hero h1, .section-title, .hero__lead, .hero .btn-pair, .hero__lockup, .header__logo, [data-reveal], .work__photo picture) { animation: motion-failsafe 0s 4s forwards; }
+.js-motion:not(.motion-on) :is(.hero h1, .section-title, .hero__lead, .hero .btn-pair, .hero__tour, [data-reveal], .header__logo) { animation: motion-failsafe 0s 4s forwards; }
+.js-motion:not(.motion-on) .intro { animation: intro-failsafe 0s 9s forwards; }
+@keyframes intro-failsafe { to { visibility: hidden; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation: none !important; }

@@ -302,12 +302,14 @@ for (const photo of config.photos) {
 /* ---------- files that photos.json no longer produces ---------- */
 // Only listed, never deleted: a renamed or dropped photo leaves its old
 // files behind, and they must be removed by hand (and from the HTML).
+// The dots drawing's stills and the share image come from dots/stills.cjs.
+const MADE_ELSEWHERE = /^(dots-hero-.*|conpav\.jpg)$/;
 const stale = [];
 if (!only && !problems.length) {
   for (const dir of [OUT_IMG, OUT_OG]) {
     for (const f of await readdir(dir)) {
       const file = path.join(dir, f);
-      if (!written.has(file)) stale.push(path.relative(site, file));
+      if (!written.has(file) && !MADE_ELSEWHERE.test(f)) stale.push(path.relative(site, file));
     }
   }
 }

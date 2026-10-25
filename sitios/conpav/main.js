@@ -1,14 +1,19 @@
 /* =========================================================================
    CONPAV: behaviour
-   - Header: a thin line after 8px of scroll; aria-current follows the section
+   - Header: a thin line after 8px of scroll; its tone follows the section
+     under it; aria-current follows the section in view
    - Menu (below 1024px): full screen, Escape closes it, focus stays inside
-   - WhatsApp float: shows once the hero is left, hides while Contact is on screen
-   - Logo intro: the globe of the logo joins, turns and stops face on, then
-     CONPAV appears (a video; the SVG takes over when it ends)
-   - Motion (GSAP + ScrollTrigger + SplitText): the portada arrives, section
-     titles rise line by line, the main photo of each work fills from the
-     bottom up like concrete in the formwork ("colado"), and "Por dentro" is
-     the one scene tied to scroll: the parts of the slope get named, one by one
+   - WhatsApp float: shows once the portada is left, hides over Contact
+   - Logo intro (first visit of the session): the globe turns three times,
+     CONPAV appears, and the logo flies to the corner of the header. Any
+     scroll, key or tap skips it; it never holds the page.
+   - Portada: hero3d.js draws the structure of points; here the scroll moves
+     its camera across the areas (ScrollTrigger), the offer gives way to the
+     drawing, the five bars fill, and the pause button stops the ambient motion
+   - Motion (GSAP + ScrollTrigger + SplitText, Lenis for smooth scroll):
+     titles rise line by line, figures count up, the map lights the eight
+     departments, lists arrive as lists
+   - Works: filter by area, with the count announced
    - Quote form: validation in plain words, FormSubmit by fetch, and a
      WhatsApp message with what was typed if sending fails
    Without JS or with reduced motion everything is visible and usable.
@@ -22,20 +27,49 @@
   const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
   const hasIO = "IntersectionObserver" in window;
   const hasGsap = !!(window.gsap && window.ScrollTrigger && window.SplitText);
-  if (!hasIO || !hasGsap) root.classList.remove("js-motion");
+  if (!hasIO || !hasGsap) root.classList.remove("js-motion", "intro-on");
   const motion = root.classList.contains("js-motion");
+  const clamp01 = (v) => Math.min(1, Math.max(0, v));
 
   const WA_URL = "https://wa.me/50372277828";
   const WA_TEXT = "Hola. Escribo desde el sitio web de CONPAV. Quiero cotizar una obra de: ";
   const waLink = (text) => WA_URL + "?text=" + encodeURIComponent(text);
 
-  /* =======================================================================
-     Header line and current section
-     ======================================================================= */
   const header = $(".header");
-  function onScrollHeader() { if (header) header.classList.toggle("is-scrolled", window.scrollY > 8); }
-  window.addEventListener("scroll", onScrollHeader, { passive: true });
-  onScrollHeader();
+  const headerH = () => (header ? header.offsetHeight : 0);
+  let lenis = null;
+  let menuOpen = false;
+
+  /* =======================================================================
+     Smooth scroll (Lenis) on the GSAP ticker, only with motion
+     ======================================================================= */
+  if (motion && window.Lenis) {
+    lenis = new window.Lenis({ lerp: 0.1, smoothWheel: true });
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+
+  /* =======================================================================
+     Header: the line, the tone of the section under it, the current section
+     ======================================================================= */
+  const toned = $$("main > section[data-tone], footer[data-tone]");
+  let toneTick = 0;
+  function onScrollHeader() {
+    if (!header) return;
+    header.classList.toggle("is-scrolled", window.scrollY > 8);
+    const y = headerH() / 2;
+    let tone = "dark";
+    for (const s of toned) {
+      const r = s.getBoundingClientRect();
+      if (r.top <= y && r.bottom > y) { tone = s.dataset.tone; break; }
+    }
+    header.dataset.toneBase = tone;
+    if (!menuOpen && header.dataset.tone !== tone) header.dataset.tone = tone;
+  }
+  window.addEventListener("scroll", () => {
+    if (!toneTick) toneTick = requestAnimationFrame(() => { toneTick = 0; onScrollHeader(); updateFloat(); });
+  }, { passive: true });
 
   const navLinks = $$('.nav a[href^="#"]');
   if (hasIO && navLinks.length) {
@@ -56,21 +90,20 @@
      ======================================================================= */
   const toggle = $(".menu-toggle");
   const menu = $("#menu");
-  let menuOpen = false;
   function setMenu(open, returnFocus) {
     menuOpen = open;
     menu.hidden = !open;
     toggle.setAttribute("aria-expanded", String(open));
     toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Menú");
     header.classList.toggle("is-open", open);
-    header.dataset.tone = open ? "dark" : header.dataset.toneBase;
+    header.dataset.tone = open ? "dark" : header.dataset.toneBase || "dark";
     root.classList.toggle("menu-open", open);
+    if (lenis) { if (open) lenis.stop(); else lenis.start(); }
     updateFloat();
     if (open) { const first = $("a", menu); if (first) first.focus(); }
     else if (returnFocus) toggle.focus();
   }
   if (toggle && menu && header) {
-    header.dataset.toneBase = header.dataset.tone || "light";
     toggle.addEventListener("click", () => setMenu(!menuOpen, true));
     menu.addEventListener("click", (e) => { if (e.target.closest("a")) setMenu(false, false); });
     document.addEventListener("keydown", (e) => {
@@ -87,55 +120,183 @@
   }
 
   /* =======================================================================
-     WhatsApp float: after the hero, never over Contact
+     WhatsApp float: after the portada, never over Contact or the menu
      ======================================================================= */
   const fab = $(".wa-float");
   const hero = $("#inicio");
   const contact = $("#contacto");
-  let heroIn = true, contactIn = false;
-  function updateFloat() { if (fab) fab.classList.toggle("is-shown", !heroIn && !contactIn && !menuOpen); }
-  if (fab && hero && hasIO) {
+  let contactIn = false;
+  function updateFloat() {
+    if (!fab || fab.hidden) return;
+    const pastHero = hero ? hero.getBoundingClientRect().bottom < window.innerHeight * 0.6 : true;
+    fab.classList.toggle("is-shown", pastHero && !contactIn && !menuOpen);
+  }
+  if (fab && hasIO) {
     fab.hidden = false;
-    new IntersectionObserver(([e]) => { heroIn = e.isIntersecting; updateFloat(); }).observe(hero);
     if (contact) new IntersectionObserver(([e]) => { contactIn = e.isIntersecting; updateFloat(); }).observe(contact);
+  }
+  onScrollHeader();
+
+  /* =======================================================================
+     In-page links glide with Lenis; the focus follows the target
+     ======================================================================= */
+  if (lenis) {
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      const id = a.getAttribute("href");
+      const target = id.length > 1 && document.getElementById(id.slice(1));
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(id === "#inicio" ? 0 : target, { offset: -headerH() - 8, duration: 1.4 });
+      history.replaceState(null, "", id);
+      if (id !== "#inicio" && target !== $("#main")) {
+        if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+        target.focus({ preventScroll: true });
+      }
+    });
   }
 
   /* =======================================================================
-     Logo intro (portada). The video plays once, only when motion is
-     allowed; when it ends, fails or does not start, the SVG lockup (drawn
-     exactly where the last frame has it) takes its place. Without motion
-     the video is never loaded and the SVG is there from the start.
+     Portada. hero3d.js runs first (both scripts are deferred, in order) and
+     leaves window.conpavHero; without WebGL it is missing, and the still
+     image from the <noscript> takes its place.
      ======================================================================= */
-  const stage = $(".hero__stage");
-  const intro = stage && $(".hero__intro", stage);
-  if (intro && motion) {
-    let watchdog;
-    const done = () => { clearTimeout(watchdog); stage.classList.add("is-done"); };
-    intro.addEventListener("ended", done);
+  const H = window.conpavHero;
+  const sticky = $(".hero__sticky");
+  const heroText = $(".hero__text");
+  if (!H && sticky) {
+    root.classList.add("no-webgl");
+    const ns = $("noscript", sticky);
+    if (ns) ns.insertAdjacentHTML("afterend", ns.textContent);
+  }
+  const tourItems = $$(".tour__item");
+  const layout = (k) => { if (H && heroText) H.setLayout(heroText.getBoundingClientRect(), k); };
+
+  // The scroll drives the camera: the offer gives way to the drawing as the
+  // tour begins, each bar fills on the way to its area, and the area in view
+  // is named. Nothing here takes the scroll; it only reads it.
+  let textK = 1;
+  function setTour(p) {
+    H.setProgress(p);
+    const k = 1 - clamp01((p - 0.02) / 0.09);
+    if (k !== textK) {
+      textK = k;
+      heroText.style.opacity = k;
+      heroText.style.transform = k < 1 ? "translateY(" + (-(1 - k) * 40).toFixed(1) + "px)" : "";
+      heroText.style.visibility = k < 0.02 ? "hidden" : "";
+    }
+    layout(k);
+    let prev = 0.02, best = null, bestD = 0.09;
+    tourItems.forEach((li) => {
+      const at = H.stops[li.dataset.area];
+      $(".tour__fill", li).style.transform = "scaleX(" + clamp01((p - prev) / (at - prev)).toFixed(3) + ")";
+      prev = at;
+      const d = Math.abs(p - at);
+      if (d < bestD) { bestD = d; best = li; }
+    });
+    tourItems.forEach((li) => li.classList.toggle("is-active", li === best));
+  }
+
+  if (H) {
+    if (motion) {
+      H.setProgress(0);
+      layout(1);
+      const pause = $(".hero__pause");
+      if (pause && H.animated) {
+        pause.hidden = false;
+        const label = $(".hero__pause-label", pause);
+        // The drift also rests while the pointer is on the text or focus is in the hero,
+        // and comes back when they leave, unless the button paused it.
+        let held = false, hovered = false, focused = false;
+        const sync = () => H.setAmbient(!(held || hovered || focused));
+        pause.addEventListener("click", () => {
+          held = !held;
+          pause.setAttribute("aria-pressed", String(held));
+          label.textContent = held ? "Reanudar animación" : "Pausar animación";
+          sync();
+        });
+        // the text block spans the screen; its lines, lead and buttons are what is read
+        [...heroText.children].forEach((el) => {
+          el.addEventListener("pointerenter", (e) => { if (e.pointerType !== "touch") { hovered = true; sync(); } });
+          el.addEventListener("pointerleave", () => { if (hovered) { hovered = false; sync(); } });
+        });
+        // on the button itself, its own state rules
+        sticky.addEventListener("focusin", (e) => { focused = e.target !== pause; sync(); });
+        sticky.addEventListener("focusout", (e) => { if (!sticky.contains(e.relatedTarget)) { focused = false; sync(); } });
+      }
+    } else {
+      // reduced motion: the finished structure, still, beside the text
+      H.still();
+      layout(1);
+      window.addEventListener("resize", () => layout(1));
+    }
+  }
+
+  /* =======================================================================
+     Logo intro. The video plays once per session; when it ends, its last
+     frame is swapped for the two SVG pieces (they match), which fly to the
+     header logo while the paper fades and the portada arrives. If it is
+     skipped, fails or stalls, the paper just fades.
+     ======================================================================= */
+  function runIntro(onReveal) {
+    const intro = $(".intro");
+    if (!motion || !intro || !root.classList.contains("intro-on")) { onReveal(false); return; }
+    try { sessionStorage.setItem("conpav-intro", "1"); } catch (e) { /* ignore */ }
+    const video = $(".intro__video", intro);
+    const lockup = $(".intro__lockup", intro);
+    const sources = $$("source", video);
+    let over = false, watchdog;
+    const SKIP = ["wheel", "touchstart", "keydown", "pointerdown"];
+    const skip = () => finish(false);
+
+    const end = () => {
+      root.classList.remove("intro-on");
+      video.pause();
+      sources.forEach((s) => s.removeAttribute("src"));
+      video.load();
+      intro.remove();
+    };
+    function finish(fly) {
+      if (over) return;
+      over = true;
+      clearTimeout(watchdog);
+      SKIP.forEach((t) => window.removeEventListener(t, skip, true));
+      onReveal(true);
+      if (!fly) { gsap.to(intro, { autoAlpha: 0, duration: 0.45, ease: "power2.out", onComplete: end }); return; }
+      lockup.style.opacity = 1;
+      video.style.opacity = 0;
+      const tl = gsap.timeline({ onComplete: end });
+      [[".intro__globe", ".logo__globe"], [".intro__letters", ".logo__letters"]].forEach(([from, to], i) => {
+        const el = $(from, intro), target = $(to, header);
+        const a = el.getBoundingClientRect(), b = target.getBoundingClientRect();
+        tl.to(el, { x: b.left - a.left, y: b.top - a.top, scale: b.width / a.width, duration: 1.15, ease: "expo.inOut" }, i * 0.07);
+      });
+      tl.to(intro, { backgroundColor: "rgba(245, 244, 240, 0)", duration: 0.9, ease: "power2.inOut" }, 0.2)
+        .to(intro, { color: "#F5F4F0", duration: 0.6, ease: "none" }, 0.45);
+    }
+
+    SKIP.forEach((t) => window.addEventListener(t, skip, { capture: true, passive: true }));
+    video.addEventListener("ended", () => finish(true));
     // A decode error lands on the video; a source that cannot play (wrong type, or a media query
     // that does not match) fires on that <source>, so only the last one means none will play.
-    intro.addEventListener("error", done);
-    const sources = $$("source", intro);
-    sources[sources.length - 1].addEventListener("error", done);
-    // not started after a few seconds, or stuck halfway: show the logo
-    watchdog = setTimeout(() => { intro.pause(); done(); }, 3500);
-    intro.addEventListener("playing", () => {
+    video.addEventListener("error", skip);
+    sources[sources.length - 1].addEventListener("error", skip);
+    watchdog = setTimeout(skip, 2500);
+    video.addEventListener("playing", () => {
       clearTimeout(watchdog);
-      watchdog = setTimeout(() => { intro.pause(); done(); }, ((intro.duration || 5.2) - intro.currentTime + 3) * 1000);
+      watchdog = setTimeout(skip, ((video.duration || 5.2) - video.currentTime + 2) * 1000);
     }, { once: true });
     sources.forEach((s) => { s.src = s.dataset.src; });
-    intro.load();
-    const playing = intro.play();
-    if (playing && playing.catch) playing.catch(done);
-  } else if (stage) {
-    stage.classList.add("is-done");
+    video.load();
+    const playing = video.play();
+    if (playing && playing.catch) playing.catch(skip);
   }
 
   /* =======================================================================
      Motion. Every starting state is in styles.css under .js-motion, so the
      page paints already in place and GSAP only takes things to where they
-     end. Entrances run once; only the "Por dentro" scene depends on the
-     screen, so only it lives in a matchMedia context that is rebuilt on resize.
+     end. Entrances run once.
      ======================================================================= */
   if (motion) {
     gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -164,102 +325,116 @@
       ScrollTrigger.create({ trigger: el, start, end: "bottom top", once: true, onEnter: go, onLeave: go, onEnterBack: go });
     };
 
-    /* ---------- portada: the offer arrives under the turning globe ---------- */
-    const heroTitle = riseLines($(".hero h1"));
-    gsap.timeline({ delay: 0.6 })
-      .add(heroTitle(), 0)
-      .fromTo(".hero__lead, .hero .btn-pair", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: EASE, stagger: 0.08 }, 0.25);
-
-    // the header logo appears once the portada's logo has gone under the header
-    const header = $(".header");
-    if (header && stage) {
+    /* ---------- portada: the camera tour ---------- */
+    if (H && hero) {
       ScrollTrigger.create({
-        trigger: stage, start: "bottom top+=72",
-        onEnter: () => header.classList.add("logo-on"),
-        onLeaveBack: () => header.classList.remove("logo-on"),
+        trigger: hero,
+        start: () => "top " + headerH(),
+        end: "bottom bottom",
+        invalidateOnRefresh: true,
+        onUpdate: (self) => setTour(self.progress),
+        onRefresh: (self) => setTour(self.progress),
       });
     }
 
-    /* ---------- section titles and leads ---------- */
-    $$("main .section-title").forEach((el) => {
-      once(el, riseLines(el));
+    /* ---------- portada: the arrival, after the intro or straight away ---------- */
+    // With the intro, the title is already painted under the paper (it is the LCP) and stays
+    // put; inline, so it keeps showing once .intro-on goes. Without it, its lines rise.
+    const introOn = root.classList.contains("intro-on");
+    if (introOn) gsap.set(".hero h1", { visibility: "visible" });
+    const heroTitle = introOn ? null : riseLines($(".hero h1"));
+    runIntro((afterIntro) => {
+      if (H) H.assemble();
+      const tl = gsap.timeline({ delay: afterIntro ? 0.25 : 0.15 });
+      if (heroTitle) tl.add(heroTitle(), 0);
+      tl.fromTo(".hero__lead, .hero .btn-pair", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: EASE, stagger: 0.08 }, afterIntro ? 0.2 : 0.3)
+        .fromTo(".hero__tour", { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.2, ease: "power2.out" }, 1.6);
     });
+
+    /* ---------- section titles and leads ---------- */
+    $$("main .section-title").forEach((el) => { once(el, riseLines(el)); });
     $$("main [data-reveal]:not(.section-title)").forEach((el) => {
       gsap.set(el, { y: 20 });
       once(el, () => gsap.to(el, { autoAlpha: 1, y: 0, duration: 0.9, ease: EASE, delay: 0.15 }));
     });
 
-    /* ---------- lists arrive as lists: services, the works table, the facts ---------- */
-    [[".services__list > .service", 24], [".ledger tbody tr", 0], [".company__facts .facts__row", 16]].forEach(([sel, y]) => {
+    /* ---------- lists arrive as lists ---------- */
+    // Opacity, never visibility: links and fields waiting to arrive stay in the tab order,
+    // and tabbing to one scrolls it into view, which brings it in.
+    [[".figure", 24], [".areas__list > .area", 24], [".clients__list > .client", 24], [".ledger tbody tr", 0], [".company__facts .facts__row", 16], [".shot", 32]].forEach(([sel, y]) => {
       const items = $$(sel);
       if (!items.length) return;
-      gsap.set(items, { autoAlpha: 0, y });
-      const show = (batch) => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.8, ease: EASE, stagger: 0.06, overwrite: true });
+      gsap.set(items, { opacity: 0, y });
+      const show = (batch) => gsap.to(batch, { opacity: 1, y: 0, duration: 0.9, ease: EASE, stagger: 0.07, overwrite: true });
       ScrollTrigger.batch(items, { start: "top 92%", end: "bottom top", once: true, onEnter: show, onLeave: show });
     });
 
-    /* ---------- "colado": each work photo fills from the bottom, then its card ---------- */
-    $$(".work").forEach((work) => {
-      const pic = $(".work__photo picture", work);
-      const img = $("img", pic);
-      const card = $(".work__card", work);
-      gsap.set(img, { scale: 1.12 });
-      gsap.set(card, { autoAlpha: 0, y: 24 });
-      once(work, () => gsap.timeline()
-        .to(pic, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.2, ease: "power3.out" }, 0)
-        .to(img, { scale: 1, duration: 1.6, ease: EASE }, 0)
-        .to(card, { autoAlpha: 1, y: 0, duration: 0.9, ease: EASE }, 0.35), "top 80%");
+    /* ---------- the figures count up ---------- */
+    $$(".figure__n[data-count]").forEach((el) => {
+      const n = +el.dataset.count, v = { n: 0 };
+      el.textContent = "0";
+      once(el, () => gsap.to(v, { n, duration: 1.6, ease: "power3.out", delay: 0.2, onUpdate: () => { el.textContent = Math.round(v.n); } }), "top 90%");
     });
+
+    /* ---------- the map lights its departments, from La Unión to Sonsonate ---------- */
+    const map = $(".map");
+    if (map) {
+      const order = ["La Unión", "Morazán", "San Miguel", "Usulután", "San Salvador", "Chalatenango", "La Libertad", "Sonsonate"];
+      const worked = order.map((d) => $('.map__dept[data-dept="' + d + '"]', map)).filter(Boolean);
+      const labels = order.map((d) => $('.map__label[data-dept="' + d + '"]', map)).filter(Boolean);
+      gsap.set(worked, { stroke: "#4A5159" });
+      gsap.set(labels, { autoAlpha: 0, y: 6 });
+      once(map, () => gsap.timeline()
+        .to(worked, { stroke: "#F28C6A", duration: 0.7, ease: "power2.out", stagger: 0.14 }, 0.1)
+        .to(labels, { autoAlpha: 1, y: 0, duration: 0.6, ease: EASE, stagger: 0.14 }, 0.3), "top 75%");
+    }
 
     /* ---------- contact: the details and the form ---------- */
     const contactBits = $$(".contact .channels, .contact__form");
-    gsap.set(contactBits, { autoAlpha: 0, y: 24 });
-    once($(".contact"), () => gsap.to(contactBits, { autoAlpha: 1, y: 0, duration: 0.9, ease: EASE, stagger: 0.08, delay: 0.2 }), "top 70%");
-
-    /* ---------- "Por dentro": the one scene tied to scroll ----------
-       The slope under construction gets its parts named in the order they go
-       in: the mesh, the drain pipes, the shotcrete. Each cota sets its point,
-       draws its line out to the label, then the label is written. On large
-       screens the section holds still while it happens (pinned for about one
-       screen of scroll); on smaller ones it plays as the photo crosses the
-       screen. Scroll is never taken over: no snapping, no jumps. */
-    const inside = $(".inside");
-    const frame = $(".inside__frame");
-    if (inside && frame) {
-      const img = $("img", frame);
-      const cotas = $$(".cota", frame);
-      const labels = $$(".cotas__label", frame);
-      // with the object form the handler only runs while one query matches, hence both
-      gsap.matchMedia().add({
-        scene: "(min-width: 1024px) and (min-height: 640px)",
-        pass: "not all and (min-width: 1024px) and (min-height: 640px)",
-      }, (ctx) => {
-        const tl = gsap.timeline({
-          defaults: { ease: "none" },
-          scrollTrigger: ctx.conditions.scene
-            ? { trigger: frame, start: "center 55%", end: "+=110%", pin: inside, scrub: 0.6, anticipatePin: 1 }
-            : { trigger: frame, start: "top 70%", end: "bottom 80%", scrub: 0.6 },
-        });
-        tl.fromTo(img, { scale: 1.08 }, { scale: 1, duration: 1 }, 0);
-        cotas.forEach((g, i) => {
-          const lines = $$("line", g);
-          const dot = $("circle", g);
-          const label = labels[i];
-          const a = +lines[0].getAttribute("x1"), b = +lines[0].getAttribute("y1");
-          const c = +lines[0].getAttribute("x2"), d = +lines[0].getAttribute("y2");
-          const at = 0.08 + i * 0.28;
-          const fromEnd = label.classList.contains("cotas__label--end");
-          tl.fromTo(dot, { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.05 }, at)
-            .fromTo(lines, { attr: { x2: a, y2: b } }, { attr: { x2: c, y2: d }, duration: 0.12 }, at + 0.03)
-            .fromTo(label, { clipPath: fromEnd ? "inset(0% 0% 0% 100%)" : "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.1 }, at + 0.14);
-        });
-        tl.to({}, { duration: 0.1 }); // hold the finished picture before the pin lets go
-      });
-    }
+    gsap.set(contactBits, { opacity: 0, y: 24 });
+    once($(".contact"), () => gsap.to(contactBits, { opacity: 1, y: 0, duration: 0.9, ease: EASE, stagger: 0.08, delay: 0.2 }), "top 70%");
 
     root.classList.add("motion-on");
     // fonts change line breaks and heights: measure again once they are in
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
+    const refresh = () => { ScrollTrigger.refresh(); if (lenis) lenis.resize(); };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
+    window.addEventListener("load", refresh);
+  }
+
+  /* =======================================================================
+     Works: filter by area. Without JS the whole table shows and the
+     filter buttons stay hidden.
+     ======================================================================= */
+  const filters = $(".filters");
+  const rows = $$(".ledger tbody tr");
+  const workCount = $(".works__count");
+  function applyFilter(key) {
+    let n = 0, name = "";
+    $$(".filter", filters).forEach((b) => {
+      const on = b.dataset.filter === key;
+      b.setAttribute("aria-pressed", String(on));
+      if (on) name = b.firstChild && b.textContent.replace(/\s*\d+\s*$/, "").trim();
+    });
+    const shown = [];
+    rows.forEach((r) => {
+      const show = key === "all" || r.dataset.area === key;
+      r.hidden = !show;
+      if (show) { n++; shown.push(r); }
+    });
+    workCount.textContent = key === "all" ? "Todas las obras: " + n : name + ": " + n + (n === 1 ? " obra" : " obras");
+    if (motion) {
+      gsap.fromTo(shown, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out", stagger: 0.03, overwrite: true });
+      ScrollTrigger.refresh();
+    }
+  }
+  if (filters && rows.length) {
+    filters.hidden = false;
+    filters.addEventListener("click", (e) => {
+      const b = e.target.closest(".filter");
+      if (b) applyFilter(b.dataset.filter);
+    });
+    // "5 obras realizadas" under each area opens the list on that area
+    $$(".area__count[data-filter]").forEach((a) => a.addEventListener("click", () => applyFilter(a.dataset.filter)));
   }
 
   /* =======================================================================
@@ -293,19 +468,25 @@
       mensaje: (v) => (v.trim() ? "" : "Cuéntenos en pocas palabras qué obra necesita."),
     };
 
-    const check = (name) => {
+    // On leaving a field (soft), a message that clears keeps its line, invisible, until the
+    // next send: if it closed, the button below would move away from a click already on it.
+    const check = (name, soft) => {
       const input = form.elements[name];
       const err = $("#e-" + name, form);
       const help = $("#h-" + name, form);
       const msg = rules[name](input.value);
-      err.textContent = msg;
-      err.hidden = !msg;
+      const keep = soft && !msg && !err.hidden;
+      err.classList.toggle("is-spent", keep);
+      if (!keep) { err.textContent = msg; err.hidden = !msg; }
       const ids = [help && help.id, msg && err.id].filter(Boolean).join(" ");
       if (ids) input.setAttribute("aria-describedby", ids); else input.removeAttribute("aria-describedby");
       if (msg) input.setAttribute("aria-invalid", "true"); else input.removeAttribute("aria-invalid");
       return !msg;
     };
-    const showSummary = (n) => {
+    const showSummary = (n, soft) => {
+      const keep = soft && !n && !summary.hidden;
+      summary.classList.toggle("is-spent", keep);
+      if (keep) return;
       summary.hidden = !n;
       summary.textContent = n === 1 ? "Falta un dato: revise el campo marcado."
         : n ? "Faltan " + (COUNT[n] || n) + " datos: revise los campos marcados." : "";
@@ -319,15 +500,16 @@
     form.addEventListener("focusout", (e) => {
       const name = e.target.name;
       if (!tried || !rules[name]) return;
-      check(name);
-      showSummary(Object.keys(rules).filter((n) => form.elements[n].getAttribute("aria-invalid") === "true").length);
+      check(name, true);
+      showSummary(Object.keys(rules).filter((n) => form.elements[n].getAttribute("aria-invalid") === "true").length, true);
     });
 
     const value = (name) => (form.elements[name] ? form.elements[name].value.trim() : "");
     const waMessage = () => {
       const lines = [WA_TEXT + value("tipo")];
       if (value("nombre")) lines.push("Nombre: " + value("nombre"));
-      if (value("empresa")) lines.push("Empresa: " + value("empresa"));
+      if (value("empresa")) lines.push("Empresa o entidad: " + value("empresa"));
+      if (value("cliente")) lines.push("Tipo de cliente: " + value("cliente"));
       if (value("departamento")) lines.push("Departamento: " + value("departamento"));
       if (value("mensaje")) lines.push(value("mensaje").slice(0, 500));
       return lines.join("\n");
@@ -347,7 +529,7 @@
       a.target = "_blank";
       a.rel = "noopener";
       a.textContent = "WhatsApp";
-      p2.append("Si tiene fotos o planos, puede enviarlos por ", a, ".");
+      p2.append("Si tiene planos o fotos, puede enviarlos por ", a, ".");
       done.append(h, p, p2);
       form.hidden = true;
       h.focus();
